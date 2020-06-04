@@ -32,11 +32,11 @@
   { "question": "good evening", "answer": ["Good evening!", "Hi!", "Sup!"] },
   {
     "question": "good night",
-    "answer": ["Night!", "It's dark already!?", "Sleepy..."]
+    "answer": ["Night!", "It's dark already?", "Sleepy..."]
   },
   {
     "question": "goodnight",
-    "answer": ["Night!", "It's dark already!?", "Sleepy..."]
+    "answer": ["Night!", "It's dark already?", "Sleepy..."]
   },
 
   {

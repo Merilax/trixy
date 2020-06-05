@@ -12,14 +12,14 @@
     "express": "^4.17.1",
     "fs": "^0.0.2",
     "http": "^0.0.0",
-    "log-symbols": "^3.0.0",
-    "moment": "^2.24.0",
+    "log-symbols": "^4.0.0",
+    "moment": "^2.26.0",
     "opusscript": "^0.0.7",
     "path": "^0.12.7",
     "snekfetch": "^4.0.4",
     "winston": "^3.2.1",
     "ytdl-core": "^2.0.1",
-    "util": "^0.12.1"
+    "util": "^0.12.3"
   },
   "engines": {
     "node": "12.x"

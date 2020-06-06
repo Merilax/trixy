@@ -1,5 +1,7 @@
 0.1.6 >> Added autoresponses.  
-0.1.7 >> Added basic dice roller.  
+0.1.7 >> Added a basic dice roller. 
+
+---
 
 # OFFICIAL VANILLA TRIXY
 
@@ -7,25 +9,26 @@
 1.1.0 >> Added kick and ban functions.  
 1.2.0 >> Added a suggestion function.  
 1.3.0 >> Added a message purge function.  
-1.0.0 >> Improved kick and ban commands to work without role names.  
-1.0.0 >> Added commands to reboot and kill the bot.  
-1.0.0 >> Added owner id limitations.  
-1.0.0 >> Added a primitive role system.  
-1.0.0 >> Added mute command.  
-1.0.0 >> Added command cooldown.  
-
-1.1.0 >> Added test mode environment.  
-1.1.0 >> Added raid filter.  
-1.1.0 >> Added bot "admin only" operation mode.  
-1.1.0 >> Added "serverinfo" command.  
-1.1.0 >> Added owner-only "say" command.  
-1.1.0 >> Added "admincheck" command.  
-1.1.0 >> Added "MESSAGE_DELETED" scanner console.  
-1.1.0 >> Heavy code cleanup.  
+1.3.1 >> Improved kick and ban commands to work without role names.  
+1.4.0 >> Added commands to reboot and kill the bot.  
+1.4.1 >> Added owner id limitations.  
+1.4.2 >> Added a primitive role system.  
+1.5.0 >> Added mute command.  
+1.5.1 >> Added command cooldown.  
+1.6.0 >> Added test mode environment.  
+1.7.0 >> Added raid filter.  
+1.7.1 >> Added bot "admin only" operation mode.  
+1.8.0 >> Added "serverinfo" command.  
+1.9.0 >> Added owner-only "say" command.  
+1.10.0 >> Added "admincheck" command.  
+1.11.0 >> Added "MESSAGE_DELETED" scanner console.  
+1.12.0 >> Heavy code cleanup.  
 1.1.0 >> Added folder systems.  
 1.1.0 >> Added weak website collector.  
 1.2.0 >> Fixed MMFPEG dependencies. Granted ability to connect/speak in voice channels.  
 1.2.0 >> Fixed music module latency drops (mostly).  
+
+---
 
 # OFFICIAL VANILLA TRIXY v2
 

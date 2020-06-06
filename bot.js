@@ -32,7 +32,31 @@ const app = express();
 app.get("/", (request, response) => {
   response.sendStatus(200);
 });
-app.listen(process.env.PORT);
+//app.listen(process.env.PORT);
+app.listen(process.env.PORT, function() {
+  function pingURL(url) {
+    return new Promise((resp, rej) => {
+      request(
+        url,
+        { headers: { "User-Agent": "Awake-Glitch" } },
+        (err, res, body) => {
+          if (err) {
+            rej();
+          } else {
+            resp();
+          }
+        }
+      );
+    });
+  }
+  function ping() {
+    pingURL("https://vairenv2.glitch.me");
+  }
+  setInterval(() => {
+    ping();
+  }, 60000);
+  ping();
+});
 setInterval(() => {
   http.get(`http://${process.env.PROJECT_DOMAIN}.glitch.me/`);
 }, 280000);

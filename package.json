@@ -19,7 +19,8 @@
     "snekfetch": "^4.0.4",
     "winston": "^3.2.1",
     "ytdl-core": "^2.0.1",
-    "util": "^0.12.3"
+    "util": "^0.12.3",
+    "request": "^2.88.2"
   },
   "engines": {
     "node": "12.x"

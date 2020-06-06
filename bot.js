@@ -1,5 +1,6 @@
 const Discord = require("discord.js");
 const fs = require("fs");
+const request = require("request");
 const { readdirSync } = require("fs");
 const bot = new Discord.Client({fetchAllMembers: true});
 const { prefix, ownerid, statusquote } = require("./config.json");

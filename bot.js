@@ -38,7 +38,7 @@ app.listen(process.env.PORT, function() {
     return new Promise((resp, rej) => {
       request(
         url,
-        { headers: { "User-Agent": "Awake-Glitch" } },
+        { headers: { "User-Agent": "Trixy" } },
         (err, res, body) => {
           if (err) {
             rej();

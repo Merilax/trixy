@@ -50,7 +50,7 @@ app.listen(process.env.PORT, function() {
     });
   }
   function ping() {
-    pingURL("https://vairenv2.glitch.me");
+    pingURL("https://vairen2.glitch.me");
   }
   setInterval(() => {
     ping();

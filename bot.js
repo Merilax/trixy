@@ -30,7 +30,8 @@ const http = require("http");
 const express = require("express");
 const app = express();
 app.get("/", (request, response) => {
-  response.sendStatus(200);
+  response.sendFile(__dirname + "/views/index.html");
+  //response.sendStatus(200);
 });
 //app.listen(process.env.PORT);
 app.listen(process.env.PORT, function() {

@@ -3,7 +3,7 @@ const sequelize = new Sequelize('database', 'user', 'password', {
     host: '/postgres://dtpbhkqinnhhpl:6986987fb91c44a355992d5a2c1a4753f9cd56ef5ad077263407c5d600ccea19@ec2-54-74-35-87.eu-west-1.compute.amazonaws.com:5432/d4m6ctnfae47lk',
     dialect: 'postgres',
     logging: false,
-    storage: 'database.sqlite',
+    //storage: 'database.sqlite',
 });
 sequelize.authenticate();
 console.log("Database Online!");

@@ -1,14 +1,16 @@
 const Sequelize = require('sequelize');
-/* SQLite3
+//SQLite3
+
 const sequelize = new Sequelize('database', 'user', 'password', {
     host: 'localhost',
     dialect: 'sqlite',
     logging: false,
     storage: 'database.sqlite',
 });
-*/
+
 
 // PostGreSQL
+/*
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
     dialect: 'postgres',
     protocol: 'postgres',
@@ -19,6 +21,7 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
         }
     }
 });
+*/
 
 sequelize.authenticate();
 console.log("Database Online!");

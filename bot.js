@@ -11,13 +11,6 @@ const { sep } = require("path");
 const { success, error, warning } = require("log-symbols");
 //const { inspect } = require("util");
 const Sequelize = require('sequelize')
-/*
-const { Client } = require('pg');
-const pg = new Client({
-  connectionString: process.env.DATABASE_URL,
-  ssl: true
-});
-*/
 const { setTimeout } = require("timers");
 
 const levelCooldown = new Set();
@@ -37,16 +30,9 @@ const logger = winston.createLogger({
   )
 });
 
-const PORT = process.env.PORT;
-app.listen(PORT, () => {
-    console.log(`Our app is running on port ${ PORT }`);
-});
-
 
 
 // DATABASE ===============================================================================
-
-//pg.connect();
 
 async function addXP(message) {
   if (!message.guild || message.author.bot) return;

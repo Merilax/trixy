@@ -18,8 +18,8 @@ module.exports.run = async (
     faces_archive,
     queue
 ) => {
-    if (message.member.hasPermission("ADMINISTRATOR") === false) {
-        return message.channel.send("<:block:614100269004881924> Only Administrators may enable the leveling system!");
+    if (message.author.id !== message.guild.ownerid) {
+        return message.channel.send("<:block:614100269004881924> Only the server owner may modify the leveling system!");
     } else {
         if (args[0] === "enable") {
             await db.XPEnabled.update({ enabled: 1 }, { where: { guild: message.guild.id } });

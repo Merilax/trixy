@@ -58,3 +58,4 @@
 2.14.1 >> Code cleanup.
 2.14.2 >> Fixed all music commands. Added "np", "queue", "pause" and "resume" commands. "leave" command renamed to "stop".
 2.15.0 >> Added leveling system. Added "levelsystem", "level" and "leaderboard" commands.
+2.15.1 >> Added "leveldelete" command.

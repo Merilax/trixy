@@ -11,7 +11,7 @@ module.exports.run = (
   bot,
   message,
   args,
-  ownerid,
+  txdev,
   prefix,
   faces_archive,
   queue

@@ -3,7 +3,7 @@ const db = require('../../DB/db.js');
 
 module.exports.commanddata = {
     name: "level",
-    aliases: ['rank', 'lvl'],
+    aliases: ['rank', 'lvl', 'xp'],
     category: "levels",
     cooldown: 5,
     guildOnly: true,
@@ -14,7 +14,7 @@ module.exports.run = async (
     bot,
     message,
     args,
-    ownerid,
+    txdev,
     prefix,
     faces_archive,
     queue

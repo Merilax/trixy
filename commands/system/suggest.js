@@ -13,7 +13,7 @@ module.exports.run = async (
   bot,
   message,
   args,
-  ownerid,
+  txdev,
   prefix,
   faces_archive,
   queue

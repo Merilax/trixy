@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 const fs = require("fs");
 const { readdirSync } = require("fs");
 const bot = new Discord.Client({ fetchAllMembers: true });
-const { prefix, ownerid, token, statusquote } = require("./config.json");
+const { prefix, txdev, token, statusquote } = require("./config.json");
 const faces_archive = require("./faces_archive.json");
 const liveresponse = require("./responsejson.json");
 const winston = require("winston");
@@ -202,7 +202,7 @@ bot.on("message", async message => {
 
   try {
     if (command) {
-      command.run(bot, message, args, ownerid, prefix, faces_archive, queue);
+      command.run(bot, message, args, txdev, prefix, faces_archive, queue);
     }
   } catch (error) {
     console.error(error);

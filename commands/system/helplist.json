@@ -125,7 +125,11 @@
         "d": "Shows the top 10 users by Level and XP points in the guild."
     },
     "level": {
-        "t": "Level, aka `lvl`, `rank`",
+        "t": "Level, aka `lvl`, `rank`, `xp`.",
         "d": "Gets someones Level and XP points."
+    },
+    "leveldelete": {
+        "t": "Leveldelete, aka `lvldelete`, `rankdelete`.",
+        "d": "Erases a member from the guild's level database."
     }
 }

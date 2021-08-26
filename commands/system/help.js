@@ -15,7 +15,7 @@ module.exports.run = (
   bot,
   message,
   args,
-  ownerid,
+  txdev,
   prefix,
   faces_archive,
   queue
@@ -67,7 +67,7 @@ module.exports.run = (
       )
       .addField(
         "**Leveling:** _More to come soon!_",
-        "```md\n# leaderboard, level."
+        "```md\n# leaderboard, level, leveldelete."
       )
       .setThumbnail(faces_archive.tv)
       .setFooter("Icons by https://dryicons.com")

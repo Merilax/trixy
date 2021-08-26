@@ -7,7 +7,19 @@ const sequelize = new Sequelize('database', 'user', 'password', {
     storage: 'database.sqlite',
 });
 */
-const sequelize = new Sequelize(process.env.DATABASE_URL);
+
+// PostGreSQL
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
+    dialect: 'postgres',
+    protocol: 'postgres',
+    dialectOptions: {
+        ssl: {
+            require: true,
+            rejectUnauthorized: false
+        }
+    }
+});
+
 sequelize.authenticate();
 console.log("Database Online!");
 

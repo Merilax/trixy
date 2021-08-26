@@ -25,7 +25,7 @@ console.log("Database Online!");
 
 const XPEnabled = sequelize.define('xpenable', {
     guild: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         allowNull: false,
     },
     enabled: {
@@ -37,11 +37,11 @@ const XPEnabled = sequelize.define('xpenable', {
 const Levels = sequelize.define('levels', {
     user: Sequelize.STRING,
     userId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         allowNull: false,
     },
     guild: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         allowNull: false,
     },
     level: {

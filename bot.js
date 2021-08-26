@@ -10,7 +10,14 @@ const queue = new Map();
 const { sep } = require("path");
 const { success, error, warning } = require("log-symbols");
 //const { inspect } = require("util");
-const Sequelize = require('sequelize');
+const Sequelize = require('sequelize')
+const { Client } = require('pg');
+const pg = new Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
+});
 const { setTimeout } = require("timers");
 
 const levelCooldown = new Set();
@@ -33,6 +40,17 @@ const logger = winston.createLogger({
 
 
 // DATABASE ===============================================================================
+
+
+
+pg.connect();
+pg.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
+  if (err) throw err;
+  for (let row of res.rows) {
+    console.log(JSON.stringify(row));
+  }
+  pg.end();
+});
 
 async function addXP(message) {
   if (!message.guild || message.author.bot) return;

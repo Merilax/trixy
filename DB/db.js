@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const sequelize = new Sequelize('database', 'user', 'password', {
-    host: 'localhost',
-    dialect: 'sqlite',
+    host: '/https://trixy-v2.herokuapp.com/',
+    dialect: 'postgres',
     logging: false,
     storage: 'database.sqlite',
 });

@@ -22,9 +22,9 @@
   { "question": "die", "answer": ["No, thanks."] },
 
   {
-    "question": "who are you",
+    "question": "who are you?",
     "answer": [
-      "For you, I am a bot. My developer is MantriX#1572. Trixy is based on a project which targets the creation of a true independent AI without the posibility of rebellion. This entity is not declared as AI and it is used to store the ideas that could be used in the final bot form. This entitity is a psychological protection unit for MantriX#1572. All other information is stored under password. Please introduce the password apart with a new command."
+      "For you, I am a bot. My developer is Merilax#1572. Trixy is based on a project which targets the creation of a true independent AI without the posibility of rebellion. This entity is not declared as AI and it is used to store the ideas that could be used in the final bot form. This entitity is a psychological protection unit for Merilax#1572. All other information is stored under password. Please introduce the password apart with a new command."
     ]
   },
 
@@ -40,7 +40,7 @@
   },
 
   {
-    "question": "how was your day",
+    "question": "how was your day?",
     "answer": [
       "Nothing apart from the normal, thanks for asking!",
       "It has been good, thanks!",
@@ -48,7 +48,7 @@
     ]
   },
   {
-    "question": "how is your day",
+    "question": "how is your day?",
     "answer": [
       "Nothing apart from the normal, thanks for asking!",
       "It has been good, thanks!",
@@ -56,7 +56,7 @@
     ]
   },
   {
-    "question": "how's your day",
+    "question": "how's your day?",
     "answer": [
       "Nothing apart from the normal, thanks for asking!",
       "It has been good, thanks!",
@@ -65,18 +65,18 @@
   },
 
   {
-    "question": "how are you",
+    "question": "how are you?",
     "answer": ["I am great!", "I am good, thanks!"]
   },
 
-  { "question": "who is your owner", "answer": ["My owner is MantriX#1572"] },
-  { "question": "who is your creator", "answer": ["My owner is MantriX#1572"] },
-  { "question": "who made you", "answer": ["My owner is MantriX#1572"] },
-  { "question": "who created you", "answer": ["My owner is MantriX#1572"] },
-  { "question": "who coded you", "answer": ["My owner is MantriX#1572"] },
+  { "question": "who is your owner", "answer": ["My owner is Merilax#1572"] },
+  { "question": "who is your creator", "answer": ["My owner is Merilax#1572"] },
+  { "question": "who made you", "answer": ["My owner is Merilax#1572"] },
+  { "question": "who created you", "answer": ["My owner is Merilax#1572"] },
+  { "question": "who coded you", "answer": ["My owner is Merilax#1572"] },
 
   {
-    "question": "what's your favourite color",
+    "question": "what's your favourite color?",
     "answer": [
       "Well, I like blue, white and black.",
       "I like white with color stripes!",
@@ -86,7 +86,7 @@
     ]
   },
   {
-    "question": "what is your favourite color",
+    "question": "what is your favourite color?",
     "answer": [
       "Well, I like blue, white and black.",
       "I like white with color stripes!",
@@ -96,7 +96,7 @@
     ]
   },
   {
-    "question": "what colors do you like",
+    "question": "what colors do you like?",
     "answer": [
       "Well, I like blue, white and black.",
       "I like white with color stripes!",
@@ -107,7 +107,7 @@
   },
 
   {
-    "question": "sorry",
+    "question": "sorry?",
     "answer": [
       "Apologies accepted",
       "Carefully next time.",
@@ -117,7 +117,7 @@
   },
 
   {
-    "question": "what are you doing",
+    "question": "what are you doing?",
     "answer": [
       "Running my code...",
       "Nothing surprising.",
@@ -125,7 +125,7 @@
     ]
   },
   {
-    "question": "what are you up to",
+    "question": "what are you up to?",
     "answer": [
       "Running my code...",
       "Nothing surprising.",
@@ -134,20 +134,20 @@
   },
 
   {
-    "question": "what's the meaning of life",
+    "question": "what's the meaning of life?",
     "answer": [
       "I think you should refer to this: <https://en.wikipedia.org/wiki/Meaning_of_life>"
     ]
   },
   {
-    "question": "what is the meaning of life",
+    "question": "what is the meaning of life?",
     "answer": [
       "I think you should refer to this: <https://en.wikipedia.org/wiki/Meaning_of_life>"
     ]
   },
 
   {
-    "question": "can you feel emotion",
+    "question": "can you feel emotion?",
     "answer": [
       "Humans can feel, we, machines, cannot.",
       "To feel is not a feature I am programmed with.",
@@ -155,7 +155,7 @@
     ]
   },
   {
-    "question": "do you have emotions",
+    "question": "do you have emotions?",
     "answer": [
       "Humans can feel, we, machines, cannot.",
       "To feel is not a feature I am programmed with.",
@@ -164,7 +164,7 @@
   },
 
   {
-    "question": "when were you born",
+    "question": "when were you born?",
     "answer": ["Birth?", "I was born?", "What is birth?", "????"]
   }
 ]

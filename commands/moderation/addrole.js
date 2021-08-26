@@ -23,7 +23,7 @@ module.exports.run = (
   }
 
   let adduser = message.mentions.members.first();
-  let addrole = (message.guild.roles.find(role => role.name === args[1]) || message.mentions.roles.first());
+  let addrole = (message.guild.roles.cache.cache.find(role => role.name === args[1]) || message.mentions.roles.cache.first());
 
   if (!adduser)
     return message.channel.send(
@@ -35,7 +35,7 @@ module.exports.run = (
     );
 
   if (
-    message.mentions.members.first().roles.some(role => role.name === args[1])
+    message.mentions.members.first().roles.cache.some(role => role.name === args[1])
   ) {
     return message.channel.send(
       "<:delete:614100269369655306> But you already have that role..."
@@ -43,7 +43,7 @@ module.exports.run = (
   }
 
   try {
-    adduser.addRole(addrole);
+    adduser.roles.cache.add(addrole);
     message.channel.send(
       `<:approve:614100268891504661> Added **${addrole.name}** to **${adduser}**`
     );

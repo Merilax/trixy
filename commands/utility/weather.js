@@ -1,4 +1,4 @@
-const snekfetch = require("snekfetch");
+const nodefetch = require("node-fetch");
 const Discord = require("discord.js");
 
 module.exports.commanddata = {
@@ -27,99 +27,91 @@ module.exports.run = (
 
   let URL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=73639e85030b2d8d0e183f862678d6d4`;
 
-  snekfetch
-    .get(URL)
-    .then(res => {
-      //if (res.raw.cod === 401) return message.channel.send("Weather module is down.");
-      //if (res.raw.cod === 404) return message.channel.send("Weather source is unavailable or city is unregistered.");
+  nodefetch(URL).then(res => res.json()).then(json => {
 
-      var parser = JSON.parse(res.raw);
+      if (!json.wind.deg) var windangle = "";
+      if (json.wind.deg)
+        var windangle = `, with a ${json.wind.deg}° angle.`;
 
-      if (!parser.wind.deg) var windangle = "";
-      if (parser.wind.deg)
-        var windangle = `, with a ${parser.wind.deg}° angle.`;
+      if (!json.rain) var rainvolume = "no";
+      if (json.rain) var rainvolume = `${json.rain["1h"]}mm`;
 
-      if (!parser.rain) var rainvolume = "no";
-      if (parser.rain) var rainvolume = `${parser.rain["1h"]}mm`;
+      if (!json.snow) var snowvolume = "no";
+      if (json.snow) var snowvolume = `${json.snow["1h"]}mm`;
 
-      if (!parser.snow) var snowvolume = "no";
-      if (parser.snow) var snowvolume = `${parser.snow["1h"]}mm`;
+      if (!json.visibility) var visible = "unsure";
+      if (json.visibility) var visible = `${json.visibility}m`;
 
-      if (!parser.visibility) var visible = "unsure";
-      if (parser.visibility) var visible = `${parser.visibility}m`;
-
-      if (parser.timezone === -39600) {
+      if (json.timezone === -39600) {
         var timezone = "MIT";
-      } else if (parser.timezone === -36000) {
+      } else if (json.timezone === -36000) {
         var timezone = "MIT";
-      } else if (parser.timezone === -32400) {
+      } else if (json.timezone === -32400) {
         var timezone = "AKST";
-      } else if (parser.timezone === -28800) {
+      } else if (json.timezone === -28800) {
         var timezone = "PST / AKDT";
-      } else if (parser.timezone === -25200) {
+      } else if (json.timezone === -25200) {
         var timezone = "PDT / MST";
-      } else if (parser.timezone === -21600) {
+      } else if (json.timezone === -21600) {
         var timezone = "MDT / CST";
-      } else if (parser.timezone === -18000) {
+      } else if (json.timezone === -18000) {
         var timezone = "CDT / EST";
-      } else if (parser.timezone === -14400) {
+      } else if (json.timezone === -14400) {
         var timezone = "EDT / PRT";
-      } else if (parser.timezone === -12600) {
+      } else if (json.timezone === -12600) {
         var timezone = "CNT";
-      } else if (parser.timezone === -10800) {
+      } else if (json.timezone === -10800) {
         var timezone = "AGT / BET";
-      } else if (parser.timezone === -3600) {
+      } else if (json.timezone === -3600) {
         var timezone = "CAT";
-      } else if (parser.timezone === 0) {
+      } else if (json.timezone === 0) {
         var timezone = "GMT / UTC / WET";
-      } else if (parser.timezone === 3600) {
+      } else if (json.timezone === 3600) {
         var timezone = "BST / WEST / CET";
-      } else if (parser.timezone === 7200) {
+      } else if (json.timezone === 7200) {
         var timezone = "CEST / EET / AAT";
-      } else if (parser.timezone === 10800) {
+      } else if (json.timezone === 10800) {
         var timezone = "EEST / EAT";
-      } else if (parser.timezone === 12600) {
+      } else if (json.timezone === 12600) {
         var timezone = "MET";
-      } else if (parser.timezone === 14400) {
+      } else if (json.timezone === 14400) {
         var timezone = "NET";
-      } else if (parser.timezone === 18000) {
+      } else if (json.timezone === 18000) {
         var timezone = "PLT";
-      } else if (parser.timezone === 19800) {
+      } else if (json.timezone === 19800) {
         var timezone = "IST";
-      } else if (parser.timezone === 21600) {
+      } else if (json.timezone === 21600) {
         var timezone = "BST";
-      } else if (parser.timezone === 28800) {
+      } else if (json.timezone === 28800) {
         var timezone = "CTT / HKT / CST / MST / SST / AWST";
-      } else if (parser.timezone === 32400) {
+      } else if (json.timezone === 32400) {
         var timezone = "JST / KST / ACST";
-      } else if (parser.timezone === 36000) {
+      } else if (json.timezone === 36000) {
         var timezone = "AEST";
-      } else if (parser.timezone === 39600) {
+      } else if (json.timezone === 39600) {
         var timezone = "AEDT / SST*";
-      } else if (parser.timezone === 43200) {
+      } else if (json.timezone === 43200) {
         var timezone = "NZST";
-      } else if (parser.timezone === 46800) {
+      } else if (json.timezone === 46800) {
         var timezone = "NZDT";
       } else {
         var timezone = "Not universal.";
       }
 
-      const embed = new Discord.RichEmbed()
-        .addField("City", `${city} (${parser.sys.country})`, true)
+      const embed = new Discord.MessageEmbed()
+        .addField("City", `${city} (${json.sys.country})`, true)
         .addField(
           "Coordinates",
-          `${parser.coord.lon}, ${parser.coord.lat}`,
+          `${json.coord.lon}, ${json.coord.lat}`,
           true
         )
         .addField("Timezone", timezone, true)
-        .addBlankField()
-        .addField("Weather", parser.weather[0].description, true)
-        .addField("Temperature", `${parser.main.temp}°C`, true)
-        .addField("Humidity", `${parser.main.humidity}%`, true)
-        .addField("Pressure", `${parser.main.pressure}hPa`, true)
-        .addBlankField()
-        .addField("Wind", `${parser.wind.speed}m/s${windangle}`, true)
-        .addField("Cloudiness", `${parser.clouds.all}%`, true)
+        .addField("Weather", json.weather[0].description, true)
+        .addField("Temperature", `${json.main.temp}°C`, true)
+        .addField("Humidity", `${json.main.humidity}%`, true)
+        .addField("Pressure", `${json.main.pressure}hPa`, true)
+        .addField("Wind", `${json.wind.speed}m/s${windangle}`, true)
+        .addField("Cloudiness", `${json.clouds.all}%`, true)
         .addField("Rain", rainvolume, true)
         .addField("Snow", snowvolume, true)
         .addField("Visibility", visible, true)
@@ -127,9 +119,10 @@ module.exports.run = (
         .setFooter("https://openweathermap.org");
       message.channel.send(embed);
     })
-    .catch(error =>
+    .catch(error => {
       message.channel.send(
         "<:delete:614100269369655306> That city is not being monitored, or the webpage is down."
-      )
-    );
+      );
+      console.error(err);
+      });
 };

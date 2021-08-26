@@ -1,4 +1,4 @@
-const snekfetch = require("snekfetch");
+const nodefetch = require("node-fetch");
 const Discord = require("discord.js");
 
 module.exports.commanddata = {
@@ -19,15 +19,18 @@ module.exports.run = (
   faces_archive,
   queue
 ) => {
-  snekfetch.get("https://dog.ceo/api/breeds/image/random").then(res => {
-    var doggy = JSON.parse(res.raw);
+  nodefetch("https://dog.ceo/api/breeds/image/random").then(res => res.json()).then(json => {
 
-    const embed = new Discord.RichEmbed()
-      .setImage(doggy.message)
+    const embed = new Discord.MessageEmbed()
+      .setImage(json.message)
       .setTitle("Here you go! :dog:")
       .setColor("BLUE")
       .setFooter("https://dog.ceo/api/breeds/image/random");
 
-    message.channel.send(embed);
+    message.channel.send(embed).catch(error => {
+      message.channel.send(
+        "<:delete:614100269369655306> Something went wrong..."
+      );
+    });;
   });
 };

@@ -37,7 +37,7 @@
 2.1.1 >> New images added.  
 2.2.0 >> New console logger.  
 2.3.0 >> Added "dog" and "fox" commands.  
-2.3.1 >> Bot is no longer case sensitive to prefix.  
+2.3.1 >> Bot is no longer case sensitive with prefix.  
 2.4.0 >> Added "mute" and "unnmute" commands. Added JSON database and timed events.  
 2.5.0 >> Modified "help" and "server" command. Added "user" command.  
 2.5.1 >> New emotes for commands. Fixed "addrole" and "removerole" commands.  
@@ -50,6 +50,11 @@
 2.11.0 >> Added "youtube" command. Improved command handler with subfolders.  
 2.11.1 >> Fixed "addrole" and "removerole" commands, again.  
 2.12.0 >> "help" command now shows details about specific commands if specified.  
-2.13.0 >> "server" command will now show the role list if accompanied by a \<roles> argument. "suggest" command now works remotely.  
+2.13.0 >> "server" command will now show the role list if accompanied by a <roles> argument. "suggest" command now works remotely.  
 2.13.1 >> Bugfix patch.  
-2.14.0 >> Trixy now pings her partner, Vairen, to wake him up.  
+2.14.R - REVERTED >> Trixy now pings her partner, Vairen, to wake him up.  
+2.13.2 >> Changes on 1.14.R reverted, no longer needed. Instead, "shutdown" command added.
+2.14.0 >> Updated discord.js to v12. "youtube" command removed, "bird" command added. Code cleanup.
+2.14.1 >> Code cleanup.
+2.14.2 >> Fixed all music commands. Added "np", "queue", "pause" and "resume" commands. "leave" command renamed to "stop".
+2.15.0 >> Added leveling system. Added "levelsystem", "level" and "leaderboard" commands.

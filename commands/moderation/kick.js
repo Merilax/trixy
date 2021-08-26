@@ -29,7 +29,7 @@ module.exports.run = (
 
   const kickauthor = message.author;
   const kickuser = message.mentions.members.first();
-  const kickusername = args[0];
+  //const kickusername = args[0];
   //const kickguild = message.channel.guild;
   //var kickid = kickusername.slice(2, -1);
   //const kickchan = message.kickusername.slice(2, -1);
@@ -51,7 +51,7 @@ module.exports.run = (
     //kickchan.send(`You've been kicked from ${kickguild} because: ${reason}`).catch(trashlog => { });
     kickuser.kick();
     message.channel.send(
-      `<:approve:614100268891504661> ${kickauthor} succesfully kicked ${kickusername}. Reason: ${reason}`
+      `<:approve:614100268891504661> ${kickauthor} succesfully kicked **${kickuser.user.username}**. Reason: ${reason}`
     );
   }
 };

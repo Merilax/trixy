@@ -1,4 +1,4 @@
-const snekfetch = require("snekfetch");
+const nodefetch = require("node-fetch");
 const Discord = require("discord.js");
 
 module.exports.commanddata = {
@@ -18,15 +18,18 @@ module.exports.run = (
   faces_archive,
   queue
 ) => {
-  snekfetch
+  nodefetch
     .get("https://uselessfacts.jsph.pl/random.json?language=en")
-    .then(res => {
-      var fact = JSON.parse(res.raw);
+    .then(res => res.json()).then(json => {
 
-      var embed = new Discord.RichEmbed()
-        .addField("Did you know...", fact.text)
+      var embed = new Discord.MessageEmbed()
+        .addField("Did you know...", json.text)
         .setColor("BLUE")
         .setFooter("uselessfacts.jsph.pl");
-      message.channel.send(embed);
+      message.channel.send(embed).catch(error => {
+        message.channel.send(
+          "<:delete:614100269369655306> Something went wrong..."
+        );
+      });;
     });
 };

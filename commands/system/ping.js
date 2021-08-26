@@ -19,6 +19,6 @@ module.exports.run = async (
   const m = await message.channel.send("Pinging");
   m.edit(
     `<:bar_chart2:614100269306871819> Latency: ${m.createdTimestamp -
-      message.createdTimestamp}ms, API Latency: ${Math.round(bot.ping)}ms`
+      message.createdTimestamp}ms, API Latency: ${Math.round(bot.ws.ping)}ms`
   );
 };

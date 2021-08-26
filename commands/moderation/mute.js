@@ -23,7 +23,7 @@ module.exports.run = async (
     );
 
   let toMute =
-    message.mentions.members.first() || message.guild.members.get(args[0]);
+    message.mentions.members.first() || message.guild.members.cache.get(args[0]);
   if (!toMute)
     return message.channel.send(
       "<:quote:614100269386432526> Specify an user to mute."
@@ -32,28 +32,28 @@ module.exports.run = async (
 
   if (toMute.id === message.author.id)
     return message.channel.send("Your voice isn't that annoying.");
-  if (toMute.highestRole.position >= message.member.highestRole.position)
+  if (toMute.roles.highest.position >= message.member.roles.highest.position)
     return message.channel.send(
       "<:delete:614100269369655306> You cannot mute members with a higher or same role."
     );
 
-  let role = message.guild.roles.find(r => r.name === "Trixy Mute");
+  let role = message.guild.roles.cache.find(r => r.name === "Trixy Mute");
   if (!role) {
     try {
-      role = await message.guild.createRole({
+      role = await message.guild.roles.create({
         name: "Trixy Mute",
         color: "#000001",
         permission: []
       });
 
-      message.guild.channels.forEach(async (channel, id) => {
-        await channel.overwritePermissions(role, {
+      message.guild.channels.cache.forEach(async (channel, id) => {
+        await channel.permissionOverwrites.update(role, {
           SEND_MESSAGES: false,
           ADD_REACTIONS: false
         });
       });
       return message.channel.send(
-        "<:delete:614100269369655306> Because Discord is so cool, now that I have created a new role, you should put it above the members yourself, both in the role list and the channel permissions."
+        "<:delete:614100269369655306> Because Discord is so cool, now that I have created a new role you should put it above the members yourself, both in the role list and the channel permissions."
       );
     } catch (e) {
       console.log(e);
@@ -70,7 +70,7 @@ module.exports.run = async (
     time: Date.now() + parseInt(args[1]) * 1000
   };
 
-  await toMute.addRole(role);
+  await toMute.roles.cache.add(role);
 
   fs.writeFile("./mutes.json", JSON.stringify(bot.mutes, null, 4), err => {
     if (err) throw err;

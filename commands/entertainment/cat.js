@@ -1,4 +1,4 @@
-const snekfetch = require("snekfetch");
+const nodefetch = require("node-fetch");
 const Discord = require("discord.js");
 
 module.exports.commanddata = {
@@ -19,12 +19,17 @@ module.exports.run = (
   faces_archive,
   queue
 ) => {
-  snekfetch.get("https://aws.random.cat/meow").then(res => {
-    const embed = new Discord.RichEmbed()
-      .setImage(res.body.file)
+  nodefetch("https://aws.random.cat/meow").then(res => res.json()).then(json => {
+    const embed = new Discord.MessageEmbed()
+      .setImage(json.file)
       .setTitle("Here you go! :cat:")
       .setColor("BLUE")
       .setFooter("https://aws.random.cat/meow");
-    return message.channel.send(embed);
+    return message.channel.send(embed)
+      .catch(error => {
+        message.channel.send(
+          "<:delete:614100269369655306> Something went wrong..."
+        );
+      });
   });
 };

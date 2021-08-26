@@ -18,12 +18,12 @@ module.exports.run = async (
   faces_archive,
   queue
 ) => {
-  var embed = new Discord.RichEmbed()
+  var embed = new Discord.MessageEmbed()
     .setTitle("A new suggestion has arrived!")
     .setDescription(args.join(" "))
     .setColor("BLUE")
     .setFooter(message.author.tag + " / " + message.author.id);
-  const ch = await bot.channels.find(ch => ch.id === "602469256864595968");
+  const ch = await bot.channels.cache.find(ch => ch.id === "602469256864595968");
   ch.send(embed);
   message.channel.send("<:approve:614100268891504661> Suggestion sent, maybe the owner will even get in touch with you!")
 };

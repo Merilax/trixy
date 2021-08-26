@@ -20,20 +20,20 @@ module.exports.run = (
 ) => {
   function checkBots(guild) {
     let botCount = 0;
-    guild.members.forEach(member => {
+    guild.members.cache.forEach(member => {
       if (member.user.bot) botCount++;
     });
     return botCount;
   }
   function checkMembers(guild) {
     let memberCount = 0;
-    guild.members.forEach(member => {
+    guild.members.cache.forEach(member => {
       if (!member.user.bot) memberCount++;
     });
     return memberCount;
   }
-  var serverembed = new Discord.RichEmbed()
-    .setAuthor(`${message.guild.name}`, message.guild.iconURL)
+  var serverembed = new Discord.MessageEmbed()
+    .setAuthor(`${message.guild.name}`, message.guild.iconURL())
     .setColor("BLUE")
     .addField(
       "<:user:614100269382238213> Server owner",
@@ -51,12 +51,12 @@ module.exports.run = (
     )
     .addField(
       "<:comment:614100269470449664> Channel count",
-      message.guild.channels.size,
+      message.guild.channels.cache.size,
       true
     )
     .addField(
       "<:database:614100269491421190> Roles count",
-      message.guild.roles.size,
+      message.guild.roles.cache.size,
       true
     )
     .addField(
@@ -73,14 +73,14 @@ module.exports.run = (
       checkBots(message.guild),
       true
     )
-    .setThumbnail(message.guild.iconURL)
+    .setThumbnail(message.guild.iconURL())
     .setFooter("Use \"server roles\" to show a list of roles. Guild created at:")
     .setTimestamp(message.guild.createdAt);
   
-  var roleembed = new Discord.RichEmbed()
-    .setAuthor(`${message.guild.name}`, message.guild.iconURL)
+  var roleembed = new Discord.MessageEmbed()
+    .setAuthor(`${message.guild.name}`, message.guild.iconURL())
     .setColor("BLUE")
-    .addField("Roles are not in order.", message.guild.roles.map(r => r.name).join("\n"))
+    .addField("Roles are not in order.", message.guild.roles.cache.map(r => r.name).join("\n"))
   
   
   if (args[0] === "roles") {

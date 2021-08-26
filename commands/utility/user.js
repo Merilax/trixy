@@ -27,10 +27,16 @@ module.exports.run = (
   }
 
   const member = message.guild.member(user);
+  const userStatus = {
+    online: "Online",
+    idle: "Idle",
+    dnd: "Do not disturb",
+    offline: "Offline"
+  }
 
-  const embed = new Discord.RichEmbed()
+  const embed = new Discord.MessageEmbed()
     .setColor("BLUE")
-    .setThumbnail(user.avatarURL)
+    .setThumbnail(user.avatarURL())
     .addField("<:user:614100269382238213> User:", `${user}#${user.discriminator}`, true)
     .addField("<:user:614100269382238213> ID:", `${user.id}`, true)
     .addField(
@@ -40,13 +46,18 @@ module.exports.run = (
     )
     .addField(
       "<:quote:614100269386432526> Status:",
-      `${user.presence.status}`,
+      `${userStatus[user.presence.status]}`,
       true
     )
     .addField("<:home:614100269596409869> In Server", message.guild.name, true)
     .addField(
-      "<:card:614100269344489472> Game:",
-      `${user.presence.game ? user.presence.game.name : "None"}`,
+      "<:quote:614100269386432526> Custom Status:",
+      `${user.presence.activities[0] ? user.presence.activities[0].state : "None"}`,
+      true
+    )
+    .addField(
+      "<:card:614100269344489472> Activity:",
+      `${user.presence.activities[1] ? user.presence.activities[1].name : "None"}`,
       true
     )
     .addField("<:puzzle:614100269487226942> Bot:", `${user.bot}`, true)
@@ -62,7 +73,7 @@ module.exports.run = (
     )
     .addField(
       "<:database:614100269491421190> Roles:",
-      member.roles.map(roles => `${roles}`).join(", "),
+      member.roles.cache.map(roles => `${roles}`).join(", "),
       true
     )
     .setFooter(

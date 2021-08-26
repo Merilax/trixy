@@ -1,4 +1,4 @@
-const snekfetch = require("snekfetch");
+const nodefetch = require("node-fetch");
 const Discord = require("discord.js");
 
 module.exports.commanddata = {
@@ -19,24 +19,23 @@ module.exports.run = (
   faces_archive,
   queue
 ) => {
-  snekfetch
-    .get(
-      "https://api.nasa.gov/planetary/apod?api_key=AgoQvLHiG3GAz3RFxNUgnku1kKUh0RyQZdMd3ErA"
-    )
-    .then(res => {
-      var cosmos = JSON.parse(res.raw);
-      var hdlink = `Click [here](${cosmos.hdurl})`;
-      if (!cosmos.hdurl) {
-        var hdlink = "No image provided.";
+  nodefetch("https://api.nasa.gov/planetary/apod?api_key=AgoQvLHiG3GAz3RFxNUgnku1kKUh0RyQZdMd3ErA")
+    .then(res => res.json()).then(json => {
+      var hdlink = `Click [here](${json.hdurl})`;
+      if (!json.hdurl) {
+        var hdlink = "No HD image provided.";
       }
 
-      const embed = new Discord.RichEmbed()
-        .setTitle(`Image of the day: ${cosmos.title}`)
-        .setDescription(cosmos.explanation)
-        .setImage(cosmos.url)
-        .addBlankField()
+      const embed = new Discord.MessageEmbed()
+        .setTitle(`Image of the day: ${json.title}`)
+        .setDescription(json.explanation)
+        .setImage(json.url)
         .addField("HD image", hdlink)
-        .setFooter(`api.nasa.gov, ${cosmos.date}.`);
-      message.channel.send(embed);
+        .setFooter(`api.nasa.gov, ${json.date}.`);
+      message.channel.send(embed).catch(error => {
+        message.channel.send(
+          "<:delete:614100269369655306> Something went wrong..."
+        );
+      });;
     });
 };

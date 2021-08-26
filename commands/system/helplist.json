@@ -1,0 +1,131 @@
+{   
+    
+    "invite": {
+        "t": "Invite.",
+        "d": "Shares an invite for you to add trixy to a server."
+    },
+    "levelsystem": {
+        "t": "Levelsystem, aka `lvlsys`, `xpsystem`, `xpsys`.",
+        "d": "Enables or disables the leveling system in a guild."
+    },
+    "suggest": {
+        "t": "Suggest.",
+        "d": "Shares a link to the support server to provide useful feedback."
+    },
+    "ping": {
+        "t": "Ping, aka `latency`.",
+        "d": "Gets Trixy's API ping and the message endpoint ping."
+    },
+    "prune": {
+        "t": "Prune, aka `purge`, `delete`, `bulk`.",
+        "d": "Deletes from 1 to 100 messages in the given chat, as long as it's a server channel."
+    },
+    "kick": {
+        "t": "Kick.",
+        "d": "Kicks a member."
+    },
+    "ban": {
+        "t": "Ban.",
+        "d": "Bans a member."
+    },
+    "mute": {
+        "t": "Mute.",
+        "d": "Mutes a member for a given ammount of time in seconds. Mutes without time don't expire."
+    },
+    "unmute": {
+        "t": "Unmute.",
+        "d": "Unmutes a member. Only for muted members using Trixy."
+    },
+    "addrole": {
+        "t": "Addrole, aka `add`.",
+        "d": "Adds a role to a member."
+    },
+    "removerole": {
+        "t": "Removerole, aka `remove`.",
+        "d": "Removes a role from a member."
+    },
+    "roll": {
+        "t": "Roll, aka `dice`, `random`.",
+        "d": "Rolls a dice with the given amount of sides, even negatives, because why not!"
+    },
+    "bird": {
+        "t": "Bird, aka `birb`.",
+        "d": "Gets a random image of a bird."
+    },
+    "cat": {
+        "t": "Cat, aka `kitty`.",
+        "d": "Gets a random image of a cat."
+    },
+    "cosmos": {
+        "t": "Cosmos, aka `space`.",
+        "d": "Gets the daily space image from NASA."
+    },
+    "dog": {
+        "t": "Dog, aka `puppy`, `doggy`, `doggo`.",
+        "d": "Gets a random image of a dog."
+    },
+    "fact": {
+        "t": "Fact.",
+        "d": "Gets a random fact."
+    },
+    "fox": {
+        "t": "Fox, aka `foxy`.",
+        "d": "Gets a random image of a fox."
+    },
+    "np": {
+        "t": "Np. (Now playing)",
+        "d": "Shows the currently playing song in the queue."
+    },
+    "pause": {
+        "t": "Pause.",
+        "d": "Pauses a playing queue."
+    },
+    "play": {
+        "t": "Play.",
+        "d": "Plays a YouTube video or song in a voice channel, only accepts YouTube URLs."
+    },
+    "queue": {
+        "t": "Queue, aka `q`.",
+        "d": "Shows the queue."
+    },
+    "resume": {
+        "t": "Resume.",
+        "d": "Resumes a paused queue."
+    },
+    "skip": {
+        "t": "Skip, aka `s`.",
+        "d": "Skips the song currently playing in the queue."
+    },
+    "stop": {
+        "t": "Stop.",
+        "d": "Clears the queue, similar to `leave`, but without disconnecting."
+    },
+    "avatar": {
+        "t": "Avatar.",
+        "d": "Gets the avatar of the mentioned user."
+    },
+    "remind": {
+        "t": "Remind, aka `remindme`, `note`.",
+        "d": "DMs you a reminder of something after a given amount of time in seconds."
+    },
+    "server": {
+        "t": "Server, aka `serverinfo`.",
+        "d": "Gets the properties of a server"
+    },
+    "user": {
+        "t": "User, aka `userinfo`, `whois`.",
+        "d": "Gets the properties of an user"
+    },
+    "weather": {
+        "t": "Weather.",
+        "d": "Gets the current weather of a city, powered by [openweather](https://api.openweathermap.org). May be innacurate."
+    },
+    "leaderboard": {
+        "t": "Leaderboard, aka `lb`, `levels`.",
+        "d": "Shows the top 10 users by Level and XP points in the guild."
+    },
+    "level": {
+        "t": "Level, aka `lvl`, `rank`",
+        "d": "Gets someones Level and XP points."
+    }
+}

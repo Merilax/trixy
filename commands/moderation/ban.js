@@ -31,7 +31,7 @@ module.exports.run = (
 
   const banauthor = message.author;
   const banuser = message.mentions.members.first();
-  let reason = args.slice(1).join(" ");
+  let banreason = args.slice(1).join(" ");
 
   if (banuser === message.author) {
     return message.channel.send(
@@ -44,9 +44,9 @@ module.exports.run = (
       "<:delete:614100269369655306> I cannot ban this user."
     );
   } else {
-    banuser.ban(reason);
+    banuser.ban({reason: banreason});
     message.channel.send(
-      `<:approve:614100268891504661> ${banauthor} succesfully banned ${banuser.username}. Reason: ${reason}`
+      `<:approve:614100268891504661> ${banauthor} succesfully banned **${banuser.user.username}**. Reason: ${banreason}`
     );
   }
 };

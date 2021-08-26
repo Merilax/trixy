@@ -1,18 +1,22 @@
 const Discord = require("discord.js");
 const fs = require("fs");
-const request = require("request");
 const { readdirSync } = require("fs");
-const bot = new Discord.Client({fetchAllMembers: true});
-const { prefix, ownerid, statusquote } = require("./config.json");
+const bot = new Discord.Client({ fetchAllMembers: true });//
+const { prefix, ownerid, token, statusquote } = require("./config.json");
 const faces_archive = require("./faces_archive.json");
 const liveresponse = require("./responsejson.json");
-const ytdl = require("ytdl-core");
-const opus = require("opusscript");
 const winston = require("winston");
 const queue = new Map();
 const { sep } = require("path");
 const { success, error, warning } = require("log-symbols");
-const { inspect } = require("util");
+//const { inspect } = require("util");
+const Sequelize = require('sequelize');
+const { setTimeout } = require("timers");
+
+const levelCooldown = new Set();
+const levelDBTimeout = 60 * 1000;
+const xpRandom = Math.floor(Math.random() * 15 + 15);
+const db = require('./DB/db.js');
 
 ["commands", "aliases"].forEach(x => (bot[x] = new Discord.Collection()));
 
@@ -26,42 +30,57 @@ const logger = winston.createLogger({
   )
 });
 
-const http = require("http");
-const express = require("express");
-const app = express();
-app.get("/", (request, response) => {
-  //response.sendFile(__dirname + "/views/index.html");
-  response.sendStatus(200);
-});
 
-app.listen(process.env.PORT, function() {
-  function pingURL(url) {
-    return new Promise((resp, rej) => {
-      request(
-        url,
-        { headers: { "User-Agent": "Trixy" } },
-        (err, res, body) => {
-          if (err) {
-            rej();
-          } else {
-            resp();
-          }
-        }
-      );
-    });
+
+// DATABASE ===============================================================================
+
+async function addXP(message) {
+  if (!message.guild || message.author.bot) return;
+
+  const xpenable = await db.XPEnabled.findOne({ where: { guild: message.guild.id } });
+
+  if (xpenable == null) {
+    try {
+      await db.XPEnabled.create({
+        guild: message.guild.id,
+      });
+    } catch (err) {
+      console.log(`Could not register guild ${message.guild.id} in XPEnabled.`);
+    }
+  } else if (xpenable.enabled == false) { return } else {
+    const level = await db.Levels.findOne({ where: { guild: message.guild.id, userId: message.author.id } });
+
+    if (level == null) {
+      try {
+        await db.Levels.create({
+          user: message.author.tag,
+          userId: message.author.id,
+          guild: message.guild.id,
+          xp: xpRandom,
+        });
+      } catch (err) {
+        console.log(`Could not create XP entry for user ${message.author.username}`);
+      }
+    } else {
+      await db.Levels.update({ message_count: level.message_count + 1, xp: level.xp + xpRandom }, { where: { guild: message.guild.id, userId: message.author.id } })
+        .then(levelUp(message, level));
+    }
   }
-  function ping() {
-    pingURL("https://vairen2.glitch.me");
+};
+
+async function levelUp(message, level) {
+  const xpLimit = (level.level * 100 + 100);
+
+  if (level.xp >= xpLimit) {
+    await db.Levels.update({ level: level.level + 1, xp: level.xp - xpLimit }, { where: { guild: message.guild.id, userId: message.author.id } })
+      .then(message.channel.send(`<:add:614100269327974405> You leveled up! You are now Level ${level.level + 1}.`)
+        .catch(trash => { }));
   }
-  setInterval(() => {
-    ping();
-  }, 60000);
-  ping();
-});
-setInterval(() => {
-  http.get(`http://${process.env.PROJECT_DOMAIN}.glitch.me/`);
-}, 280000);
-app.use(express.static("public"));
+}
+
+
+
+// LOADING COMMANDS ===============================================================================
 
 const load = (dir = "./commands/") => {
   readdirSync(dir).forEach(dirs => {
@@ -110,9 +129,18 @@ bot.reminders = require("./reminders.json");
 const cooldowns = new Discord.Collection();
 
 bot.on("message", async message => {
+  // Checks XP cooldown and adds XP.
+  if (levelCooldown.has(message.author.id)) { } else {
+    levelCooldown.add(message.author.id);
+    addXP(message);
+    setTimeout(() => {
+      levelCooldown.delete(message.author.id);
+    }, levelDBTimeout);
+  }
+
   if (
     message.content.substr(0, prefix.length).toLowerCase() !=
-      prefix.toLowerCase() ||
+    prefix.toLowerCase() ||
     message.author.bot
   )
     return;
@@ -138,7 +166,7 @@ bot.on("message", async message => {
   }
 
   if (command.commanddata.args && !args.length) {
-    let reply = ` <:quote:614100269386432526> You didn't provide any arguments, ${message.author}!`;
+    let reply = `<:quote:614100269386432526> You didn't provide any arguments, ${message.author}!`;
 
     if (command.commanddata.usage) {
       reply += `\nThe proper usage would be: \`${prefix}${command.commanddata.name} ${command.commanddata.usage}\``;
@@ -163,8 +191,7 @@ bot.on("message", async message => {
       return message.channel.send(
         `<:hourglass2:614100269332037662> Please wait ${timeLeft.toFixed(
           1
-        )} more second(s) before using the \`${
-          command.commanddata.name
+        )} more second(s) before using the \`${command.commanddata.name
         }\` command.`
       );
     }
@@ -180,10 +207,12 @@ bot.on("message", async message => {
   } catch (error) {
     console.error(error);
     message.channel.send(
-      `<:window_text:614100269524975620> Send to MantriX#1572. An error ocurred during command execution: ${error}`
+      `<:window_text:614100269524975620> Send to Merilax#1572. An error ocurred during command execution: \n \`\`\`${error}\`\`\``
     );
   }
 });
+
+
 
 //Autoresponder//==================================================
 
@@ -225,14 +254,17 @@ bot.on("message", async message => {
     if (command === liveresponse[i].question) {
       return message.channel.send(
         liveresponse[i].answer[
-          Math.floor(Math.random() * liveresponse[i].answer.length)
+        Math.floor(Math.random() * liveresponse[i].answer.length)
         ]
       );
     }
   }
 });
 
+
+
 //STATUS AND TOKEN//========================================
+
 bot.on("debug", m => logger.log("debug", m));
 bot.on("warn", m => logger.log("warn", m));
 bot.on("error", m => logger.log("error", m));
@@ -241,23 +273,23 @@ process.on("uncaughtException", error => logger.log("error", error));
 
 bot.on("ready", () => {
   console.log(
-    `Bot has started, with ${bot.users.size} cached users, in ${bot.channels.size} channels of ${bot.guilds.size} guilds.`
+    `Bot has started, with ${bot.users.cache.size} cached users, in ${bot.channels.cache.size} channels of ${bot.guilds.cache.size} guilds.`
   );
 
   bot.setInterval(() => {
     for (let mutei in bot.mutes) {
       let mutetime = bot.mutes[mutei].time;
       let muteguildID = bot.mutes[mutei].guild;
-      let muteguild = bot.guilds.get(muteguildID);
-      let mutemember = muteguild.members.get(mutei);
-      let muterole = muteguild.roles.find(r => r.name === "Trixy Mute");
+      let muteguild = bot.guilds.cache.get(muteguildID);
+      let mutemember = muteguild.members.cache.get(mutei);
+      let muterole = muteguild.roles.cache.cache.find(r => r.name === "Trixy Mute");
       if (!muterole) continue;
 
       if (Date.now() > mutetime) {
         console.log(`${mutei} is ready for an unmute`);
 
-          mutemember.removeRole(muterole).catch(trash => {});;
-          delete bot.mutes[mutei];
+        mutemember.roles.cache.remove(muterole).catch(trash => { });;
+        delete bot.mutes[mutei];
 
         fs.writeFile("./mutes.json", JSON.stringify(bot.mutes), err => {
           if (err) throw err;
@@ -270,12 +302,12 @@ bot.on("ready", () => {
       let remindtime = bot.reminders[remindi].time;
       let reminduser = bot.reminders[remindi].user;
       let remindcontent = bot.reminders[remindi].content;
-      let remindmember = bot.users.get(reminduser);
+      let remindmember = bot.users.cache.get(reminduser);
 
       if (Date.now() > remindtime) {
         remindmember
           .send(`A reminder arrived: ${remindcontent}`)
-          .catch(trashlog => {});
+          .catch(trashlog => { });
         delete bot.reminders[remindi];
 
         fs.writeFile("./reminders.json", JSON.stringify(bot.reminders), err => {
@@ -285,10 +317,16 @@ bot.on("ready", () => {
     }
   }, 5 * 1000);
 
+  bot.user.setActivity(
+    `${bot.guilds.cache.size} servers, ${bot.users.cache.size} users. ` +
+    `${statusquote[Math.floor(Math.random() * statusquote.length)]}`,
+    { type: "WATCHING" }
+  );
+
   bot.setInterval(() => {
     bot.user.setActivity(
-      `${bot.guilds.size} servers, ${bot.users.size} users. ` +
-        `${statusquote[Math.floor(Math.random() * statusquote.length)]}`,
+      `${bot.guilds.cache.size} servers, ${bot.users.cache.size} users. ` +
+      `${statusquote[Math.floor(Math.random() * statusquote.length)]}`,
       { type: "WATCHING" }
     );
   }, 90 * 1000);
@@ -300,4 +338,5 @@ bot.on("guildDelete", guild => {
   console.log(`I have been removed from: ${guild.name} (id: ${guild.id})`);
 });
 
-bot.login(process.env.TOKEN);
+//bot.on('debug', console.log);
+bot.login(token);

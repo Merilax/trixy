@@ -37,11 +37,14 @@ const logger = winston.createLogger({
   )
 });
 
+const PORT = process.env.PORT;
+app.listen(PORT, () => {
+    console.log(`Our app is running on port ${ PORT }`);
+});
+
 
 
 // DATABASE ===============================================================================
-
-
 
 //pg.connect();
 

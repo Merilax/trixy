@@ -52,5 +52,5 @@ const Levels = sequelize.define('levels', {
     },
 });
 
-sequelize.sync({force:true});
+sequelize.sync({force:false});
 module.exports = { XPEnabled, Levels };

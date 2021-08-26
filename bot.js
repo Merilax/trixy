@@ -14,9 +14,7 @@ const Sequelize = require('sequelize')
 const { Client } = require('pg');
 const pg = new Client({
   connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false
-  }
+  ssl: true
 });
 const { setTimeout } = require("timers");
 

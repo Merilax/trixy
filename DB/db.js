@@ -38,11 +38,9 @@ const Levels = sequelize.define('levels', {
     user: Sequelize.STRING,
     userId: {
         type: Sequelize.STRING,
-        allowNull: false,
     },
     guild: {
         type: Sequelize.STRING,
-        allowNull: false,
     },
     level: {
         type: Sequelize.INTEGER,

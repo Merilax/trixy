@@ -1,14 +1,1 @@
-[ERROR] - Unexpected server response: 520
-[ERROR] - socket hang up
-[ERROR] - socket hang up
-[ERROR] - abort(Error: No video id found: https://www.youtube.com/test). Build with -s ASSERTIONS=1 for more info.
-[ERROR] - connect ETIMEDOUT 162.159.130.234:443
-[ERROR] - connect ETIMEDOUT 162.159.130.234:443
-[ERROR] - connect ETIMEDOUT 162.159.130.234:443
-[ERROR] - connect ETIMEDOUT 162.159.135.234:443
-[ERROR] - Cannot read property 'id' of undefined
-[ERROR] - Cannot read property 'id' of undefined
-[ERROR] - Cannot read property 'id' of undefined
-[ERROR] - abort(TypeError: Cannot read property 'position' of undefined). Build with -s ASSERTIONS=1 for more info.
-[ERROR] - abort(Error: No video id found: https://www.youtube.com/playlist?list=PLbrAnF1cQ0SCKw3yfO2SzJ1g5DaxXOYkv). Build with -s ASSERTIONS=1 for more info.
-[ERROR] - config is not defined
+

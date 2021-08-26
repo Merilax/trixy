@@ -23,7 +23,7 @@
     "sqlite3": "^5.0.2",
     "util": "^0.12.4",
     "winston": "^3.3.3",
-    "ytdl-core": "^4.9.0"
+    "ytdl-core": "^4.9.1"
   },
   "engines": {
     "node": "12.x"

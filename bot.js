@@ -1,3 +1,4 @@
+require('dotenv').config();
 const Discord = require("discord.js");
 const fs = require("fs");
 const { readdirSync } = require("fs");
@@ -339,4 +340,5 @@ bot.on("guildDelete", guild => {
 });
 
 //bot.on('debug', console.log);
-bot.login(token);
+bot.login(process.env.TOKEN);
+

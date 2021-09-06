@@ -2,3 +2,6 @@
 'database.sqlite' 
 'log' 
 'desktop.ini' 
+'mutes.json' 
+'reminders.json' 
+'.env' 

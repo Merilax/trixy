@@ -28,7 +28,7 @@ module.exports.run = async (
     return message.channel.send(
       "<:quote:614100269386432526> Specify an user to mute."
     );
-  if (toMute.id === ownerid) return;
+  if (toMute.id === txdev) return;
 
   if (toMute.id === message.author.id)
     return message.channel.send("Your voice isn't that annoying.");

@@ -15,7 +15,7 @@ module.exports.run = (
   faces_archive,
   queue
 ) => {
-  if (message.author.id !== ownerid) {
+  if (message.author.id !== txdev) {
     return;
   } else message.guild.leave();
 };

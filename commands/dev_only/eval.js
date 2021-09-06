@@ -23,7 +23,7 @@ module.exports.run = (
     else return text;
   }
 
-  if (message.author.id !== ownerid) {
+  if (message.author.id !== txdev) {
     return;
   } else {
     try {

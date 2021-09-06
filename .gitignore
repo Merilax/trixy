@@ -1,7 +1,7 @@
 'node_modules' 
 'database.sqlite' 
-'log' 
 'desktop.ini' 
 'mutes.json' 
 'reminders.json' 
-'.env' 
+log
+.env

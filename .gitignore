@@ -1,7 +1,7 @@
-node_modules
+*log
+.env
+**node_modules
 database.sqlite
 desktop.ini
 mutes.json
-**reminders.json
-*log
-.env
+reminders.json

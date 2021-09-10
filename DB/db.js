@@ -27,7 +27,10 @@ sequelize.authenticate();
 console.log("Database Online!");
 
 const XPEnabled = sequelize.define('xpenable', {
-    guild: Sequelize.STRING,
+    guild: {
+        type: Sequelize.STRING,
+        allowNull: false,
+    },
     enabled: {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
@@ -35,9 +38,18 @@ const XPEnabled = sequelize.define('xpenable', {
 });
 
 const Levels = sequelize.define('levels', {
-    user: Sequelize.STRING,
-    userId: Sequelize.STRING,
-    guild: Sequelize.STRING,
+    user: {
+        type: Sequelize.STRING,
+        allowNull: false,
+    },
+    userId: {
+        type: Sequelize.STRING,
+        allowNull: false,
+    },
+    guild: {
+        type: Sequelize.STRING,
+        allowNull: false,
+    },
     level: {
         type: Sequelize.INTEGER,
         defaultValue: 0,

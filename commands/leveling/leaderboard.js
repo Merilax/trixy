@@ -21,7 +21,7 @@ module.exports.run = async (
 ) => {
     const xpenable = await db.XPEnabled.findOne({ where: { guild: message.guild.id } });
     if (xpenable.enabled == false) { return } else {
-        const level = (await db.Levels.findAll({ attributes: ['user', 'level', 'xp'] }, { where: { guild: message.guild.id } }));
+        const level = (await db.Levels.findAll({ where: { guild: message.guild.id } }));
 
         let xplist = [];
         let lb = [];

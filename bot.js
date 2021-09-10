@@ -10,8 +10,6 @@ const winston = require("winston");
 const queue = new Map();
 const { sep } = require("path");
 const { success, error, warning } = require("log-symbols");
-//const { inspect } = require("util");
-const Sequelize = require('sequelize')
 const { setTimeout } = require("timers");
 
 const levelCooldown = new Set();
@@ -38,34 +36,12 @@ const logger = winston.createLogger({
 async function addXP(message) {
   if (!message.guild || message.author.bot) return;
 
-  const xpenable = await db.XPEnabled.findOne({ where: { guild: message.guild.id } });
+  const [xpenable, xpCreated] = await db.XPEnabled.findOrCreate({ where: { guild: message.guild.id }, defaults: { guild: message.guild.id } });
+  const [level, levelCreated] = await db.Levels.findOrCreate({ where: { user: message.author.tag, guild: message.guild.id, userId: message.author.id } });
 
-  if (xpenable == null) {
-    try {
-      await db.XPEnabled.create({
-        guild: message.guild.id,
-      });
-    } catch (err) {
-      console.log(`Could not register guild ${message.guild.id} in XPEnabled.`);
-    }
-  } else if (xpenable.enabled == false) { return } else {
-    const level = await db.Levels.findOne({ where: { guild: message.guild.id, userId: message.author.id } });
-
-    if (level == null) {
-      try {
-        await db.Levels.create({
-          user: message.author.tag,
-          userId: message.author.id,
-          guild: message.guild.id,
-          xp: xpRandom,
-        });
-      } catch (err) {
-        console.log(`Could not create XP entry for user ${message.author.username}`);
-      }
-    } else {
+  if (xpenable.enabled == false) { return } else {
       await db.Levels.update({ message_count: level.message_count + 1, xp: level.xp + xpRandom }, { where: { guild: message.guild.id, userId: message.author.id } })
-        .then(levelUp(message, level));
-    }
+          .then(levelUp(message, level));
   }
 };
 
@@ -73,9 +49,8 @@ async function levelUp(message, level) {
   const xpLimit = (level.level * 100 + 100);
 
   if (level.xp >= xpLimit) {
-    await db.Levels.update({ level: level.level + 1, xp: level.xp - xpLimit }, { where: { guild: message.guild.id, userId: message.author.id } })
-      .then(message.channel.send(`<:add:614100269327974405> You leveled up! You are now Level ${level.level + 1}.`)
-        .catch(trash => { }));
+      await db.Levels.update({ level: level.level + 1, xp: level.xp - xpLimit }, { where: { guild: message.guild.id, userId: message.author.id } })
+          .then(message.channel.send(`<:add:614100269327974405> You leveled up! You are now Level ${level.level + 1}.`));
   }
 }
 

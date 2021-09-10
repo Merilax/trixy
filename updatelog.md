@@ -59,3 +59,4 @@
 2.14.2 >> Fixed all music commands. Added "np", "queue", "pause" and "resume" commands. "leave" command renamed to "stop".
 2.15.0 >> Added leveling system. Added "levelsystem", "level" and "leaderboard" commands.
 2.15.1 >> Added "leveldelete" command.
+2.15.2 >> Fixed all moderation commands, improved level system and fixed "leaderboard" command. Minor code cleanup.

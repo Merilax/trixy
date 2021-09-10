@@ -16,38 +16,38 @@ module.exports.run = (
   faces_archive,
   queue
 ) => {
-  if (message.member.hasPermission("MANAGE_ROLES") !== true) {
+  if (!message.member.hasPermission("MANAGE_ROLES")) {
     return message.channel.send(
       "<:delete:614100269369655306> You cannot manage roles."
     );
   }
 
   let removeuser = message.mentions.members.first();
-  let removerole = (message.guild.roles.cache.find(role => role.name === args[1]) || message.mentions.roles.cache.first());
+  let removerole = (message.guild.roles.cache.find((r => r.name === args[1])) || message.mentions.roles.cache.first() || (r => r.id === args[1]));
 
   if (!removeuser)
     return message.channel.send(
-      "<<:quote:614100269386432526> Please mention an actual user."
+      "<<:quote:614100269386432526> Please mention a user."
     );
   if (!removerole)
     return message.channel.send(
       "<:quote:614100269386432526> I didn't find that role."
     );
 
-  if (!removeuser.roles.cache.some(role => role.name === args[1])) {
+  if (!removeuser.roles.cache.some(removerole)) {
     return message.channel.send(
       "<:delete:614100269369655306> But you don't have that role..."
     );
   }
 
   try {
-    removeuser.roles.cache.remove(removerole);
+    removeuser.roles.remove(removerole);
     message.channel.send(
-      `<:approve:614100268891504661> Removed **${removerole.name}** from **${removeuser}**`
+      `<:approve:614100268891504661> Removed **${removerole.name}** from **${removeuser}**.`
     );
-  } catch (error) {
-    console.error(error);
-    message.reply(
+  } catch (e) {
+    console.log(e);
+    message.channel.send(
       "<:delete:614100269369655306> I seem to be unable to manage this role or user."
     );
   }

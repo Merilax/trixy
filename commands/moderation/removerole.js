@@ -23,7 +23,7 @@ module.exports.run = (
   }
 
   let removeuser = message.mentions.members.first();
-  let removerole = (message.guild.roles.cache.cache.find(role => role.name === args[1]) || message.mentions.roles.cache.first());
+  let removerole = (message.guild.roles.cache.find(role => role.name === args[1]) || message.mentions.roles.cache.first());
 
   if (!removeuser)
     return message.channel.send(

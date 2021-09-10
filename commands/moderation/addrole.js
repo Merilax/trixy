@@ -23,7 +23,7 @@ module.exports.run = (
   }
 
   let adduser = message.mentions.members.first();
-  let addrole = (message.guild.roles.cache.cache.find(role => role.name === args[1]) || message.mentions.roles.cache.first());
+  let addrole = (message.guild.roles.cache.find(role => role.name === args[1]) || message.mentions.roles.cache.first());
 
   if (!adduser)
     return message.channel.send(

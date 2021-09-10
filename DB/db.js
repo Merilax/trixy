@@ -67,5 +67,21 @@ const Levels = sequelize.define('levels', {
     },
 });
 
+const Mutes = sequelize.define('mutes', {
+    userName: {
+        type: Sequelize.STRING,
+        allowNull: false,
+    },
+    userId: {
+        type: Sequelize.STRING,
+        allowNull: false,
+    },
+    guildId: {
+        type: Sequelize.STRING,
+        allowNull: false,
+    },
+    duration:  Sequelize.INTEGER,
+});
+
 sequelize.sync({force:false});
 module.exports = { XPEnabled, Levels };

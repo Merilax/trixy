@@ -1,4 +1,5 @@
 const fs = require("fs");
+const db = require('../../DB/db.js');
 
 module.exports.commanddata = {
   name: "unmute",
@@ -22,53 +23,54 @@ module.exports.run = async (
       "<:delete:614100269369655306> You do not have permissions to manage roles."
     );
 
-  let toMute =
-    message.mentions.members.first() || message.guild.members.cache.get(args[0]);
-  if (!toMute)
+  let muteUser = message.mentions.members.first();
+  if (!muteUser)
     return message.channel.send(
       "<:quote:614100269386432526> Specify an user to unmute."
     );
-
-  if (toMute.id === message.author.id)
+  if (muteUser.id === message.author.id)
     return message.channel.send("How can you unmute yourself?");
-  if (toMute.roles.cache.highest.position >= message.member.roles.cache.highest.position)
+  if (muteUser.roles.highest.position >= message.member.roles.highest.position)
     return message.channel.send(
-      "<:delete:614100269369655306> You cannot unmute members with a higher or same role."
+      "<:delete:614100269369655306> You cannot unmute members with a higher or same role as yours."
     );
 
-  let role = message.guild.roles.cache.cache.find(r => r.name === "Trixy Mute");
-  if (!role) {
+  let txMuteRole = message.guild.roles.cache.find(r => r.name === "Trixy Mute");
+  if (!txMuteRole) {
     try {
-      role = await message.guild.roles.cache.create({
-        name: "Trixy Mute",
-        color: "#000001",
-        permission: []
+      txMuteRole = await message.guild.roles.create({
+        data: {
+          name: "Trixy Mute",
+          color: "#000001",
+          position: self.roles.highest.position - 1
+        }
       });
 
       message.guild.channels.cache.forEach(async (channel, id) => {
-        await channel.overwritePermissions(role, {
+        await channel.updateOverwrite(txMuteRole, {
           SEND_MESSAGES: false,
           ADD_REACTIONS: false
         });
       });
+      return message.channel.send("<:fix:614100269449347082> I have created a Mute role, please check if its position is correct and working. Please do not change its name or I won't find it!");
     } catch (e) {
       console.log(e);
+      return message.channel.send("<:delete:614100269369655306> Could not create Mute role! Am I administrator?");
     }
   }
 
-  if (!role || !toMute.roles.cache.has(role.id))
+  if (!muteUser.roles.cache.has(txMuteRole.id))
     return message.channel.send(
       "<:delete:614100269369655306> This user can't be any louder."
     );
 
-  await toMute.roles.cache.remove(role);
-
-  delete bot.mutes[toMute.id];
-
-  fs.writeFile("./mutes.json", JSON.stringify(bot.mutes), err => {
-    if (err) throw err;
-    message.channel.send(
-      `<:approve:614100268891504661> I have unmuted <@${toMute.user.id}>.`
-    );
-  });
+    try {
+      await db.Mutes.destroy({ where: { guildId: message.guild.id, userId: muteUser.user.id } });
+      await muteUser.roles.remove(txMuteRole);
+      message.channel.send(
+        `<:approve:614100268891504661> User ${args[0]} has been succesfully unmuted.`
+      );
+    } catch (e) {
+      console.log(e);
+    }
 };

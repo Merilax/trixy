@@ -15,7 +15,7 @@ module.exports.run = (
   faces_archive,
   queue
 ) => {
-  if (message.member.hasPermission("KICK_MEMBERS") === false) {
+  if (!message.member.hasPermission("KICK_MEMBERS")) {
     return message.channel.send(
       "<:delete:614100269369655306> You cannot kick members."
     );
@@ -27,15 +27,9 @@ module.exports.run = (
     );
   }
 
-  const kickauthor = message.author;
   const kickuser = message.mentions.members.first();
-  //const kickusername = args[0];
-  //const kickguild = message.channel.guild;
-  //var kickid = kickusername.slice(2, -1);
-  //const kickchan = message.kickusername.slice(2, -1);
   let reason = args.slice(1).join(" ");
 
-  //console.log(kickchan);
 
   if (kickuser === message.author) {
     return message.channel.send(
@@ -43,15 +37,14 @@ module.exports.run = (
     );
   }
 
-  if (kickuser.kickable === false) {
+  if (!kickuser.kickable) {
     return message.channel.send(
       "<:delete:614100269369655306> I cannot kick this user."
     );
   } else {
-    //kickchan.send(`You've been kicked from ${kickguild} because: ${reason}`).catch(trashlog => { });
     kickuser.kick();
     message.channel.send(
-      `<:approve:614100268891504661> ${kickauthor} succesfully kicked **${kickuser.user.username}**. Reason: ${reason}`
+      `<:approve:614100268891504661> ${message.author} succesfully kicked **${kickuser.user.username}**. Reason: ${reason}`
     );
   }
 };

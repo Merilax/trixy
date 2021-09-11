@@ -16,39 +16,34 @@ module.exports.run = (
   faces_archive,
   queue
 ) => {
-  if (!message.member.hasPermission("MANAGE_ROLES")) {
-    return message.channel.send(
-      "<:delete:614100269369655306> You cannot manage roles."
-    );
+  if (!message.member.hasPermission("MANAGE_ROLES"))
+    return message.channel.send("<:delete:614100269369655306> You cannot manage roles.");
+
+  function checkRoleType(arg) {
+    if (message.guild.roles.cache.find(r => r.name === arg)) {
+      return message.guild.roles.cache.find(r => r.name === arg);
+    } else if (message.guild.roles.cache.get(arg)) {
+      return message.guild.roles.cache.get(arg);
+    } else {
+      return message.mentions.roles.first();
+    }
   }
 
-  let removeuser = message.mentions.members.first();
-  let removerole = (message.guild.roles.cache.find((r => r.name === args[1])) || message.mentions.roles.cache.first() || (r => r.id === args[1]));
+  let removeMember = message.mentions.members.first();
+  var removeRole = checkRoleType(args[1]);
 
-  if (!removeuser)
-    return message.channel.send(
-      "<<:quote:614100269386432526> Please mention a user."
-    );
-  if (!removerole)
-    return message.channel.send(
-      "<:quote:614100269386432526> I didn't find that role."
-    );
-
-  if (!removeuser.roles.cache.some(removerole)) {
-    return message.channel.send(
-      "<:delete:614100269369655306> But you don't have that role..."
-    );
-  }
+  if (!removeMember)
+    return message.channel.send("<<:quote:614100269386432526> Please mention a user.");
+  if (!removeRole)
+    return message.channel.send("<:quote:614100269386432526> I didn't find that role.");
+  if (!removeMember.roles.cache.some(r => r.id === removeRole.id))
+    return message.channel.send("<:delete:614100269369655306> But you don't have that role...");
 
   try {
-    removeuser.roles.remove(removerole);
-    message.channel.send(
-      `<:approve:614100268891504661> Removed **${removerole.name}** from **${removeuser}**.`
-    );
+    removeMember.roles.remove(checkRoleType(args[1]));
+    message.channel.send(`<:approve:614100268891504661> Removed **${removeRole.name}** from **${removeMember}**.`);
   } catch (e) {
     console.log(e);
-    message.channel.send(
-      "<:delete:614100269369655306> I seem to be unable to manage this role or user."
-    );
+    message.channel.send("<:delete:614100269369655306> I seem to be unable to manage this role or user.");
   }
 };

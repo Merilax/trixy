@@ -99,7 +99,7 @@ const load = (dir = "./commands/") => {
 };
 load();
 
-bot.mutes = require("./mutes.json");
+//bot.mutes = require("./mutes.json");
 bot.reminders = require("./reminders.json");
 
 const cooldowns = new Discord.Collection();
@@ -253,12 +253,13 @@ bot.on("ready", () => {
   );
 
   bot.setInterval(() => {
+    /*
     for (let mutei in bot.mutes) {
       let mutetime = bot.mutes[mutei].time;
       let muteguildID = bot.mutes[mutei].guild;
       let muteguild = bot.guilds.cache.get(muteguildID);
       let mutemember = muteguild.members.cache.get(mutei);
-      let muterole = muteguild.roles.cache.cache.find(r => r.name === "Trixy Mute");
+      let muterole = muteguild.roles.cache.find(r => r.name === "Trixy Mute");
       if (!muterole) continue;
 
       if (Date.now() > mutetime) {
@@ -273,6 +274,7 @@ bot.on("ready", () => {
         });
       }
     }
+    */
 
     for (let remindi in bot.reminders) {
       let remindtime = bot.reminders[remindi].time;

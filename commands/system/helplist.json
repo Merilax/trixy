@@ -1,135 +1,173 @@
-{   
-    
+{
+    "commented_entry": {
+        "t": "A random comment.",
+        "d": "How did you find this?",
+        "u": "A curious one, are you?"
+    },
+
     "invite": {
         "t": "Invite.",
-        "d": "Shares an invite for you to add trixy to a server."
+        "d": "Shares an invite for you to add trixy to a server.",
+        "u": "`invite`"
     },
     "levelsystem": {
         "t": "Levelsystem, aka `lvlsys`, `xpsystem`, `xpsys`.",
-        "d": "Enables or disables the leveling system in a guild."
+        "d": "Enables or disables the leveling system in a guild.",
+        "u": "`levelsystem {enable | disable}`"
     },
     "suggest": {
         "t": "Suggest.",
-        "d": "Shares a link to the support server to provide useful feedback."
+        "d": "Shares a link to the support server to provide useful feedback.",
+        "u": "`suggest <message>`"
     },
     "ping": {
         "t": "Ping, aka `latency`.",
-        "d": "Gets Trixy's API ping and the message endpoint ping."
+        "d": "Gets Trixy's API ping and the message endpoint ping.",
+        "u": "`ping`"
     },
     "prune": {
         "t": "Prune, aka `purge`, `delete`, `bulk`.",
-        "d": "Deletes from 1 to 100 messages in the given chat, as long as it's a server channel."
+        "d": "Deletes from 1 to 100 messages in the given chat, as long as it's a server channel.",
+        "u": "`prune <delete_count>`"
     },
     "kick": {
         "t": "Kick.",
-        "d": "Kicks a member."
+        "d": "Kicks a member.",
+        "u": "`kick <@member>`"
     },
     "ban": {
         "t": "Ban.",
-        "d": "Bans a member."
+        "d": "Bans a member.",
+        "u": "`ban <@member> [reason]`"
     },
     "mute": {
         "t": "Mute.",
-        "d": "Mutes a member for a given ammount of time in seconds. Mutes without time don't expire."
+        "d": "Mutes a member for a given ammount of time in seconds. Mutes without time don't expire.",
+        "u": "`mute <@member>`"
     },
     "unmute": {
         "t": "Unmute.",
-        "d": "Unmutes a member. Only for muted members using Trixy."
+        "d": "Unmutes a member. Only for muted members using Trixy.",
+        "u": "`unmute <@member>`"
     },
     "addrole": {
         "t": "Addrole, aka `add`.",
-        "d": "Adds a role to a member."
+        "d": "Adds a role to a member.",
+        "u": "`addrole <@member> {role_name_caseSensitive | role_id | <&role>}`"
     },
     "removerole": {
         "t": "Removerole, aka `remove`.",
-        "d": "Removes a role from a member."
+        "d": "Removes a role from a member.",
+        "u": "`removerole <@member> {role_name_caseSensitive | role_id | <&role>}`"
     },
     "roll": {
         "t": "Roll, aka `dice`, `random`.",
-        "d": "Rolls a dice with the given amount of sides, even negatives, because why not!"
+        "d": "Rolls a dice with the given amount of sides, even negatives, because why not!",
+        "u": "`roll <number>`"
     },
     "bird": {
         "t": "Bird, aka `birb`.",
-        "d": "Gets a random image of a bird."
+        "d": "Gets a random image of a bird.",
+        "u": "`bird`"
     },
     "cat": {
         "t": "Cat, aka `kitty`.",
-        "d": "Gets a random image of a cat."
+        "d": "Gets a random image of a cat.",
+        "u": "`cat`"
     },
     "cosmos": {
         "t": "Cosmos, aka `space`.",
-        "d": "Gets the daily space image from NASA."
+        "d": "Gets the daily space image from NASA.",
+        "u": "`cosmos`"
     },
     "dog": {
         "t": "Dog, aka `puppy`, `doggy`, `doggo`.",
-        "d": "Gets a random image of a dog."
+        "d": "Gets a random image of a dog.",
+        "u": "`dog`"
     },
     "fact": {
         "t": "Fact.",
-        "d": "Gets a random fact."
+        "d": "Gets a random fact.",
+        "u": "`fact`"
     },
     "fox": {
         "t": "Fox, aka `foxy`.",
-        "d": "Gets a random image of a fox."
+        "d": "Gets a random image of a fox.",
+        "u": "`fox`"
     },
     "np": {
         "t": "Np. (Now playing)",
-        "d": "Shows the currently playing song in the queue."
+        "d": "Shows the currently playing song in the queue.",
+        "u": "`np`"
     },
     "pause": {
         "t": "Pause.",
-        "d": "Pauses a playing queue."
+        "d": "Pauses a playing queue.",
+        "u": "`pause`"
     },
     "play": {
         "t": "Play.",
-        "d": "Plays a YouTube video or song in a voice channel, only accepts YouTube URLs."
+        "d": "Plays a YouTube video or song in a voice channel, only accepts YouTube URLs.",
+        "u": "`play <youtube_url>`"
     },
     "queue": {
         "t": "Queue, aka `q`.",
-        "d": "Shows the queue."
+        "d": "Shows the queue.",
+        "u": "`queue`"
     },
     "resume": {
         "t": "Resume.",
-        "d": "Resumes a paused queue."
+        "d": "Resumes a paused queue.",
+        "u": "`resume`"
     },
     "skip": {
         "t": "Skip, aka `s`.",
-        "d": "Skips the song currently playing in the queue."
+        "d": "Skips the song currently playing in the queue.",
+        "u": "`skip`"
     },
     "stop": {
         "t": "Stop.",
-        "d": "Clears the queue, similar to `leave`, but without disconnecting."
+        "d": "Clears the queue, similar to `leave`, but without disconnecting.",
+        "u": "`stop`"
     },
     "avatar": {
         "t": "Avatar.",
-        "d": "Gets the avatar of the mentioned user."
+        "d": "Gets the avatar of the mentioned user.",
+        "u": "`avatar`"
     },
     "remind": {
         "t": "Remind, aka `remindme`, `note`.",
-        "d": "DMs you a reminder of something after a given amount of time in seconds."
+        "d": "DMs you a reminder of something after a given amount of time in minutes.",
+        "u": "`remind <number> <message>`"
     },
     "server": {
         "t": "Server, aka `serverinfo`.",
-        "d": "Gets the properties of a server"
+        "d": "Gets the properties of a server",
+        "u": "`server`"
     },
     "user": {
         "t": "User, aka `userinfo`, `whois`.",
-        "d": "Gets the properties of an user"
+        "d": "Gets the properties of an user",
+        "u": "`user <@member>`"
     },
     "weather": {
         "t": "Weather.",
-        "d": "Gets the current weather of a city, powered by [openweather](https://api.openweathermap.org). May be innacurate."
+        "d": "Gets the current weather of a city, powered by [openweather](https://api.openweathermap.org).",
+        "u": "`weather`"
     },
     "leaderboard": {
         "t": "Leaderboard, aka `lb`, `levels`.",
-        "d": "Shows the top 10 users by Level and XP points in the guild."
+        "d": "Shows the top 10 users by Level and XP points in the guild.",
+        "u": "`leaderboard`"
     },
     "level": {
         "t": "Level, aka `lvl`, `rank`, `xp`.",
-        "d": "Gets someones Level and XP points."
+        "d": "Gets someones Level and XP points.",
+        "u": "`level [<@member>]`"
     },
     "leveldelete": {
         "t": "Leveldelete, aka `lvldelete`, `rankdelete`.",
-        "d": "Erases a member from the guild's level database."
+        "d": "Erases a member from the guild's level database.",
+        "u": "`leveldelete <@member>`"
     }
 }

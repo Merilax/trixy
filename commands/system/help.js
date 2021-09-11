@@ -24,12 +24,12 @@ module.exports.run = (
     var advhelp = args[0];
     var help = helplist[advhelp];
 
-    if (help) {
+    if (help && help !== "/") {
       var helpembed = new Discord.MessageEmbed()
-        .addField(
-          `${"<:settings:614100269004750898> " + help.t}`, help.d
-        )
+        .addField(`<:settings:614100269004750898> **${help.t}**`, help.d)
+        .setFooter("Usage: " + help.u)
         .setColor("BLUE");
+        
       return message.author.send(helpembed).catch(error => {
         message.channel.send("<:delete:614100269369655306> It seems like I can't DM you! I'll post the message here instead...\n");
         message.channel.send(helpembed);

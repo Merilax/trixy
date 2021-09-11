@@ -40,8 +40,8 @@ async function addXP(message) {
   const [level, levelCreated] = await db.Levels.findOrCreate({ where: { user: message.author.tag, guild: message.guild.id, userId: message.author.id } });
 
   if (xpenable.enabled == false) { return } else {
-      await db.Levels.update({ message_count: level.message_count + 1, xp: level.xp + xpRandom }, { where: { guild: message.guild.id, userId: message.author.id } })
-          .then(levelUp(message, level));
+    await db.Levels.update({ message_count: level.message_count + 1, xp: level.xp + xpRandom }, { where: { guild: message.guild.id, userId: message.author.id } })
+      .then(levelUp(message, level));
   }
 };
 
@@ -49,8 +49,8 @@ async function levelUp(message, level) {
   const xpLimit = (level.level * 100 + 100);
 
   if (level.xp >= xpLimit) {
-      await db.Levels.update({ level: level.level + 1, xp: level.xp - xpLimit }, { where: { guild: message.guild.id, userId: message.author.id } })
-          .then(message.channel.send(`<:add:614100269327974405> You leveled up! You are now Level ${level.level + 1}.`));
+    await db.Levels.update({ level: level.level + 1, xp: level.xp - xpLimit }, { where: { guild: message.guild.id, userId: message.author.id } })
+      .then(message.channel.send(`<:add:614100269327974405> You leveled up! You are now Level ${level.level + 1}.`));
   }
 }
 
@@ -117,9 +117,10 @@ bot.on("message", async message => {
   if (
     message.content.substr(0, prefix.length).toLowerCase() !=
     prefix.toLowerCase() ||
-    message.author.bot
-  )
-    return;
+    message.author.bot ||
+    message.content.includes("@here") ||
+    message.content.includes("@everyone")
+  ) return;
 
   const args = message.content
     .slice(prefix.length)
@@ -193,36 +194,32 @@ bot.on("message", async message => {
 //Autoresponder//==================================================
 
 bot.on("message", async message => {
-  if (message.content.includes("<@583006737322475550> prefix"))
-    message.channel.send("Try using `Trixy, help`");
-  if (message.content.includes("<@583006737322475550> help"))
-    message.channel.send("Try using `Trixy, help`");
-  if (message.content.includes("hi Trixy"))
-    message.channel.send(`Hello ${message.author.toString()}!`);
-  if (message.content.includes("Hi Trixy"))
-    message.channel.send(`Hello ${message.author.toString()}!`);
-  if (message.content.includes("Trixy, hi"))
-    message.channel.send(`Hello ${message.author.toString()}!`);
-  if (message.content.includes("Trixy, hello"))
-    message.channel.send(`Hello ${message.author.toString()}!`);
-  if (message.content.includes("Hello Trixy"))
-    message.channel.send(`Hello ${message.author.toString()}!`);
-  if (message.content.includes("hello Trixy"))
-    message.channel.send(`Hello ${message.author.toString()}!`);
-
-  if (
-    message.content.substr(0, prefix.length).toLowerCase() !=
-    prefix.toLowerCase()
-  )
-    return;
   const args = message.content
     .slice(prefix.length)
     .trim()
     .split(/trixy, /g);
   const command = args.shift().toLowerCase();
 
+  if (message.mentions.users.first()) {
+    if ((message.mentions.users.first().id === bot.user.id)) {
+      var mentionForHelp = message.content.trim().split(' ');
+      switch (mentionForHelp[1]) {
+        case "help":
+        case "prefix": return message.channel.send("Try using `Trixy, help`");
+      }
+    }
+  }
+  switch (message.content.trim().toLowerCase()) {
+    case "hi trixy": case "hello trixy": case "trixy, hi": case "trixy, hello":
+      return message.channel.send(`Hello ${message.author.username}!`);
+  }
+
+  if (
+    message.content.substr(0, prefix.length).toLowerCase() != prefix.toLowerCase()
+  ) return;
+
   if (command === "send nudes") {
-    if (message.channel.nsfw == true)
+    if (message.channel.nsfw === true)
       return message.channel.send("You pig! You thought it would work here?");
   }
 
@@ -296,14 +293,14 @@ bot.on("ready", () => {
   }, 5 * 1000);
 
   bot.user.setActivity(
-    `${bot.guilds.cache.size} servers, ${bot.users.cache.size} users. ` +
+    `${bot.guilds.cache.size} servers, ${bot.users.cache.size} users.\n@Trixy help. ` +
     `${statusquote[Math.floor(Math.random() * statusquote.length)]}`,
     { type: "WATCHING" }
   );
 
   bot.setInterval(() => {
     bot.user.setActivity(
-      `${bot.guilds.cache.size} servers, ${bot.users.cache.size} users. ` +
+      `${bot.guilds.cache.size} servers, ${bot.users.cache.size} users.\n@Trixy help. ` +
       `${statusquote[Math.floor(Math.random() * statusquote.length)]}`,
       { type: "WATCHING" }
     );
@@ -318,4 +315,3 @@ bot.on("guildDelete", guild => {
 
 //bot.on('debug', console.log);
 bot.login(process.env.TOKEN);
-

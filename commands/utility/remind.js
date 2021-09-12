@@ -1,4 +1,4 @@
-const fs = require("fs");
+const db = require('../../DB/db.js');
 
 module.exports.commanddata = {
   name: "remind",
@@ -9,7 +9,7 @@ module.exports.commanddata = {
   guildOnly: false
 };
 
-module.exports.run = (
+module.exports.run = async (
   bot,
   message,
   args,
@@ -18,32 +18,25 @@ module.exports.run = (
   faces_archive,
   queue
 ) => {
-  const fs = require("fs");
+  let remindContent = args.slice(1).join(" ");
+  let remindTiming = args[0];
 
-  let remindcontent = args.slice(1).join(" ");
-  let remindtiming = args[0];
-
-  if (!remindcontent)
-    return message.channel.send(
-      "<:quote:614100269386432526> You should tell me what to remind you."
-    );
-  if (remindtiming.match(/^\d+$/) != null) {
-  } else {
-    return message.channel.send("<:quote:614100269386432526> For how long? The input will be in minutes, at the beginning of the command.");
+  if (!remindContent)
+    return message.channel.send("<:quote:614100269386432526> You should tell me what to remind you.");
+  if (remindTiming.match(/^\d+$/) != null) { } else {
+    return message.channel.send("<:quote:614100269386432526> For how long? The input will be in minutes, as the first argument.");
   }
 
-  bot.reminders[message.author.id] = {
-    user: message.author.id,
-    time: Date.now() + parseInt(args[0]) * 60000,
-    content: remindcontent
-  };
+  if (remindTiming && (remindTiming < 525600) && (remindTiming > 0)) {
+    var remindThen = Date.now() + (parseInt(remindTiming) * 60000);
+  } else {
+    return message.channel.send("<:delete:614100269369655306> That's not right, you may set a maximum of 525600 minutes, which is actually a year.");
+  }
 
-  fs.writeFile(
-    "./reminders.json",
-    JSON.stringify(bot.reminders, null, 4),
-    err => {
-      if (err) throw err;
-      message.channel.send(`<:approve:614100268891504661> Reminder set.`);
-    }
-  );
+  try {
+    await db.Mutes.create({ userId: message.author.id, duration: remindThen, text: remindContent });
+    message.channel.send(`<:approve:614100268891504661> Alright! I will remind you in ${remindTiming} minutes.`);
+  } catch (e) {
+    console.log(e);
+  }
 };

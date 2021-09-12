@@ -101,8 +101,6 @@ const load = (dir = "./commands/") => {
 };
 load();
 
-bot.reminders = require("./reminders.json");
-
 const cooldowns = new Discord.Collection();
 
 bot.on("message", async message => {
@@ -248,48 +246,47 @@ bot.on("ready", async () => {
   );
 
   bot.setInterval(async () => {
-    const mutedb = await db.Mutes.findAll();
+    const muteDB = await db.Mutes.findAll();
+    const remindDB = await db.Reminders.findAll();
 
     for (i = 0; ; i++) {
-      if (!mutedb[i]) break;
+      if (!muteDB[i]) break;
 
-      let muteguildID = mutedb[i].guildId;
+      let muteguildID = muteDB[i].guildId;
       let muteguild = bot.guilds.cache.get(muteguildID);
-      if (!muteguild) { await db.Mutes.destroy({ where: { guildId: mutedb[i].guildId, userId: mutedb[i].userId } }); }
-      let mutemember = muteguild.members.cache.get(mutedb[i].userId);
+      if (!muteguild) {
+        await db.Mutes.destroy({ where: { guildId: muteDB[i].guildId, userId: muteDB[i].userId } });
+      }
+      let mutemember = muteguild.members.cache.get(muteDB[i].userId);
       if (!mutemember) continue;
       let muterole = muteguild.roles.cache.find(r => r.name === "Trixy Mute");
       if (!muterole) continue;
 
-      try {
-        if (mutedb[i].duration == 0) { continue } else if (Date.now() > mutedb[i].duration) {
-          mutemember.roles.remove(muterole);
-          await db.Mutes.destroy({ where: { guildId: muteguildID, userId: mutedb[i].userId } });
-          console.log(`${mutedb[i].userId} has been unmuted.`);
-        }
-      } catch (e) {
-        console.log(e);
+
+      if (muteDB[i].duration == 0) { continue } else if (Date.now() > muteDB[i].duration) {
+        mutemember.roles.remove(muterole);
+        await db.Mutes.destroy({ where: { guildId: muteguildID, userId: muteDB[i].userId } })
+          .catch(e => console.log(e));
       }
     }
 
-    for (let remindi in bot.reminders) {
-      let remindtime = bot.reminders[remindi].time;
-      let reminduser = bot.reminders[remindi].user;
-      let remindcontent = bot.reminders[remindi].content;
-      let remindmember = bot.users.cache.get(reminduser);
+    for (i = 0; ; i++) {
+      if (!remindDB[i]) break;
 
-      if (Date.now() > remindtime) {
-        remindmember
-          .send(`A reminder arrived: ${remindcontent}`)
-          .catch(trashlog => { });
-        delete bot.reminders[remindi];
+      let userID = remindDB[i].userId;
+      let remindUser = bot.users.cache.get(userID);
+      if (!remindUser) {
+        await db.Reminders.destroy({ where: { userId: userID, duration: muteDB[i].duration, text: remindDB[i].text } });
+      }
 
-        fs.writeFile("./reminders.json", JSON.stringify(bot.reminders), err => {
-          if (err) throw err;
-        });
+      if (Date.now() > remindDB[i].duration) {
+        remindUser.send(`A reminder arrived:`).catch(e => { });
+        remindUser.send(remindDB[i].text).catch(e => { });
+        await db.Reminders.destroy({ where: { userId: userID, duration: muteDB[i].duration, text: remindDB[i].text } })
+          .catch(e => console.log(e));
       }
     }
-  }, 10 * 1000);
+  }, 60 * 1000);
 
   bot.user.setActivity(
     `${bot.guilds.cache.size} servers, ${bot.users.cache.size} users.\n@Trixy help. ` +

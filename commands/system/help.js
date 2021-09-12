@@ -35,7 +35,7 @@ module.exports.run = (
         message.channel.send(helpembed);
       });
     } else {
-      return message.channel.send("<:delete:614100269369655306> That does not look like a command I would know. Try with just the \"help\" command.");
+      return message.channel.send("<:delete:614100269369655306> That does not look like a command I would know. Try not to use aliases, only the full command name.");
     }
   } else {
     var helpembed = new Discord.MessageEmbed()
@@ -43,7 +43,7 @@ module.exports.run = (
         "<:settings:614100269004750898> **I'd love to help! Listing all commands:**"
       )
       .setDescription(
-        "Need help? [Join the support server!](https://discord.gg/ZbUQ8Mh). Put a command after \"Trixy, help\" for more info about it."
+        "Need help? [Join the support server!](https://discord.gg/ZbUQ8Mh)\n Put a command after \"Trixy, help\" for more info about it."
       )
       .addField(
         "**System and information:**",
@@ -75,9 +75,8 @@ module.exports.run = (
       .setTimestamp(new Date());
 
     return message.author.send(helpembed).catch(error => {
-      message.channel.send(
-        "<:delete:614100269369655306> It seems like I can't DM you!"
-      );
+      message.channel.send("<:delete:614100269369655306> It seems like I can't DM you! I'll post the message here instead...\n");
+      message.channel.send(helpembed);
     });
   };
 }

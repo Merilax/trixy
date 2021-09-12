@@ -83,5 +83,17 @@ const Mutes = sequelize.define('mutes', {
     duration: Sequelize.INTEGER,
 });
 
+const Reminders = sequelize.define('reminders', {
+    userId: {
+        type: Sequelize.STRING,
+        allowNull: false,
+    },
+    text: {
+        type: Sequelize.STRING(1999),
+        allowNull: false,
+    },
+    duration: Sequelize.INTEGER,
+});
+
 sequelize.sync({force:false});
-module.exports = { XPEnabled, Levels, Mutes };
+module.exports = { XPEnabled, Levels, Mutes, Reminders };

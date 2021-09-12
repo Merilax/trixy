@@ -1,4 +1,3 @@
-const fs = require("fs");
 const db = require('../../DB/db.js');
 
 module.exports.commanddata = {
@@ -72,14 +71,13 @@ module.exports.run = async (
   }
 
   if (args[1] && (args[1] < 1000000) && (args[1] > 0)) {
-    var muteExpire = Date.now() + parseInt(args[1]) * 60000;
+    var muteExpire = Date.now() + (parseInt(args[1]) * 60000);
   } else {
     var muteExpire = 0
   }
 
   try {
     await db.Mutes.findOrCreate({ where: { guildId: message.guild.id }, defaults: { userName: muteUser.user.tag, userId: muteUser.user.id, guildId: message.guild.id, duration: muteExpire } });
-    //await db.Mutes.update({ userName: muteUser.user.tag, duration: muteExpire }, { where: { guildId: message.guild.id, userId: muteUser.user.id } });
     await muteUser.roles.add(txMuteRole);
     message.channel.send(
       `<:approve:614100268891504661> User ${args[0]} has been succesfully muted for ${args[1]} minutes.`

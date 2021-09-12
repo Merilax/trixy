@@ -7,7 +7,7 @@
     "start": "node bot.js"
   },
   "dependencies": {
-    "JSON": "^1.0.0",
+    "json": ">=10.0.0",
     "discord.js": "^12.5.3",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",

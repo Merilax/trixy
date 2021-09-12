@@ -24,7 +24,7 @@ module.exports.run = (
     var advhelp = args[0];
     var help = helplist[advhelp];
 
-    if (help && help !== "/") {
+    if (help) {
       var helpembed = new Discord.MessageEmbed()
         .addField(`<:settings:614100269004750898> **${help.t}**`, help.d)
         .setFooter("Usage: " + help.u)

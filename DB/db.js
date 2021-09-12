@@ -80,8 +80,8 @@ const Mutes = sequelize.define('mutes', {
         type: Sequelize.STRING,
         allowNull: false,
     },
-    duration:  Sequelize.INTEGER,
+    duration: Sequelize.INTEGER,
 });
 
 sequelize.sync({force:false});
-module.exports = { XPEnabled, Levels };
+module.exports = { XPEnabled, Levels, Mutes };

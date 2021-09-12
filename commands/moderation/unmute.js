@@ -59,18 +59,19 @@ module.exports.run = async (
     }
   }
 
-  if (!muteUser.roles.cache.has(txMuteRole.id))
+  if (muteUser.roles.cache.has(txMuteRole.id) === false) {
     return message.channel.send(
       "<:delete:614100269369655306> This user can't be any louder."
-    );
+    )
+  } 
 
-    try {
-      await db.Mutes.destroy({ where: { guildId: message.guild.id, userId: muteUser.user.id } });
-      await muteUser.roles.remove(txMuteRole);
-      message.channel.send(
-        `<:approve:614100268891504661> User ${args[0]} has been succesfully unmuted.`
-      );
-    } catch (e) {
-      console.log(e);
-    }
+  try {
+    await db.Mutes.destroy({ where: { guildId: message.guild.id, userId: muteUser.user.id } });
+    await muteUser.roles.remove(txMuteRole);
+    message.channel.send(
+      `<:approve:614100268891504661> User ${args[0]} has been succesfully unmuted.`
+    );
+  } catch (e) {
+    console.log(e);
+  }
 };

@@ -38,15 +38,15 @@ module.exports.run = async (
     );
   }
 
-  const [mutes, created] = await db.Mutes.findOrCreate({ where: { guildId: message.guild.id }, defaults: { userName: muteUser.user.tag, userId: muteUser.user.id, guildId: message.guild.id, duration: 0 } });
+  //const [mutes, created] = 
 
   let self = message.guild.members.cache.find(m => m.id === bot.user.id);
-  let txMuteRole = message.guild.roles.cache.find(r => r.name === "Pioneer Mute");
+  let txMuteRole = message.guild.roles.cache.find(r => r.name === "Trixy Mute");
   if (!txMuteRole) {
     try {
       txMuteRole = await message.guild.roles.create({
         data: {
-          name: "Pioneer Mute",
+          name: "Trixy Mute",
           color: "#000001",
           position: self.roles.highest.position - 1
         }
@@ -70,14 +70,19 @@ module.exports.run = async (
       "<:delete:614100269369655306> This user can't be any more silent."
     );
   }
-  
-  const muteExpire = Date.now() /*+ parseInt(args[1]) * 1000*/;
+
+  if (args[1] && (args[1] < 1000000) && (args[1] > 0)) {
+    var muteExpire = Date.now() + parseInt(args[1]) * 60000;
+  } else {
+    var muteExpire = 0
+  }
 
   try {
-    await db.Mutes.update({ userName: muteUser.user.tag, duration: muteExpire }, { where: { guildId: message.guild.id, userId: muteUser.user.id } });
+    await db.Mutes.findOrCreate({ where: { guildId: message.guild.id }, defaults: { userName: muteUser.user.tag, userId: muteUser.user.id, guildId: message.guild.id, duration: muteExpire } });
+    //await db.Mutes.update({ userName: muteUser.user.tag, duration: muteExpire }, { where: { guildId: message.guild.id, userId: muteUser.user.id } });
     await muteUser.roles.add(txMuteRole);
     message.channel.send(
-      `<:approve:614100268891504661> User ${args[0]} has been succesfully muted.` // for ${args[1]} seconds //
+      `<:approve:614100268891504661> User ${args[0]} has been succesfully muted for ${args[1]} minutes.`
     );
   } catch (e) {
     console.log(e);

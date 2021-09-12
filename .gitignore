@@ -1,6 +1,5 @@
 *log
 .env
-**node_modules
+node_modules/
 desktop.ini
-reminders.json
 database.sqlite

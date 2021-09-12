@@ -5,6 +5,12 @@
         "u": "A curious one, are you?"
     },
 
+
+    "help": {
+        "t": "You are a funny one, are you?",
+        "d": "I appreciate your curiosity, but there is nothing to find here!",
+        "u": "`help [<command>]`"
+    },
     "invite": {
         "t": "Invite.",
         "d": "Shares an invite for you to add trixy to a server.",
@@ -25,6 +31,14 @@
         "d": "Gets Trixy's API ping and the message endpoint ping.",
         "u": "`ping`"
     },
+    "prefix": {
+        "t": "Prefix.",
+        "d": "Sets a custom bot prefix for the server. Append `reset` as the command argument to get rid of the custom prefix. Both custom and original prefix will work simultaneously.",
+        "u": "`prefix {<prefix> | reset}`"
+    },
+
+
+
     "prune": {
         "t": "Prune, aka `purge`, `delete`, `bulk`.",
         "d": "Deletes from 1 to 100 messages in the given chat, as long as it's a server channel.",
@@ -42,7 +56,7 @@
     },
     "mute": {
         "t": "Mute.",
-        "d": "Mutes a member for a given ammount of time in seconds. Mutes without time don't expire.",
+        "d": "Mutes a member for a given ammount of time in minutes. Mutes without time don't expire.",
         "u": "`mute <@member>`"
     },
     "unmute": {
@@ -53,13 +67,16 @@
     "addrole": {
         "t": "Addrole, aka `add`.",
         "d": "Adds a role to a member.",
-        "u": "`addrole <@member> {role_name_caseSensitive | role_id | <&role>}`"
+        "u": "`addrole <@member> {role_name_caseSensitive | role_id | <@role>}`"
     },
     "removerole": {
         "t": "Removerole, aka `remove`.",
         "d": "Removes a role from a member.",
-        "u": "`removerole <@member> {role_name_caseSensitive | role_id | <&role>}`"
+        "u": "`removerole <@member> {role_name_caseSensitive | role_id | <@role>}`"
     },
+
+
+
     "roll": {
         "t": "Roll, aka `dice`, `random`.",
         "d": "Rolls a dice with the given amount of sides, even negatives, because why not!",
@@ -95,6 +112,9 @@
         "d": "Gets a random image of a fox.",
         "u": "`fox`"
     },
+
+
+
     "np": {
         "t": "Np. (Now playing)",
         "d": "Shows the currently playing song in the queue.",
@@ -130,6 +150,9 @@
         "d": "Clears the queue, similar to `leave`, but without disconnecting.",
         "u": "`stop`"
     },
+
+
+
     "avatar": {
         "t": "Avatar.",
         "d": "Gets the avatar of the mentioned user.",
@@ -155,6 +178,9 @@
         "d": "Gets the current weather of a city, powered by [openweather](https://api.openweathermap.org).",
         "u": "`weather`"
     },
+
+
+
     "leaderboard": {
         "t": "Leaderboard, aka `lb`, `levels`.",
         "d": "Shows the top 10 users by Level and XP points in the guild.",

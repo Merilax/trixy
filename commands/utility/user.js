@@ -79,5 +79,5 @@ module.exports.run = (
     .setFooter(
       `Replying to ${message.author.tag}`
     );
-  message.channel.send({ embed });
+  message.channel.send(embed);
 };

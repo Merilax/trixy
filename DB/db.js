@@ -95,5 +95,17 @@ const Reminders = sequelize.define('reminders', {
     duration: Sequelize.INTEGER,
 });
 
+const Prefix = sequelize.define('prefix', {
+    guildId: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true,
+    },
+    prefix: {
+        type: Sequelize.STRING(10),
+        allowNull: false,
+    },
+});
+
 sequelize.sync({force:false});
-module.exports = { XPEnabled, Levels, Mutes, Reminders };
+module.exports = { XPEnabled, Levels, Mutes, Reminders, Prefix };

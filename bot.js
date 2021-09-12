@@ -17,7 +17,6 @@ const levelCooldown = new Set();
 const levelDBTimeout = 60 * 1000;
 const xpRandom = Math.floor(Math.random() * 15 + 15);
 const db = require('./DB/db.js');
-const { Console } = require('console');
 
 ["commands", "aliases"].forEach(x => (bot[x] = new Discord.Collection()));
 
@@ -126,20 +125,47 @@ bot.on("message", async message => {
       return message.channel.send(`Hello ${message.author.username}!`);
   } // Reacts to friendliness. Hi Trixy!
 
-  if (
-    message.content.substr(0, prefix.length).toLowerCase() !=
-    prefix.toLowerCase() ||
-    message.author.bot ||
-    message.content.includes("@here") ||
-    message.content.includes("@everyone")
-  ) return; // Returns unless prefix included.
+  const prefixDB = await db.Prefix.findOne({ where: { guildId: message.guild.id } });
+  if (prefixDB === null) {
+    if (
+      message.content.substr(0, prefix.length).toLowerCase() != prefix.toLowerCase()
+      || message.author.bot
+      || message.content.includes("@here")
+      || message.content.includes("@everyone")
+    ) {
+      return;
+    } else {
+      var args = message.content
+        .slice(prefix.length)
+        .trim()
+        .split(/ +/g);
+    }
+  } else {
+    if (
+      message.content.substr(0, prefixDB.prefix.length).toLowerCase() != prefixDB.prefix
+      && message.content.substr(0, prefix.length).toLowerCase() != prefix.toLowerCase()
+      || message.author.bot
+      || message.content.includes("@here")
+      || message.content.includes("@everyone")
+    ) {
+      return;
+    } else {
+      if (message.content.substr(0, prefix.length).toLowerCase() === prefix.toLowerCase()) {
+        var args = message.content
+        .slice(prefix.length)
+        .trim()
+        .split(/ +/g);
+      } else {
+        var args = message.content
+        .slice(prefixDB.prefix.length)
+        .trim()
+        .split(/ +/g);
+      }
+      
+    }
+  } // Returns unless prefix included and declares args accordingly to prefix used.
 
-  const args = message.content
-    .slice(prefix.length)
-    .trim()
-    .split(/ +/g);
   const cmd = args.shift().toLowerCase();
-
   let command;
 
   if (cmd.length === 0) return;
@@ -189,7 +215,7 @@ bot.on("message", async message => {
 
   try {
     if (command) {
-      command.run(bot, message, args, txdev, prefix, faces_archive, queue);
+      command.run(bot, message, args, txdev, prefix, faces_archive, queue, db);
     }
   } catch (error) {
     console.error(error);
@@ -276,13 +302,13 @@ bot.on("ready", async () => {
       let userID = remindDB[i].userId;
       let remindUser = bot.users.cache.get(userID);
       if (!remindUser) {
-        await db.Reminders.destroy({ where: { userId: userID, duration: muteDB[i].duration, text: remindDB[i].text } });
+        await db.Reminders.destroy({ where: { userId: userID, duration: remindDB[i].duration, text: remindDB[i].text } });
       }
 
       if (Date.now() > remindDB[i].duration) {
         remindUser.send(`A reminder arrived:`).catch(e => { });
         remindUser.send(remindDB[i].text).catch(e => { });
-        await db.Reminders.destroy({ where: { userId: userID, duration: muteDB[i].duration, text: remindDB[i].text } })
+        await db.Reminders.destroy({ where: { userId: userID, duration: remindDB[i].duration, text: remindDB[i].text } })
           .catch(e => console.log(e));
       }
     }

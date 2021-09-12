@@ -1,6 +1,5 @@
 const Discord = require("discord.js");
 const db = require('../../DB/db.js');
-const xpRandom = Math.floor(Math.random() * 15 + 15);
 
 module.exports.commanddata = {
     name: "level",

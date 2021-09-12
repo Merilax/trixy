@@ -1,6 +1,5 @@
 require('dotenv').config();
 const Discord = require("discord.js");
-const fs = require("fs");
 const { readdirSync } = require("fs");
 const bot = new Discord.Client({ fetchAllMembers: true });
 const { prefix, txdev, statusquote } = require("./config.json");

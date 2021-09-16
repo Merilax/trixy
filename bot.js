@@ -124,8 +124,42 @@ bot.on("message", async message => {
       return message.channel.send(`Hello ${message.author.username}!`);
   } // Reacts to friendliness. Hi Trixy!
 
-  const prefixDB = await db.Prefix.findOne({ where: { guildId: message.guild.id } });
-  if (prefixDB === null) {
+  if (message.author.bot || message.content.includes("@here") || message.content.includes("@everyone")) return; //Returns when author is a bot or when mass mentioned
+
+  if (message.guild) {
+    const prefixDB = await db.Prefix.findOne({ where: { guildId: message.guild.id } });
+    if (prefixDB === null) {
+      if (
+        message.content.substr(0, prefix.length).toLowerCase() != prefix.toLowerCase()
+      ) {
+        return;
+      } else {
+        var args = message.content
+          .slice(prefix.length)
+          .trim()
+          .split(/ +/g);
+      }
+    } else {
+      if (
+        message.content.substr(0, prefixDB.prefix.length).toLowerCase() != prefixDB.prefix
+        && message.content.substr(0, prefix.length).toLowerCase() != prefix.toLowerCase()
+      ) {
+        return;
+      } else {
+        if (message.content.substr(0, prefix.length).toLowerCase() === prefix.toLowerCase()) {
+          var args = message.content
+            .slice(prefix.length)
+            .trim()
+            .split(/ +/g);
+        } else {
+          var args = message.content
+            .slice(prefixDB.prefix.length)
+            .trim()
+            .split(/ +/g);
+        }
+      }
+    } // Returns unless prefix included and declares args accordingly to prefix used.
+  } else {
     if (
       message.content.substr(0, prefix.length).toLowerCase() != prefix.toLowerCase()
       || message.author.bot
@@ -139,30 +173,7 @@ bot.on("message", async message => {
         .trim()
         .split(/ +/g);
     }
-  } else {
-    if (
-      message.content.substr(0, prefixDB.prefix.length).toLowerCase() != prefixDB.prefix
-      && message.content.substr(0, prefix.length).toLowerCase() != prefix.toLowerCase()
-      || message.author.bot
-      || message.content.includes("@here")
-      || message.content.includes("@everyone")
-    ) {
-      return;
-    } else {
-      if (message.content.substr(0, prefix.length).toLowerCase() === prefix.toLowerCase()) {
-        var args = message.content
-        .slice(prefix.length)
-        .trim()
-        .split(/ +/g);
-      } else {
-        var args = message.content
-        .slice(prefixDB.prefix.length)
-        .trim()
-        .split(/ +/g);
-      }
-      
-    }
-  } // Returns unless prefix included and declares args accordingly to prefix used.
+  }
 
   const cmd = args.shift().toLowerCase();
   let command;

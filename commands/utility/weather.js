@@ -92,7 +92,7 @@ module.exports.run = (
       .addField("Snow", snowvolume, true)
       .addField("Visibility", visible, true)
       .setColor("BLUE")
-      .setFooter("Powered by [openweather](https://api.openweathermap.org)");
+      .setFooter("Powered by OpenWeather");
     message.channel.send(embed);
   })
     .catch(error => {

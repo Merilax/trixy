@@ -43,7 +43,7 @@ module.exports.run = (
         "<:settings:614100269004750898> **I'd love to help! Listing all commands:**"
       )
       .setDescription(
-        "Need help? [Join the support server!](https://discord.gg/ZbUQ8Mh)\n Put a command after \"Trixy, help\" for more info about it."
+        "Need help? [Join the support server!](https://discord.gg/ZbUQ8Mh)\n Put a command after `Trixy, help` for more info about it."
       )
       .addField(
         "**System and information:**",
@@ -67,7 +67,7 @@ module.exports.run = (
       )
       .addField(
         "**Leveling:** _More to come soon!_",
-        "```md\n# leaderboard, level, leveldelete."
+        "```md\n# leaderboard, level, leveldelete.```"
       )
       .setThumbnail(faces_archive.tv)
       .setFooter("Icons by https://dryicons.com")

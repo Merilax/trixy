@@ -29,7 +29,7 @@ module.exports.run = (
         .addField(`<:settings:614100269004750898> **${help.t}**`, help.d)
         .setFooter("Usage: " + help.u)
         .setColor("BLUE");
-        
+
       return message.author.send(helpembed).catch(error => {
         message.channel.send("<:delete:614100269369655306> It seems like I can't DM you! I'll post the message here instead...\n");
         message.channel.send(helpembed);
@@ -43,7 +43,7 @@ module.exports.run = (
         "<:settings:614100269004750898> **I'd love to help! Listing all commands:**"
       )
       .setDescription(
-        "Need help? [Join the support server!](https://discord.gg/ZbUQ8Mh)\n Put a command after `Trixy, help` for more info about it."
+        "Need help? [Join the support server!](https://discord.gg/ZbUQ8Mh)\n Put a command after `Trixy, help` for more info about it.\n Have you seen our new website? Check it out [here](https://merilax.github.io/trixy-front)"
       )
       .addField(
         "**System and information:**",

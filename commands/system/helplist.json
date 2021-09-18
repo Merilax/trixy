@@ -9,22 +9,22 @@
     "help": {
         "t": "You are a funny one, are you?",
         "d": "I appreciate your curiosity, but there is nothing to find here!",
-        "u": "`help [<command>]`"
+        "u": "`help (command)`"
     },
     "invite": {
         "t": "Invite.",
-        "d": "Shares an invite for you to add trixy to a server.",
+        "d": "Shares an invite with you to add trixy to a server.",
         "u": "`invite`"
     },
     "levelsystem": {
         "t": "Levelsystem, aka `lvlsys`, `xpsystem`, `xpsys`.",
         "d": "Enables or disables the leveling system in a guild.",
-        "u": "`levelsystem {enable | disable}`"
+        "u": "`levelsystem [enable | disable]`"
     },
     "suggest": {
         "t": "Suggest.",
-        "d": "Shares a link to the support server to provide useful feedback.",
-        "u": "`suggest <message>`"
+        "d": "Sends your feedback directly to the support server.",
+        "u": "`suggest [message]`"
     },
     "ping": {
         "t": "Ping, aka `latency`.",
@@ -34,7 +34,7 @@
     "prefix": {
         "t": "Prefix.",
         "d": "Sets a custom bot prefix for the server. Append `reset` as the command argument to get rid of the custom prefix. Both custom and original prefix will work simultaneously.",
-        "u": "`prefix {<prefix> | reset}`"
+        "u": "`prefix [newprefix | reset]`"
     },
 
 
@@ -42,37 +42,37 @@
     "prune": {
         "t": "Prune, aka `purge`, `delete`, `bulk`.",
         "d": "Deletes from 1 to 100 messages in the given chat, as long as it's a server channel.",
-        "u": "`prune <delete_count>`"
+        "u": "`prune [delete_count]`"
     },
     "kick": {
         "t": "Kick.",
         "d": "Kicks a member.",
-        "u": "`kick <@member>`"
+        "u": "`kick [@member]`"
     },
     "ban": {
         "t": "Ban.",
         "d": "Bans a member.",
-        "u": "`ban <@member> [reason]`"
+        "u": "`ban [@member] (reason)`"
     },
     "mute": {
         "t": "Mute.",
         "d": "Mutes a member for a given ammount of time in minutes. Mutes without time don't expire.",
-        "u": "`mute <@member>`"
+        "u": "`mute (minutes) [@member]`"
     },
     "unmute": {
         "t": "Unmute.",
-        "d": "Unmutes a member. Only for muted members using Trixy.",
-        "u": "`unmute <@member>`"
+        "d": "Unmutes a member.",
+        "u": "`unmute [@member]`"
     },
     "addrole": {
         "t": "Addrole, aka `add`.",
         "d": "Adds a role to a member.",
-        "u": "`addrole <@member> {role_name_caseSensitive | role_id | <@role>}`"
+        "u": "`addrole [@member] [role_name_caseSensitive | role_id | @role]`"
     },
     "removerole": {
         "t": "Removerole, aka `remove`.",
         "d": "Removes a role from a member.",
-        "u": "`removerole <@member> {role_name_caseSensitive | role_id | <@role>}`"
+        "u": "`removerole [@member] [role_name_caseSensitive | role_id | @role]`"
     },
 
 
@@ -80,7 +80,7 @@
     "roll": {
         "t": "Roll, aka `dice`, `random`.",
         "d": "Rolls a dice with the given amount of sides, even negatives, because why not!",
-        "u": "`roll <number>`"
+        "u": "`roll [number]`"
     },
     "bird": {
         "t": "Bird, aka `birb`.",
@@ -128,7 +128,7 @@
     "play": {
         "t": "Play.",
         "d": "Plays a YouTube video or song in a voice channel, only accepts YouTube URLs.",
-        "u": "`play <youtube_url>`"
+        "u": "`play [youtube_url]`"
     },
     "queue": {
         "t": "Queue, aka `q`.",
@@ -147,7 +147,7 @@
     },
     "stop": {
         "t": "Stop.",
-        "d": "Clears the queue, similar to `leave`, but without disconnecting.",
+        "d": "Clears the queue and disconnects.",
         "u": "`stop`"
     },
 
@@ -156,12 +156,12 @@
     "avatar": {
         "t": "Avatar.",
         "d": "Gets the avatar of the mentioned user.",
-        "u": "`avatar`"
+        "u": "`avatar (@member)`"
     },
     "remind": {
         "t": "Remind, aka `remindme`, `note`.",
         "d": "DMs you a reminder of something after a given amount of time in minutes.",
-        "u": "`remind <number> <message>`"
+        "u": "`remind [number] [message]`"
     },
     "server": {
         "t": "Server, aka `serverinfo`.",
@@ -171,12 +171,12 @@
     "user": {
         "t": "User, aka `userinfo`, `whois`.",
         "d": "Gets the properties of an user",
-        "u": "`user <@member>`"
+        "u": "`user (@member)`"
     },
     "weather": {
         "t": "Weather.",
         "d": "Gets the current weather of a city, powered by [openweather](https://api.openweathermap.org).",
-        "u": "`weather`"
+        "u": "`weather [city]`"
     },
 
 
@@ -189,11 +189,11 @@
     "level": {
         "t": "Level, aka `lvl`, `rank`, `xp`.",
         "d": "Gets someones Level and XP points.",
-        "u": "`level [<@member>]`"
+        "u": "`level (@member)`"
     },
     "leveldelete": {
         "t": "Leveldelete, aka `lvldelete`, `rankdelete`.",
         "d": "Erases a member from the guild's level database.",
-        "u": "`leveldelete <@member>`"
+        "u": "`leveldelete [@member]`"
     }
 }

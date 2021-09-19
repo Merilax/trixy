@@ -1,5 +1,5 @@
 const fs = require("fs");
-const db = require('../../DB/db.js');
+const db = require('../../DB/sequelDB.js');
 
 module.exports.commanddata = {
   name: "unmute",

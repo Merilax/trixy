@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const db = require('../../DB/db.js');
+const db = require('../../DB/sequelDB.js');
 
 module.exports.commanddata = {
     name: "leveldelete",

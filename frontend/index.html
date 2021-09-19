@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark light" />
+    <title>Trixy V2</title>
+    <link rel="icon" type="image/vnd.microsoft.icon" href="media/favicon/tx32.ico" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous" />
+    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="theme/dark.css" />
+    <link rel="stylesheet" id="switch-css" href="" />
+</head>
+
+<body>
+    <span class="this-folder-is" id="index" style="display: none;"></span>
+
+    <header id="top">
+        <button id="btn-theme" onclick="swapTheme();"><img src="media/bulblight.svg" alt="Toggle theme" width="30"
+                height="30" /></button>
+    </header>
+
+    <nav class="container-md">
+        <div class="row nav-row">
+            <div class="col-1" id="navlogo">
+                <a href="#top">
+                    <img src="media/trixy.png" alt="Trixy" title="Back to main page" width="50" height="50" />
+                </a>
+            </div>
+
+            <div class="col-8" id="navlink">
+                <span><a href="https://discord.com/oauth2/authorize?client_id=583006737322475550&permissions=8&redirect_uri=https%3A%2F%2Fwww.google.com&response_type=code&scope=bot%20identify%20email%20guilds"
+                        target="_blank">Add to server</a></span>
+                <span><a href="sites/commands/commands.html">Commands</a></span>
+                <span><a href="https://discord.gg/ZbUQ8Mh" target="_blank">Support</a></span>
+            </div>
+
+            <div class="col-1" id="navlogin">
+                <a href="#top">Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container-md">
+        <div>
+            <h1>A general purpose bot, for your general needs.</h1>
+        </div>
+        <div style="padding-top: 30px;">
+            <h3>Trixy will take care of most of your basic needs in the server, be it moderating, leveling up
+                members or just playing music.<br>
+                All with just a single command. Quick. Simple.</h3>
+        </div>
+    </main>
+
+    <div class="line-breaker"><img src="media/line-breaker1.png" alt="Decorative line breaker." /></div>
+
+    <article class="container-sm">
+        <div class="col">
+            <section class="col" id="left">
+                <div>
+                    <h4>Basic moderation and member management</h4>
+                    <p>Add roles, mute annoying people, ban missbehaving members or just purge some messages in the
+                        channel.</p>
+                </div>
+                <span>
+                    <img src="media/cmd-proof/mute-cmd.png" alt="Muting a member." />
+                </span>
+            </section>
+
+            <section class="col" id="right">
+                <div>
+                    <h4>Random images and facts</h4>
+                    <p>A collection of commands that serve content. A random cat image? NASA's daily space photo? All
+                        yours.</p>
+                </div>
+                <span>
+                    <img src="media/cmd-proof/cat-cmd.png" alt="Asking for a cat iamge." />
+                </span>
+            </section>
+
+            <section class="col" id="left">
+                <div>
+                    <h4>Utility commands</h4>
+                    <p>Get information about users or guilds, set a reminder or lookup the weather somewhere.</p>
+                </div>
+                <span>
+                    <img src="media/cmd-proof/weather-cmd.png" alt="Looking up the weather." />
+                </span>
+            </section>
+
+            <section class="col" id="right">
+                <div>
+                    <h4>Play music from YouTube</h4>
+                    <p>Play, skip, pause and resume songs, list the queue and see what song is playing.</p>
+                </div>
+                <span>
+                    <img src="media/cmd-proof/play-cmd.png" alt="Playing a song." />
+                </span>
+            </section>
+
+            <section class="col" id="left">
+                <div>
+                    <h4>Level system</h4>
+                    <p>Grind experience and climb the leaderboard for additional rewards. (Role rewards to be added
+                        soon.)</p>
+                </div>
+                <span>
+                    <img src="media/cmd-proof/level-cmd.png" alt="Checking level progression." />
+                </span>
+            </section>
+        </div>
+    </article>
+
+    <div class="container-fluid line-breaker"><img src="media/line-breaker2.png" alt="Decorative line breaker." /></div>
+
+    <section>
+        <div class="container">
+            <h4>Dashboard (To Be Added)</h4>
+            <p>A description will go here eventually.</p>
+        </div>
+        <span>
+            <img src="media/placeholder-dark.jpg" alt="Screenshot of the Dashboard. TBA!" />
+        </span>
+    </section>
+
+    <footer class="container-fluid">
+        <div id="foot1">
+            <span id="footer-logo"><img src="media/trixy.png" alt="Trixy" width="70" height="70"
+                    style="border-radius: 50%; margin: 10px;"><h1>TRIXY</h1></span>
+            <span id="contact-us">CONTACT US</span>
+            <span id="contacts">
+                <a href="https://discord.gg/ZbUQ8Mh"><img src="media/discord.png" alt="Discord" height="40px"></a>
+                <a href="mailto://merilaxreloaded@gmail.com"><img src="media/mail.png" alt="Email" height="40px"></a>
+            </span>
+        </div>
+        <div id="foot2">
+            <h5>Trixy</h5>
+            <span><a href="https://discord.com/oauth2/authorize?client_id=583006737322475550&permissions=8&redirect_uri=https%3A%2F%2Fwww.google.com&response_type=code&scope=bot%20identify%20email%20guilds"
+                    target="_blank">Add to server</a></span>
+            <span><a href="sites/commands/commands.html">Commands</a></span>
+            <span><a href="https://discord.gg/ZbUQ8Mh" target="_blank">Support</a></span>
+        </div>
+        <div id="foot3">
+            <h5>Legal links</h5>
+            <span><a href="sites/legal/privacy-policy.html">Privacy Policy</a></span>
+            <span><a href="sites/legal/terms-and-conditions.html">Terms and Conditions</a></span>
+            <span><a href="sites/legal/cookie-policy.html">Cookie Policy</a></span>
+            <span><a href="sites/legal/disclaimers.html">Disclaimers</a></span>
+        </div>
+        <div id="foot4">
+            <a href="#top">Login</a>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+        crossorigin="anonymous"></script>
+    <script src="script.js">document.onload(setFolder("index"));</script>
+</body>
+
+</html>

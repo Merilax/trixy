@@ -1,0 +1,55 @@
+ul {
+    list-style: none;
+}
+
+
+
+/* MAIN */
+
+main { margin: 100px 0 200px; }
+main h3 { text-align: justify; }
+
+
+
+/* LINE BREAKER */
+
+.line-breaker {
+    margin: 200px 0;
+    padding: 0;
+    width: 100vw;
+}
+.line-breaker img {
+    width: inherit;
+}
+
+
+
+/* ARTICLE */
+
+section {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    margin: 200px 0;
+}
+section div {
+    width: 40vw;
+    min-width: 400px;
+
+    padding: 20px 15px;
+    border-radius: 15px;
+}
+section span {
+    display: flex;
+    justify-content: center;
+}
+section img {
+    border-radius: 25px;
+    margin: 30px 15px;
+    
+    max-width: 75%;
+    max-height: 45%;
+}
+section#left { justify-content: left; flex-direction: row; }
+section#right { justify-content: right; flex-direction: row-reverse; }

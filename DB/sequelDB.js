@@ -11,7 +11,7 @@ const sequelize = new Sequelize('database', 'user', 'password', {
 
 // PostGreSQL
 
-const sequelize = new Sequelize(process.env.DATABASE_URL, {
+const sequelize = new Sequelize(process.env.SEQUELDB_URL, {
     dialect: 'postgres',
     protocol: 'postgres',
     dialectOptions: {

@@ -12,13 +12,6 @@ const { sep } = require("path");
 const { success, error, warning } = require("log-symbols");
 const { setTimeout } = require("timers");
 
-const levelCooldown = new Set();
-const levelDBTimeout = 60 * 1000;
-const xpRandom = Math.floor(Math.random() * 15 + 15);
-const db = require('./DB/db.js');
-
-["commands", "aliases"].forEach(x => (bot[x] = new Discord.Collection()));
-
 const logger = winston.createLogger({
   transports: [
     new winston.transports.Console(),
@@ -32,6 +25,15 @@ const logger = winston.createLogger({
 
 
 // DATABASE ===============================================================================
+
+const mongodb = require('./DB/mongoDB.js');
+mongodb.then(() => console.log('Connected to mongoDB!')).catch(err => console.log(err));
+
+
+const levelCooldown = new Set();
+const levelDBTimeout = 60 * 1000;
+const xpRandom = Math.floor(Math.random() * 15 + 15);
+const db = require('./DB/sequelDB.js');
 
 async function addXP(message) {
   if (!message.guild || message.author.bot) return;
@@ -56,7 +58,40 @@ async function levelUp(message, level) {
 
 
 
+// EXPRESS ===============================================================================
+
+const express = require("express"),
+const app = express(),
+const PORT = process.env.PORT || 3001;
+const session = require('express-session');
+const passport = require('passport');
+const discordStrategy = require('./strategies/discordstrategy.js')
+
+// Routes
+const authRoute = require('./routes/auth');
+
+app.use(session({
+  secret: 'secretHere',
+  cookie: {
+    maxAge: 60000 * 60 * 24
+  },
+  saveUninitialized: false
+}));
+
+// Passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Middleware
+app.use('/auth', authRoute);
+
+app.listen(PORT, () => { console.log(`Node server running on http://localhost:${3000}`); });
+
+
+
 // LOADING COMMANDS =========================================================================
+
+["commands", "aliases"].forEach(x => (bot[x] = new Discord.Collection()));
 
 const load = (dir = "./commands/") => {
   readdirSync(dir).forEach(dirs => {

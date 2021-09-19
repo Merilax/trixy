@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark light" />
+    <title>Trixy / Commands</title>
+    <link rel="icon" type="image/vnd.microsoft.icon" href="../../media/favicon/tx32.ico" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous" />
+    <link rel="stylesheet" href="../../theme/dark.css" />
+    <link rel="stylesheet" href="commands.css" />
+    <link rel="stylesheet" id="switch-css" href="" />
+</head>
+
+<body>
+    <span class="this-folder-is" id="sites/commands/" style="display: none;"></span>
+
+    <header id="top">
+        <button id="btn-theme" onclick="swapTheme();"><img src="../../media/bulblight.svg" alt="Toggle theme" width="30"
+                height="30" /></button>
+    </header>
+
+    <nav class="container-md">
+        <div class="row nav-row">
+            <div class="col-1" id="navlogo">
+                <a href="../../index.html">
+                    <img src="../../media/trixy.png" alt="Trixy" title="Back to main page" width="50" height="50" />
+                </a>
+            </div>
+
+            <div class="col-8" id="navlink">
+                <span><a href="https://discord.com/oauth2/authorize?client_id=583006737322475550&permissions=8&redirect_uri=https%3A%2F%2Fwww.google.com&response_type=code&scope=bot%20identify%20email%20guilds"
+                        target="_blank">Add to Discord</a></span>
+                <span><a href="#">Commands</a></span>
+                <span><a href="https://discord.gg/ZbUQ8Mh" target="_blank">Support</a></span>
+            </div>
+
+            <div class="col-1" id="navlogin">
+                <a href="#">Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container-md">
+        <div class="primary">
+            <ul>
+                <li><button onclick="changeDiv('system')">System</button></li>
+                <li><button onclick="changeDiv('moderation')">Moderation</button></li>
+                <li><button onclick="changeDiv('entertainment')">Entertainment</button></li>
+                <li><button onclick="changeDiv('utility')">Utility</button></li>
+                <li><button onclick="changeDiv('music')">Music</button></li>
+                <li><button onclick="changeDiv('leveling')">Leveling</button></li>
+            </ul>
+        </div>
+
+        <div class="secondary">
+            <div class="comlist" id="system">
+                <span class="comhead">Command</span>
+                <span class="comhead">Description</span>
+                <span class="comhead">Usage</span>
+
+                <span class="title">help</span>
+                <span class="description">Does what you would expect it to do.</span>
+                <span class="usage">Trixy, help (command)</span>
+
+                <span class="title">invite</span>
+                <span class="description">Shares an invite with you that adds trixy to a server.</span>
+                <span class="usage">Trixy, invite</span>
+
+                <span class="title">levelsystem</span>
+                <span class="description">Enables or disables the leveling system in a guild.</span>
+                <span class="usage">Trixy, levelsystem [enable | disable]</span>
+
+                <span class="title">suggest</span>
+                <span class="description">Sends your feedback directly to the support server.</span>
+                <span class="usage">Trixy, suggest [message]</span>
+
+                <span class="title">ping</span>
+                <span class="description">Gets Trixy's client ping and message endpoint ping.</span>
+                <span class="usage">Trixy, ping</span>
+
+                <span class="title">prefix</span>
+                <span class="description">Sets a custom bot prefix for the server. Use "reset" as the new prefix to
+                    disable it. Both custom and original prefix will work.</span>
+                <span class="usage">Trixy, prefix [newprefix | reset]</span>
+            </div>
+
+            <div class="comlist" id="moderation">
+                <span class="comhead">Command</span>
+                <span class="comhead">Description</span>
+                <span class="comhead">Usage</span>
+
+                <span class="title">prune</span>
+                <span class="description">Deletes from 1 to 100 messages in the given chat, as long as it's a server channel.</span>
+                <span class="usage">Trixy, prune [delete_count]</span>
+
+                <span class="title">kick</span>
+                <span class="description">Kicks a member.</span>
+                <span class="usage">Trixy, kick [@member]</span>
+
+                <span class="title">ban</span>
+                <span class="description">Bans a member.</span>
+                <span class="usage">Trixy, ban [@member] (reason)</span>
+
+                <span class="title">mute</span>
+                <span class="description">Mutes a member for a given ammount of time in minutes. Mutes without time don't expire.</span>
+                <span class="usage">Trixy, mute (minutes) [@member]</span>
+
+                <span class="title">unmute</span>
+                <span class="description">Unmutes a member.</span>
+                <span class="usage">Trixy, unmute [@member]</span>
+
+                <span class="title">addrole</span>
+                <span class="description">Adds a role to a member.</span>
+                <span class="usage">Trixy, addrole [@member] [role_name | role_id | @role]</span>
+
+                <span class="title">removerole</span>
+                <span class="description">Removes a role from a member.</span>
+                <span class="usage">Trixy, removerole [@member] [role_name | role_id | @role]</span>
+            </div>
+
+            <div class="comlist" id="entertainment">
+                <span class="comhead">Command</span>
+                <span class="comhead">Description</span>
+                <span class="comhead">Usage</span>
+
+                <span class="title">roll</span>
+                <span class="description">Rolls a dice with the given amount of sides, even negatives, because why not!</span>
+                <span class="usage">Trixy, roll [number]</span>
+
+                <span class="title">bird</span>
+                <span class="description">Gets a random image of a bird.</span>
+                <span class="usage">Trixy, bird</span>
+
+                <span class="title">cat</span>
+                <span class="description">Gets a random image of a cat.</span>
+                <span class="usage">Trixy, cat</span>
+
+                <span class="title">cosmos</span>
+                <span class="description">Gets the daily space image from NASA.</span>
+                <span class="usage">Trixy, cosmos</span>
+
+                <span class="title">dog</span>
+                <span class="description">Gets a random image of a dog.</span>
+                <span class="usage">Trixy, dog</span>
+
+                <span class="title">fact</span>
+                <span class="description">Gets a random fact.</span>
+                <span class="usage">Trixy, fact</span>
+
+                <span class="title">fox</span>
+                <span class="description">Gets a random image of a fox.</span>
+                <span class="usage">Trixy, fox</span>
+            </div>
+
+            <div class="comlist" id="utility">
+                <span class="comhead">Command</span>
+                <span class="comhead">Description</span>
+                <span class="comhead">Usage</span>
+
+                <span class="title">avatar</span>
+                <span class="description">Gets the avatar of the mentioned user.</span>
+                <span class="usage">Trixy, avatar (@member)</span>
+
+                <span class="title">remind</span>
+                <span class="description">DMs you a reminder of something after a given amount of time in minutes.</span>
+                <span class="usage">Trixy, remind [number] [message]</span>
+
+                <span class="title">server</span>
+                <span class="description">Gets the properties of a server</span>
+                <span class="usage">Trixy, server</span>
+
+                <span class="title">user</span>
+                <span class="description">Gets the properties of an user</span>
+                <span class="usage">Trixy, user (@member)</span>
+
+                <span class="title">weather</span>
+                <span class="description">Gets the current weather of a city, powered by <a href="https://api.openweathermap.org">openweather</a>.</span>
+                <span class="usage">Trixy, [city]</span>
+            </div>
+
+            <div class="comlist" id="music">
+                <span class="comhead">Command</span>
+                <span class="comhead">Description</span>
+                <span class="comhead">Usage</span>
+
+                <span class="title">np</span>
+                <span class="description">Shows the currently playing song in the queue.</span>
+                <span class="usage">Trixy, np</span>
+
+                <span class="title">pause</span>
+                <span class="description">Pauses a playing queue.</span>
+                <span class="usage">Trixy, pause</span>
+
+                <span class="title">play</span>
+                <span class="description">Plays a YouTube video or song in a voice channel, only accepts YouTube URLs.</span>
+                <span class="usage">Trixy, play [youtube_url]</span>
+
+                <span class="title">queue</span>
+                <span class="description">Shows the queue.</span>
+                <span class="usage">Trixy, queue</span>
+
+                <span class="title">resume</span>
+                <span class="description">Resumes a paused queue.</span>
+                <span class="usage">Trixy, resume</span>
+
+                <span class="title">skip</span>
+                <span class="description">Skips the song currently playing in the queue.</span>
+                <span class="usage">Trixy, skip</span>
+
+                <span class="title">stop</span>
+                <span class="description">Clears the queue and disconnects.</span>
+                <span class="usage">Trixy, stop</span>
+            </div>
+
+            <div class="comlist" id="leveling">
+                <span class="comhead">Command</span>
+                <span class="comhead">Description</span>
+                <span class="comhead">Usage</span>
+
+                <span class="title">leaderboard</span>
+                <span class="description">Shows the top 10 users by Level and XP points in the guild.</span>
+                <span class="usage">Trixy, leaderboard</span>
+
+                <span class="title">level</span>
+                <span class="description">Gets someones Level and XP points.</span>
+                <span class="usage">Trixy, level (@member)</span>
+
+                <span class="title">leveldelete</span>
+                <span class="description">Erases a member from the guild's level database.</span>
+                <span class="usage">Trixy, leveldelete [@member]</span>
+            </div>
+        </div>
+    </main>
+
+    <footer class="container-fluid">
+        <div id="foot1">
+            <span id="footer-logo"><img src="../../media/trixy.png" alt="Trixy" width="70" height="70"
+                    style="border-radius: 50%; margin: 10px;"><h1>TRIXY</h1></span>
+            <span id="contact-us">CONTACT US</span>
+            <span id="contacts">
+                <a href="https://discord.gg/ZbUQ8Mh"><img src="../../media/discord.png" alt="Discord" height="40px"></a>
+                <a href="mailto://merilaxreloaded@gmail.com"><img src="../../media/mail.png" alt="Email" height="40px"></a>
+            </span>
+        </div>
+        <div id="foot2">
+            <h5>Trixy</h5>
+            <span><a href="https://discord.com/oauth2/authorize?client_id=583006737322475550&permissions=8&redirect_uri=https%3A%2F%2Fwww.google.com&response_type=code&scope=bot%20identify%20email%20guilds"
+                    target="_blank">Add to server</a></span>
+            <span><a href="#top">Commands</a></span>
+            <span><a href="https://discord.gg/ZbUQ8Mh" target="_blank">Support</a></span>
+        </div>
+        <div id="foot3">
+            <h5>Legal links</h5>
+            <span><a href="../../sites/legal/privacy-policy.html">Privacy Policy</a></span>
+            <span><a href="../../sites/legal/terms-and-conditions.html">Terms and Conditions</a></span>
+            <span><a href="../../sites/legal/cookie-policy.html">Cookie Policy</a></span>
+            <span><a href="../../sites/legal/disclaimers.html">Disclaimers</a></span>
+        </div>
+        <div id="foot4">
+            <a href="#top">Login</a>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+        crossorigin="anonymous"></script>
+    <script src="../../script.js">document.onload(setFolder("sites/commands/"));</script>
+</body>
+
+</html>

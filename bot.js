@@ -45,7 +45,7 @@ async function addXP(message) {
     await db.Levels.update({ message_count: level.message_count + 1, xp: level.xp + xpRandom }, { where: { guild: message.guild.id, userId: message.author.id } })
       .then(levelUp(message, level));
   }
-};
+}
 
 async function levelUp(message, level) {
   const xpLimit = (level.level * 100 + 100);
@@ -60,12 +60,12 @@ async function levelUp(message, level) {
 
 // EXPRESS ===============================================================================
 
-const express = require("express"),
-const app = express(),
+const express = require("express");
+const app = express();
 const PORT = process.env.PORT || 3001;
 const session = require('express-session');
 const passport = require('passport');
-const discordStrategy = require('./strategies/discordstrategy.js')
+const discordStrategy = require('./strategies/discordstrategy.js');
 
 // Routes
 const authRoute = require('./routes/auth');

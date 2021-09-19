@@ -3,11 +3,11 @@ const passport = require('passport');
 const mongoDB = require('../DB/mongoDB');
 const DiscordUser = require('../DB/mongoModels/DiscordUser.js')
 
-passport.serializeUser((user, done) => {
+passport.serializeUser( (user, done) => {
     done(null, user.id);
 });
 
-passport.deserializeUser((id, done) => {
+passport.deserializeUser( async (id, done) => {
     const user = await DiscordUser.findById(id);
     if (user) done(null, user);
 });

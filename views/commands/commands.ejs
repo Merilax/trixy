@@ -16,31 +16,9 @@
 </head>
 
 <body>
-    <header id="top">
-        <button id="btn-theme" onclick="swapTheme();"><img src="/media/bulblight.svg" alt="Toggle theme" width="30"
-                height="30" /></button>
-    </header>
+    <%- include('../partials/header') -%>
 
-    <nav class="container-md">
-        <div class="row nav-row">
-            <div class="col-1" id="navlogo">
-                <a href="/">
-                    <img src="/media/trixy.png" alt="Trixy" title="Back to main page" width="50" height="50" />
-                </a>
-            </div>
-
-            <div class="col-8" id="navlink">
-                <span><a href="https://discord.com/oauth2/authorize?client_id=583006737322475550&permissions=8&redirect_uri=https%3A%2F%2Fwww.google.com&response_type=code&scope=bot%20identify%20email%20guilds"
-                        target="_blank">Add to Discord</a></span>
-                <span><a href="#top">Commands</a></span>
-                <span><a href="https://discord.gg/ZbUQ8Mh" target="_blank">Support</a></span>
-            </div>
-
-            <div class="col-1" id="navlogin">
-                <a href="/auth">Login</a>
-            </div>
-        </div>
-    </nav>
+    <%- include('../partials/nav') -%>
 
     <main class="container-md">
         <div class="primary">
@@ -234,34 +212,7 @@
         </div>
     </main>
 
-    <footer class="container-fluid">
-        <div id="foot1">
-            <span id="footer-logo"><img src="/media/trixy.png" alt="Trixy" width="70" height="70"
-                    style="border-radius: 50%; margin: 10px;"><h1>TRIXY</h1></span>
-            <span id="contact-us">CONTACT US</span>
-            <span id="contacts">
-                <a href="https://discord.gg/ZbUQ8Mh"><img src="/media/discord.png" alt="Discord" height="40px"></a>
-                <a href="mailto://merilaxreloaded@gmail.com"><img src="/media/mail.png" alt="Email" height="40px"></a>
-            </span>
-        </div>
-        <div id="foot2">
-            <h5>Trixy</h5>
-            <span><a href="https://discord.com/oauth2/authorize?client_id=583006737322475550&permissions=8&redirect_uri=https%3A%2F%2Fwww.google.com&response_type=code&scope=bot%20identify%20email%20guilds"
-                    target="_blank">Add to server</a></span>
-            <span><a href="#top">Commands</a></span>
-            <span><a href="https://discord.gg/ZbUQ8Mh" target="_blank">Support</a></span>
-        </div>
-        <div id="foot3">
-            <h5>Legal links</h5>
-            <span><a href="/legal/privacy-policy">Privacy Policy</a></span>
-            <span><a href="/legal/terms-and-conditions">Terms and Conditions</a></span>
-            <span><a href="/legal/cookie-policy">Cookie Policy</a></span>
-            <span><a href="/legal/disclaimers">Disclaimers</a></span>
-        </div>
-        <div id="foot4">
-            <a href="/auth">Login</a>
-        </div>
-    </footer>
+    <%- include('../partials/footer') -%>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"

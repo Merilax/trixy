@@ -11,6 +11,8 @@ const queue = new Map();
 const { sep } = require("path");
 const { success, error, warning } = require("log-symbols");
 const { setTimeout } = require("timers");
+const path = require('path');
+const ejs = require('ejs');
 
 const logger = winston.createLogger({
   transports: [
@@ -65,17 +67,24 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 const session = require('express-session');
 const passport = require('passport');
-const discordStrategy = require('./strategies/discordstrategy.js');
+const DiscordStrategy = require('./strategies/discordstrategy');
 
 // Routes
 const authRoute = require('./routes/auth');
+const dashboardRoute = require('./routes/dashboard');
+const commandsRoute = require('./routes/commands');
+const cookiesRoute = require('./routes/legal/cookie-policy');
+const disclaimersRoute = require('./routes/legal/disclaimers');
+const privacyRoute = require('./routes/legal/privacy-policy');
+const termsRoute = require('./routes/legal/terms-and-conditions');
 
 app.use(session({
   secret: 'secretHere',
   cookie: {
     maxAge: 60000 * 60 * 24
   },
-  saveUninitialized: false
+  saveUninitialized: false,
+  name: 'discord.oauth2'
 }));
 
 // Passport
@@ -83,7 +92,19 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Middleware
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.use('/auth', authRoute);
+app.use('/dashboard', dashboardRoute);
+app.use('/commands', commandsRoute);
+app.use('/legal/cookie-policy', cookiesRoute);
+app.use('/legal/disclaimers', disclaimersRoute);
+app.use('/legal/privacy-policy', privacyRoute);
+app.use('/legal/terms-and-conditions', termsRoute);
+app.use('/dashboard', dashboardRoute);
+app.get('/', (req, res) => { res.render('index'); });
 
 app.listen(PORT, () => { console.log(`Node server running on http://localhost:${3000}`); });
 
@@ -313,7 +334,7 @@ process.on("uncaughtException", error => logger.log("error", error));
 
 bot.on("ready", async () => {
   console.log(
-    `Bot has started, with ${bot.users.cache.size} cached users, in ${bot.channels.cache.size} channels of ${bot.guilds.cache.size} guilds.`
+    `\n\n\nBot has started, with ${bot.users.cache.size} cached users, in ${bot.channels.cache.size} channels of ${bot.guilds.cache.size} guilds.\n\n\n`
   );
 
   bot.setInterval(async () => {

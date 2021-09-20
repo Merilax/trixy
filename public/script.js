@@ -1,23 +1,12 @@
 // THEME
 
 let theme = localStorage.getItem('theme');
-let site = "./theme/";
-const thisFolderIs = document.getElementsByClassName('this-folder-is').item(0).id;
-
-function setFolder() {
-  switch (thisFolderIs) {
-    case "index": return "./theme/";
-    case "sites/commands/":
-    case "sites/legal/": return "../../theme/";
-  }
-}
-const thisFolder = setFolder(); 
 
 function setTheme(th) {
   if (th == 'light') {
-    document.getElementById('switch-css').href = thisFolder + "dark.css"
+    document.getElementById('switch-css').href = "/dark.css";
   } else if (th == 'dark') {
-    document.getElementById('switch-css').href = thisFolder + "light.css"
+    document.getElementById('switch-css').href = "/light.css";
   }
 }
 
@@ -30,10 +19,10 @@ if (theme == null) {
 function swapTheme() {
   if (theme == 'light') {
     localStorage.setItem('theme', 'dark');
-    document.getElementById('switch-css').href = thisFolder + "dark.css"
+    document.getElementById('switch-css').href = "/dark.css";
   } else if (theme == 'dark') {
     localStorage.setItem('theme', 'light');
-    document.getElementById('switch-css').href = thisFolder + "light.css"
+    document.getElementById('switch-css').href = "/light.css";
   }
   location.reload();
 }

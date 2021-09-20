@@ -12,7 +12,6 @@ const { sep } = require("path");
 const { success, error, warning } = require("log-symbols");
 const { setTimeout } = require("timers");
 const path = require('path');
-const ejs = require('ejs');
 
 const logger = winston.createLogger({
   transports: [
@@ -30,6 +29,7 @@ const logger = winston.createLogger({
 
 const mongodb = require('./DB/mongoDB.js');
 mongodb.then(() => console.log('Connected to mongoDB!')).catch(err => console.log(err));
+
 
 
 const levelCooldown = new Set();
@@ -95,6 +95,7 @@ app.use(passport.session());
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('partials', express.static(path.join(__dirname, 'views/partials')));
 
 app.use('/auth', authRoute);
 app.use('/dashboard', dashboardRoute);

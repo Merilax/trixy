@@ -1,11 +1,16 @@
 const router = require('express').Router();
 
-router.get('/', (req, res) => {
-    res.status(200).render('dashboard/dashboard.ejs');
-});
+function isAuthorized(req, res, next) {
+    if (req.user) { next(); }
+    else { res.redirect('/'); }
+}
 
-router.get('/modules', (req, res) => {
-    res.send(200);
+router.get('/', isAuthorized, (req, res) => {
+    res.render('dashboard/dashboard.ejs', {
+        discordId: req.user.discordId,
+        username: req.user.username,
+        useravatar: req.user.useravatar
+    });
 });
 
 module.exports = router;

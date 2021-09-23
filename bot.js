@@ -30,8 +30,6 @@ const logger = winston.createLogger({
 const mongodb = require('./DB/mongoDB.js');
 mongodb.then(() => console.log('Connected to mongoDB!')).catch(err => console.log(err));
 
-
-
 const levelCooldown = new Set();
 const levelDBTimeout = 60 * 1000;
 const xpRandom = Math.floor(Math.random() * 15 + 15);
@@ -105,7 +103,16 @@ app.use('/legal/disclaimers', disclaimersRoute);
 app.use('/legal/privacy-policy', privacyRoute);
 app.use('/legal/terms-and-conditions', termsRoute);
 app.use('/dashboard', dashboardRoute);
-app.get('/', (req, res) => { res.render('index'); });
+app.get('/', isAuthorized, (req, res) => { res.render('index'); });
+
+function isAuthorized(req, res, next) {
+  if (req.user) {
+    res.redirect('/dashboard');
+  }
+  else {
+    next();
+  }
+}
 
 app.listen(PORT, () => { console.log(`Node server running on http://localhost:${3000}`); });
 

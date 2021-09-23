@@ -221,7 +221,7 @@ footer a { text-decoration: none; color: var(--txt3); }
 
 
 
-/* || SITES/COMMANDS */
+/* || COMMANDS */
 
 .primary ul { background-color: var(--dark-layer1); }
 .primary li button{ background-color: var(--dark-layer3); }
@@ -229,3 +229,27 @@ footer a { text-decoration: none; color: var(--txt3); }
 .secondary { background-color: var(--dark-layer3); }
 .secondary .comhead { background-color: var(--dark-layer4); }
 .secondary .title { color: var(--blue); }
+
+
+
+/* || DASHBOARD */
+
+.select button:hover, .select button:focus { background-color: var(--light-layer4); color: var(--blue); }
+
+#pconf, #gconf2 {
+    background-color: var(--dark-layer1);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+#gconf ul { background-color: var(--dark-layer1); }
+#gconf li button{ background-color: var(--dark-layer3); }
+#gconf li:hover button, #gconf li button:focus { background-color: var(--light-layer4); color: var(--blue); }
+
+.level-card {
+    background-color: var(--dark-layer3);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.level-card button { background-color: var(--dark-layer3); }
+.level-card button:hover { background-color: var(--light-layer4); color: var(--blue); }
+.prefix button { background-color: var(--dark-layer3); }
+.prefix button:hover { background-color: var(--light-layer4); color: var(--blue); }

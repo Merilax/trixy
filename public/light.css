@@ -229,8 +229,32 @@ footer a { text-decoration: none; color: var(--txt3); }
 
 .primary ul { background-color: var(--light-layer1); }
 .primary li button { background-color: var(--light-layer4); }
-.primary li:hover button, .primary li button:focus { background-color: var(--light-layer6); }
+.primary li:hover button, .primary li button:focus { background-color: var(--txt6); }
 .secondary { background-color: var(--dark-layer1); }
 .secondary .comhead { background-color: var(--light-layer3); }
 .secondary span { background-color: var(--light-layer1); }
 .secondary .title { color: var(--light-layer7); }
+
+
+
+/* || DASHBOARD */
+
+.select button:hover, .select button:focus { background-color: var(--light-layer5); color: var(--txt6); }
+
+#pconf, #gconf2 {
+    background-color: var(--light-layer1);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+#gconf ul { background-color: var(--light-layer1); }
+#gconf li button{ background-color: var(--light-layer3); }
+#gconf li:hover button, #gconf li button:focus { background-color: var(--light-layer5); color: var(--txt6); }
+
+.level-card {
+    background-color: var(--light-layer3);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.level-card button { background-color: var(--light-layer3); }
+.level-card button:hover { background-color: var(--light-layer5); color: var(--txt6); }
+.prefix button { background-color: var(--light-layer3); }
+.prefix button:hover { background-color: var(--light-layer5); color: var(--txt6); }

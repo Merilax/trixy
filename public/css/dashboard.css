@@ -1,0 +1,142 @@
+#dashlogo {
+    margin: 20px 20px 20px 40px;
+    padding: 0;
+    align-items: center;
+    justify-self: left;
+    justify-content: center;
+}
+#dashlogo a {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-self: left;
+    justify-content: center;
+}
+#dashlogo a h2 { text-decoration: none; margin: 0; color: var(--nav-a); }
+#dashlogo a:hover h2 { color: var(--nav-a-hover); }
+#dashlogo img { border-radius: 50%; margin-right: 10px; }
+
+.select {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 50px;
+}
+@media (max-width: 576px) { .select { flex-wrap: wrap; width: 100%;} }
+.select button {
+    background-color: var(--nav);
+    margin: 10px 30px;
+    border-radius: 10px;
+    padding: 10px;
+    border-style: none;
+    width: 100%;
+    text-align: center;
+    color: var(--nav-a);
+    transition: background-color 0.5s, color 0.5s;
+}
+
+
+
+/* || PERSONAL CONFIG */
+
+#pconf {
+    display: none;
+    padding: 20px 10px;
+    border-radius: 10px;
+}
+
+.level-card {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    border-radius: 10px;
+    padding: 10px;
+}
+.level-card input {
+    border: 0;
+    border-radius: 10px;
+    padding: 0;
+    margin: 20px 0;
+    height: 50px;
+    width: 100%;
+}
+.level-card button {
+    background-color: transparent;
+    margin: 5px 0;
+    border-radius: 10px;
+    padding: 5px;
+    border-style: none;
+    text-align: center;
+    color: var(--txt);
+    transition: background-color 0.5s, color 0.5s;
+}
+
+
+/* || GUILD CONFIG */
+
+#gconf {
+    display: none;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+#gconf ul {
+    width: 200px;
+    list-style: none;
+    text-indent: 5px;
+    border-radius: 20px;
+    padding: 20px 30px 20px 20px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+#gconf li button {
+    background-color: transparent;
+    margin: 5px 0;
+    border-radius: 10px;
+    padding: 5px;
+    border-style: none;
+    width: 100%;
+    text-align: left;
+    color: var(--txt);
+    transition: background-color 0.5s, color 0.5s;
+}
+@media (max-width: 992px) {
+    #gconf ul {
+        display: block;
+        width: 100%;
+    }
+    #gconf li button { text-align: center; }
+}
+.module { display: none; }
+
+
+
+#gconf2 {
+    display: none;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.prefix-input {
+    border: 0;
+    border-radius: 10px;
+    padding: 0;
+    margin: 20px 0;
+    height: 50px;
+    width: 80px;
+}
+.prefix button {
+    background-color: transparent;
+    margin: 5px 0;
+    border-radius: 10px;
+    padding: 5px;
+    width: auto;
+    min-width: 20px;
+    border-style: none;
+    text-align: center;
+    color: var(--txt);
+    transition: background-color 0.5s, color 0.5s;
+}

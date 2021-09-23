@@ -17,10 +17,54 @@
 
 <body>
     <%- include('../partials/header') -%>
-    
-    
 
-    <%- include('../partials/footer') -%>
+    <%- include('dashpartials/nav') -%>
+
+    <div class="container select">
+        <button onclick="selectThis('personal')">Personal configuration</button>
+        <button onclick="selectThis('guild')">Guild configuration</button>
+    </div>
+
+    <main class="container-md conf" id="pconf">
+        <div class="container level-card">
+            <h2>Level card</h2>
+            <span>Select a color to apply to your level card: (WIP)</span>
+            <input type="color" id="personal-card" value="#6633BB" /> <!-- MAKE THIS DYNAMIC -->
+            <button onclick="updateDB('personal-card')">Submit</button>
+            <button onclick="updateDB('personal-card-reset')">Use Guild default</button>
+        </div>
+    </main>
+
+    <main class="container-md conf" id="gconf">
+        <ul>
+            <li><button onclick="changeModule('system')">System</button></li>
+            <li><button onclick="changeModule('leveling')">Leveling</button></li>
+        </ul>
+        <div id="gconf2">
+            <div class="module" id="system">
+                <div class="container-md prefix">
+                    <h2>Prefix</h2>
+                    <span>Set a custom prefix: </span>
+                    <input type="text" id="prefix" id="prefix-input" maxlength="10">
+                    <button onclick="updateDB('prefix-set')">Submit</button>
+                    <button onclick="updateDB('prefix-reset')">Reset</button>
+                </div>
+            </div>
+
+            <div class="module" id="leveling">
+                <div class="container-md level-card">
+                    <h2>Guild level card</h2>
+                    <span>Select a color to apply to all Guild level cards: (WIP)</span>
+                    <input type="color" id="guild-card" value="#6633BB" /> <!-- MAKE THIS DYNAMIC -->
+                    <!-- <button onclick="updateDB('guild-card')">Submit</button>
+                    <button onclick="updateDB('guild-card-reset')">Use Trixy default</button> -->
+                </div>
+                <!-- Add leveldelete option -->
+            </div>
+        </div>
+    </main>
+
+    <%- include('dashpartials/footer') -%>
 </body>
 
 </html>

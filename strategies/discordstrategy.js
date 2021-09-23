@@ -3,11 +3,11 @@ const passport = require('passport');
 const DiscordUser = require('../DB/modals/DiscordUser')
 
 passport.serializeUser( (user, done) => {
-    done(null, user._id);
+    done(null, user.id);
 });
 
-passport.deserializeUser( async (_id, done) => {
-    const user = await DiscordUser.findById(_id);
+passport.deserializeUser( async (id, done) => {
+    const user = await DiscordUser.findById(id);
     if (user) done(null, user);
 });
 
@@ -24,7 +24,9 @@ passport.use(new DiscordStrategy({
         } else {
             const newUser = await DiscordUser.create({
                 discordId: profile.id,
-                username: profile.username
+                username: profile.username,
+                useravatar: profile.avatar,
+                guilds: profile.guilds
             });
             const savedUser = await newUser.save();
             done(null, savedUser);

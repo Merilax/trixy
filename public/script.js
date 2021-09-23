@@ -29,7 +29,7 @@ function swapTheme() {
 
 
 
-// SITES/COMMANDS
+// COMMANDS
 
 let comcat;
 const comlist = document.getElementsByClassName('comlist');

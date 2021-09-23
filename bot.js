@@ -81,7 +81,7 @@ const termsRoute = require('./routes/legal/terms-and-conditions');
 app.use(session({
   secret: 'secretHere',
   cookie: {
-    maxAge: 60000 * 60 * 24
+    maxAge: 60000 * 60 * 8
   },
   saveUninitialized: false,
   name: 'discord.oauth2'

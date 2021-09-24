@@ -20,8 +20,6 @@ module.exports.run = async (
     prefix,
     faces_archive
 ) => {
-    console.log("Trigger, level");
-    
     const [xpenable, xpCreated] = await db.XPEnabled.findOrCreate({ where: { guild: message.guild.id }, defaults: { guild: message.guild.id } });
     if (xpenable.enabled === false) { return }
 

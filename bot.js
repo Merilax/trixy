@@ -41,7 +41,6 @@ async function addXP(message) {
 
   if (xpenable.enabled === false) { return } else {
     const [level, levelCreated] = await db.Levels.findOrCreate({ where: { guild: message.guild.id, userId: message.author.id }, defaults: { guild: message.guild.id, user: message.author.tag } });
-    console.log(level);
     await db.Levels.update({ message_count: level.message_count + 1, xp: level.xp + xpRandom }, { where: { guild: message.guild.id, userId: message.author.id } })
       .then(levelUp(message, level));
   }

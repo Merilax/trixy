@@ -9,7 +9,6 @@ function isAuthorized(req, res, next) {
 }
 
 router.post('/', isAuthorized, async (req, res) => {
-    console.log("Trigger, dbupdate");
     const discordId = req.user.discordId;
     //const username = req.user.username;
     //const useravatar = req.user.useravatar;
@@ -29,20 +28,15 @@ router.post('/', isAuthorized, async (req, res) => {
             try {
                 if (userColor) {
                     await PersonalCard.findOneAndUpdate({ discordId: discordId }, { color: toChangeValue });
-                    console.log("Trigger, db find and update");
                 } else {
                     await PersonalCard.create({
                         discordId: discordId,
                         color: toChangeValue
                     });
-                    console.log("Trigger, db create");
                 }
             } catch (err) {
                 console.log(err);
             }
-
-            console.log("Trigger, dbupdate switch END");
-
             break;
         /*
         case "prefix-set":

@@ -23,7 +23,6 @@ router.post('/', isAuthorized, async (req, res) => {
     switch (toChange) {
         case "personal-card":
             if (toChangeValue.match(/^#[0-9a-f]{3,6}$/i)) { } else return;
-            if (toChangeValue === "reset") { toChangeValue = "BLUE" };
 
             try {
                 if (userColor) {
@@ -38,6 +37,20 @@ router.post('/', isAuthorized, async (req, res) => {
                 console.log(err);
             }
             break;
+
+        case "personal-card-reset":
+            try {
+                if (userColor) {
+                    await PersonalCard.findOneAndUpdate({ discordId: discordId }, { color: "BLUE" });
+                } else {
+                    await PersonalCard.create({
+                        discordId: discordId,
+                        color: "BLUE"
+                    });
+                }
+            } catch (err) {
+                console.log(err);
+            }
         /*
         case "prefix-set":
             if (req.body.value === reset) {

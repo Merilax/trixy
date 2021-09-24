@@ -20,8 +20,10 @@ module.exports.run = async (
     prefix,
     faces_archive
 ) => {
+    console.log("Trigger, level");
+    
     const [xpenable, xpCreated] = await db.XPEnabled.findOrCreate({ where: { guild: message.guild.id }, defaults: { guild: message.guild.id } });
-    if (xpenable.enabled == false) { return }
+    if (xpenable.enabled === false) { return }
 
     if (!args[0]) {
         var user = message.author;
@@ -33,18 +35,19 @@ module.exports.run = async (
     const userColor = await PersonalCard.findOne({ discordId: user.id });
     const guildColor = await GuildCard.findOne({ discordId: user.id });
     let embedColor;
-
+    
     if (level === null) {
         return message.channel.send("<:delete:614100269369655306> No XP gained yet.");
     }
 
-    if (userColor == null) {
-        if (guildColor == null) { embedColor = "BLUE"; }
+    if (userColor === null) {
+        if (guildColor === null) { embedColor = "BLUE"; }
         else { embedColor = guildColor.color; }
     } else { embedColor = userColor.color; }
+    
 
     const embed = new Discord.MessageEmbed()
-        .setTitle(`**${level.tag}**`)
+        .setTitle(`**${level.user}**`)
         .setDescription(`**LEVEL: ${level.level}\nXP: [ ${level.xp} / ${(level.level * 100 + 100)} ]**`)
         .setColor(embedColor)
         .setThumbnail(user.avatarURL())

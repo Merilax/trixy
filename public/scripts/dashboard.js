@@ -46,4 +46,5 @@ function updateDB(inputType) {
         var param = "reset";
     }
     xhr.send(`edit=${inputType}&value=${param}`);
+    console.log("Trigger, dashPost");
 }

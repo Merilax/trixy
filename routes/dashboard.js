@@ -9,8 +9,8 @@ router.get('/', isAuthorized, async (req, res) => {
     res.render('dashboard/dashboard.ejs', {
         discordId: req.user.discordId,
         username: req.user.username,
-        useravatar: req.user.useravatar
-        //profile: req.user
+        useravatar: req.user.useravatar,
+        guilds: req.user.guilds
     });
 });
 

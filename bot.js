@@ -7,7 +7,6 @@ const faces_archive = require("./faces_archive.json");
 const liveresponse = require("./responsejson.json");
 const helplist = require('./commands/system/helplist.json');
 const winston = require("winston");
-const queue = new Map();
 const { sep } = require("path");
 const { success, error, warning } = require("log-symbols");
 const { setTimeout } = require("timers");
@@ -70,6 +69,7 @@ const DiscordStrategy = require('./strategies/discordstrategy');
 // Routes
 const authRoute = require('./routes/auth');
 const dashboardRoute = require('./routes/dashboard');
+const dbupdateRoute = require('./routes/dbupdate');
 const commandsRoute = require('./routes/commands');
 const cookiesRoute = require('./routes/legal/cookie-policy');
 const disclaimersRoute = require('./routes/legal/disclaimers');
@@ -82,7 +82,7 @@ app.use(session({
     maxAge: 60000 * 60 * 8
   },
   saveUninitialized: false,
-  name: 'discord.oauth2'
+  name: 'discord.oauth2',
 }));
 
 // Passport
@@ -95,6 +95,9 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('partials', express.static(path.join(__dirname, 'views/partials')));
 
+app.use(express.json());
+app.use(express.urlencoded());
+
 app.use('/auth', authRoute);
 app.use('/dashboard', dashboardRoute);
 app.use('/commands', commandsRoute);
@@ -103,7 +106,10 @@ app.use('/legal/disclaimers', disclaimersRoute);
 app.use('/legal/privacy-policy', privacyRoute);
 app.use('/legal/terms-and-conditions', termsRoute);
 app.use('/dashboard', dashboardRoute);
-app.get('/', isAuthorized, (req, res) => { res.render('index'); });
+app.use('/dbupdate', dbupdateRoute);
+app.get('/', isAuthorized, (req, res) => {
+  res.render('index');
+});
 
 function isAuthorized(req, res, next) {
   if (req.user) {
@@ -289,7 +295,7 @@ bot.on("message", async message => {
 
   try {
     if (command) {
-      command.run(bot, message, args, txdev, prefix, faces_archive, queue, db);
+      command.run(bot, message, args, txdev, prefix, faces_archive);
     }
   } catch (error) {
     console.error(error);

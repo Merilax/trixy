@@ -14,8 +14,7 @@ module.exports.run = async (
   args,
   txdev,
   prefix,
-  faces_archive,
-  queue
+  faces_archive
 ) => {
   if (!message.member.hasPermission("MANAGE_ROLES"))
     return message.channel.send(

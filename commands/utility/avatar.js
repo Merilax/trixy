@@ -12,8 +12,7 @@ module.exports.run = (
   args,
   txdev,
   prefix,
-  faces_archive,
-  queue
+  faces_archive
 ) => {
   if (!message.mentions.users.size) {
     return message.channel.send(

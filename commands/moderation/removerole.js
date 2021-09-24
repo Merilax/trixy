@@ -13,8 +13,7 @@ module.exports.run = (
   args,
   txdev,
   prefix,
-  faces_archive,
-  queue
+  faces_archive
 ) => {
   if (!message.member.hasPermission("MANAGE_ROLES"))
     return message.channel.send("<:delete:614100269369655306> You cannot manage roles.");

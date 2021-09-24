@@ -16,8 +16,7 @@ module.exports.run = async (
     args,
     txdev,
     prefix,
-    faces_archive,
-    queue
+    faces_archive
 ) => {
     if (message.author.id !== message.guild.ownerID) return message.channel.send("<:block:614100269004881924> Only the server owner may erase level progress!");
 

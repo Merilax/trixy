@@ -40,7 +40,6 @@ function changeDiv(category) {
     case "moderation": comcat = "moderation"; break;
     case "entertainment": comcat = "entertainment"; break;
     case "utility": comcat = "utility"; break;
-    case "music": comcat = "music"; break;
     case "leveling": comcat = "leveling";
   }
 

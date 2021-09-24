@@ -13,8 +13,7 @@ module.exports.run = (
   args,
   txdev,
   prefix,
-  faces_archive,
-  queue
+  faces_archive
 ) => {
   const amount = parseInt(args[0])+1;
 

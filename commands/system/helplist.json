@@ -115,44 +115,6 @@
 
 
 
-    "np": {
-        "t": "Np. (Now playing)",
-        "d": "Shows the currently playing song in the queue.",
-        "u": "`np`"
-    },
-    "pause": {
-        "t": "Pause.",
-        "d": "Pauses a playing queue.",
-        "u": "`pause`"
-    },
-    "play": {
-        "t": "Play.",
-        "d": "Plays a YouTube video or song in a voice channel, only accepts YouTube URLs.",
-        "u": "`play [youtube_url]`"
-    },
-    "queue": {
-        "t": "Queue, aka `q`.",
-        "d": "Shows the queue.",
-        "u": "`queue`"
-    },
-    "resume": {
-        "t": "Resume.",
-        "d": "Resumes a paused queue.",
-        "u": "`resume`"
-    },
-    "skip": {
-        "t": "Skip, aka `s`.",
-        "d": "Skips the song currently playing in the queue.",
-        "u": "`skip`"
-    },
-    "stop": {
-        "t": "Stop.",
-        "d": "Clears the queue and disconnects.",
-        "u": "`stop`"
-    },
-
-
-
     "avatar": {
         "t": "Avatar.",
         "d": "Gets the avatar of the mentioned user.",

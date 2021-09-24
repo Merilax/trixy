@@ -13,8 +13,7 @@ module.exports.run = async (
   args,
   txdev,
   prefix,
-  faces_archive,
-  queue
+  faces_archive
 ) => {
   const m = await message.channel.send("Pinging");
   m.edit(

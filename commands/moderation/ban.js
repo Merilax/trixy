@@ -14,8 +14,7 @@ module.exports.run = (
   args,
   txdev,
   prefix,
-  faces_archive,
-  queue
+  faces_archive
 ) => {
   if (!message.member.hasPermission("BAN_MEMBERS")) {
     return message.channel.send(

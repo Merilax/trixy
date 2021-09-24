@@ -15,8 +15,7 @@ module.exports.run = (
   args,
   txdev,
   prefix,
-  faces_archive,
-  queue
+  faces_archive
 ) => {
   nodefetch
     .get("https://uselessfacts.jsph.pl/random.json?language=en")

@@ -18,8 +18,7 @@ module.exports.run = async (
     args,
     txdev,
     prefix,
-    faces_archive,
-    queue
+    faces_archive
 ) => {
     const [xpenable, xpCreated] = await db.XPEnabled.findOrCreate({ where: { guild: message.guild.id }, defaults: { guild: message.guild.id } });
     if (xpenable.enabled == false) { return }

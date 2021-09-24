@@ -14,14 +14,13 @@ module.exports.run = async (
     args,
     txdev,
     prefix,
-    faces_archive,
-    queue
+    faces_archive
 ) => {
     const newPrefix = args[0].trim().toLowerCase();
 
     if (message.author.id !== message.guild.ownerID) return message.channel.send("<:block:614100269004881924> Only the server owner may change the prefix!");
     if (newPrefix.length > 11) return message.channel.send("<:delete:614100269369655306> Prefix can be at most 10 characters long.");
-
+    if (newPrefix.match(/^[\w\d\s\W]{1,10}$/i) === false) return message.channel.send("<:delete:614100269369655306> Prefix can only contain letters, numbers, special characters like ! or . and whitespace.");
 
     const [prefixDB, created] = await db.Prefix.findOrCreate({ where: { guildId: message.guild.id }, defaults: { guildId: message.guild.id, prefix: newPrefix } });
     if (created) {

@@ -15,8 +15,7 @@ module.exports.run = (
   args,
   txdev,
   prefix,
-  faces_archive,
-  queue
+  faces_archive
 ) => {
   let city = args.slice().join(" ");
 

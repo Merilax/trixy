@@ -15,8 +15,7 @@ module.exports.run = async (
   args,
   txdev,
   prefix,
-  faces_archive,
-  queue
+  faces_archive
 ) => {
   let remindContent = args.slice(1).join(" ");
   let remindTiming = args[0];

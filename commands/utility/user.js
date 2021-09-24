@@ -16,8 +16,7 @@ module.exports.run = (
   args,
   txdev,
   prefix,
-  faces_archive,
-  queue
+  faces_archive
 ) => {
   let user;
   if (message.mentions.users.first()) {

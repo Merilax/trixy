@@ -5,11 +5,12 @@ function isAuthorized(req, res, next) {
     else { res.redirect('/'); }
 }
 
-router.get('/', isAuthorized, (req, res) => {
+router.get('/', isAuthorized, async (req, res) => {
     res.render('dashboard/dashboard.ejs', {
         discordId: req.user.discordId,
         username: req.user.username,
         useravatar: req.user.useravatar
+        //profile: req.user
     });
 });
 

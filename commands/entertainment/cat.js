@@ -16,8 +16,7 @@ module.exports.run = (
   args,
   txdev,
   prefix,
-  faces_archive,
-  queue
+  faces_archive
 ) => {
   nodefetch("https://aws.random.cat/meow").then(res => res.json()).then(json => {
     const embed = new Discord.MessageEmbed()

@@ -33,99 +33,17 @@ function changeModule(selected) {
     document.getElementById("gconf2").style.display = "flex";
 }
 
-const GuildCard = require('../../DB/modals/GuildCard.js');
-// Update DB
-const mongodb = require('./DB/mongoDB.js');
-const sqldb = require('./DB/sequelDB.js');
-
-const userColor = await PersonalCard.findOne({ discordId: discordId });
-const guildColor = await GuildCard.findOne({ discordId: user.id });
-
 function updateDB(inputType) {
-    switch (inputType) {
-        case "personal-card":
-            try {
-                if (userColor) {
-                    var updateColor = await PersonalCard.findOneAndUpdate({ filter: profile.id, update: { color: "RED" } });
-                    done(null, updateColor);
-                } else {
-                    var newColor = await PersonalCard.create({
-                        discordId: profile.id,
-                        color: "BLUE"
-                    });
-                    var savedColor = await newColor.save();
-                    done(null, savedColor);
-                }
-            } catch (err) {
-                console.log(err);
-                done(err, null);
-            }
-            break;
-
-        case "personal-card-reset":
-            try {
-                if (userColor) {
-                    var updateColor = await PersonalCard.findOneAndUpdate({ filter: profile.id, update: { color: "BLUE" } });
-                    done(null, updateColor);
-                } else {
-                    var newColor = await PersonalCard.create({
-                        discordId: profile.id,
-                        color: "BLUE"
-                    });
-                    var savedColor = await newColor.save();
-                    done(null, savedColor);
-                }
-            } catch (err) {
-                console.log(err);
-                done(err, null);
-            }
-            break;
-
-        case "prefix-set":
-            break;
-
-        case "prefix-reset":
-            break;
-/*
-        case "guild-card":
-            try {
-                if (guildColor) {
-                    var updateColor = await GuildCard.findOneAndUpdate({ filter: profile.id, update: { color: "YELLOW" } });
-                    done(null, updateColor);
-                } else {
-                    var newColor = await GuildCard.create({
-                        discordId: profile.id,
-                        color: "BLUE"
-                    });
-                    var savedColor = await newColor.save();
-                    done(null, savedColor);
-                }
-            } catch (err) {
-                console.log(err);
-                done(err, null);
-            }
-            break;
-
-        case "guild-card-reset":
-            try {
-                if (guildColor) {
-                    done(null, color);
-                    var updateColor = await GuildCard.findOneAndUpdate({ filter: profile.id, update: { color: "BLUE" } });
-                    var savedColor = await newColor.save();
-                } else {
-                    var newColor = await GuildCard.create({
-                        discordId: profile.id,
-                        color: "BLUE"
-                    });
-                    var savedColor = await newColor.save();
-                    done(null, savedColor);
-                }
-            } catch (err) {
-                console.log(err);
-                done(err, null);
-            }
-            break;
-*/
-        default: { }
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/dbupdate', true);
+    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xhr.onreadystatechange = function () {
+        if (this.readyState === XMLHttpRequest.DONE && this.status === 200) { }
+    };
+    try {
+        var param = document.getElementById(inputType).value
+    } catch (e) {
+        var param = "reset";
     }
+    xhr.send(`edit=${inputType}&value=${param}`);
 }

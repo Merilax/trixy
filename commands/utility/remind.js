@@ -33,7 +33,7 @@ module.exports.run = async (
   }
 
   try {
-    await db.Mutes.create({ userId: message.author.id, duration: remindThen, text: remindContent });
+    await db.Reminders.create({ userId: message.author.id, duration: remindThen, text: remindContent });
     message.channel.send(`<:approve:614100268891504661> Alright! I will remind you in ${remindTiming} minutes.`);
   } catch (e) {
     console.log(e);

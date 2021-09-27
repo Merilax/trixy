@@ -80,7 +80,7 @@ const Mutes = sequelize.define('mutes', {
         type: Sequelize.STRING,
         allowNull: false,
     },
-    duration: Sequelize.INTEGER,
+    duration: Sequelize.BIGINT,
 });
 
 const Reminders = sequelize.define('reminders', {

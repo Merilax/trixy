@@ -56,7 +56,7 @@ module.exports.run = async (
           ADD_REACTIONS: false
         });
       });
-      return message.channel.send("<:fix:614100269449347082> I have created a Mute role, please check if its position is correct and working. Please do not change its name or I won't find it!");
+      message.channel.send("<:fix:614100269449347082> I have created a Mute role, please check if its position is correct and working. Please do not change its name or I won't find it!");
     } catch (e) {
       console.log(e);
       return message.channel.send("<:delete:614100269369655306> Could not create Mute role! Am I administrator?");
@@ -72,7 +72,7 @@ module.exports.run = async (
   if (args[1] && (args[1] < 1000000) && (args[1] > 0)) {
     var muteExpire = Date.now() + (parseInt(args[1]) * 60000);
   } else {
-    var muteExpire = 0
+    var muteExpire = 0;
   }
 
   try {

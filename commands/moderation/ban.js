@@ -37,7 +37,7 @@ module.exports.run = (
     );
   }
 
-  if (!banuser.banable) {
+  if (banuser.banable == false) {
     return message.channel.send(
       "<:delete:614100269369655306> I cannot ban this user."
     );

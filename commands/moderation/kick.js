@@ -36,7 +36,7 @@ module.exports.run = (
     );
   }
 
-  if (!kickuser.kickable) {
+  if (kickuser.kickable == false) {
     return message.channel.send(
       "<:delete:614100269369655306> I cannot kick this user."
     );

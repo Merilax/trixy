@@ -42,7 +42,7 @@ async function addXP(message) {
   if (xpenable.enabled === false) { return } else {
     const [level, levelCreated] = await db.Levels.findOrCreate({ where: { guild: message.guild.id, userId: message.author.id }, defaults: { guild: message.guild.id, user: message.author.tag } });
     await db.Levels.update({ message_count: level.message_count + 1, xp: level.xp + xpRandom }, { where: { guild: message.guild.id, userId: message.author.id } })
-      .then(levelUp(message, level));
+    levelUp(message, level);
   }
 }
 
@@ -51,7 +51,7 @@ async function levelUp(message, level) {
 
   if (level.xp >= xpLimit) {
     await db.Levels.update({ level: level.level + 1, xp: level.xp - xpLimit }, { where: { guild: message.guild.id, userId: message.author.id } })
-      .then(message.channel.send(`<:add:614100269327974405> You leveled up! You are now Level ${level.level + 1}.`));
+    message.channel.send(`<:add:614100269327974405> You leveled up! You are now Level ${level.level + 1}.`);
   }
 }
 

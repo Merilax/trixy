@@ -35,22 +35,22 @@ const xpRandom = Math.floor(Math.random() * 15 + 15);
 const db = require('./DB/sequelDB.js');
 
 async function addXP(message) {
-  if (!message.guild || message.author.bot) return;
-
-  const [xpenable, xpCreated] = await db.XPEnabled.findOrCreate({ where: { guild: message.guild.id }, defaults: { guild: message.guild.id } });
+  if (!message.guild) return;
+  var [xpenable, xpCreated] = await db.XPEnabled.findOrCreate({ where: { guild: message.guild.id }, defaults: { guild: message.guild.id } });
+  var [level, levelCreated] = await db.Levels.findOrCreate({ where: { guild: message.guild.id, userId: message.author.id }, defaults: { guild: message.guild.id, user: message.author.tag } });
 
   if (xpenable.enabled === false) { return } else {
-    const [level, levelCreated] = await db.Levels.findOrCreate({ where: { guild: message.guild.id, userId: message.author.id }, defaults: { guild: message.guild.id, user: message.author.tag } });
-    await db.Levels.update({ message_count: level.message_count + 1, xp: level.xp + xpRandom }, { where: { guild: message.guild.id, userId: message.author.id } })
-    levelUp(message, level);
+    await db.Levels.update({ message_count: level.message_count + 1, xp: level.xp + xpRandom }, { where: { guild: message.guild.id, userId: message.author.id } });
+    levelUp(message);
   }
 }
 
-async function levelUp(message, level) {
+async function levelUp(message) {
+  var level = await db.Levels.findOne({ where: { guild: message.guild.id, userId: message.author.id }, defaults: { guild: message.guild.id, user: message.author.tag } });
   const xpLimit = (level.level * 100 + 100);
 
   if (level.xp >= xpLimit) {
-    await db.Levels.update({ level: level.level + 1, xp: level.xp - xpLimit }, { where: { guild: message.guild.id, userId: message.author.id } })
+    await db.Levels.update({ level: level.level + 1, xp: level.xp - xpLimit }, { where: { guild: message.guild.id, userId: message.author.id } });
     message.channel.send(`<:add:614100269327974405> You leveled up! You are now Level ${level.level + 1}.`);
   }
 }
@@ -172,6 +172,8 @@ load();
 const cooldowns = new Discord.Collection();
 
 bot.on("message", async message => {
+  if (message.author.bot) return;
+
   if (levelCooldown.has(message.author.id)) { } else {
     levelCooldown.add(message.author.id);
     addXP(message);

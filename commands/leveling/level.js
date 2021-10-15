@@ -40,7 +40,7 @@ module.exports.run = async (
     }
 
     if (userColor === null) {
-        if (guildColor === null) { cardColor = "BLUE"; }
+        if (guildColor === null) { cardColor = '#08f'; }
         else { cardColor = guildColor.color; }
     } else { cardColor = userColor.color; }
     
@@ -61,7 +61,7 @@ module.exports.run = async (
     ctx.strokeStyle = 'none';
 
     // Progress bg arrow
-    ctx.fillStyle = '#48f';
+    ctx.fillStyle = cardColor;
     ctx.fillRect(0, 0, progressBar, 280);
     ctx.save();
     ctx.moveTo(progressBar-1, 0);
@@ -98,7 +98,7 @@ module.exports.run = async (
     ctx.fillStyle = '#eee';
     ctx.fillText(message.author.tag.toUpperCase(), 220, 110, 280);
     ctx.fillText(`LEVEL ${level.level}`, 220, 190, 280);
-    ctx.fillStyle = '#48f';
+    ctx.fillStyle = cardColor;
     ctx.moveTo(225, 135);
     ctx.beginPath();
     ctx.lineTo(475, 135);

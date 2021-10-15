@@ -43,14 +43,6 @@ module.exports.run = async (
         if (guildColor === null) { cardColor = '#08f'; }
         else { cardColor = guildColor.color; }
     } else { cardColor = userColor.color; }
-    
-    /*const embed = new Discord.MessageEmbed()
-        .setTitle(`**${level.user}**`)
-        .setDescription(`**LEVEL: ${level.level}\nXP: [ ${level.xp} / ${(level.level * 100 + 100)} ]**`)
-        .setColor(cardColor)
-        .setThumbnail(user.avatarURL())
-        .setTimestamp(new Date());
-    message.channel.send(embed);*/
 
     const xpLimit = (level.level * 100 + 100);
     const progressBar = ((level.xp / xpLimit) * 950);
@@ -58,16 +50,16 @@ module.exports.run = async (
     const canvas = Canvas.createCanvas(950, 280);
     const ctx = canvas.getContext('2d');
 
-    ctx.strokeStyle = 'none';
-
     // Progress bg arrow
     ctx.fillStyle = cardColor;
     ctx.fillRect(0, 0, progressBar, 280);
     ctx.save();
     ctx.moveTo(progressBar-1, 0);
-    ctx.lineTo(progressBar+50-1, 140);
+    ctx.lineTo(progressBar, 0);
+    ctx.lineTo(progressBar+50, 140);
+    ctx.lineTo(progressBar, 280);
     ctx.lineTo(progressBar-1, 280);
-    ctx.lineTo(progressBar-1, 0);
+    ctx.lineTo(progressBar, 0);
     ctx.clip();
     ctx.fill();
     ctx.restore();

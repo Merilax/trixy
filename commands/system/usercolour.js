@@ -21,6 +21,7 @@ module.exports.run = async (
 
     const newColour = args[0].trim().toLowerCase();
     if (newColour.match(/^#[0-9a-f]{3,6}$/i) === false) return message.channel.send("<:delete:614100269369655306> Colour must be in hexadecimal format.");
+    const userColor = await PersonalCard.findOne({ discordId: message.author.id });
 
     try {
         if (userColor) {
@@ -31,10 +32,9 @@ module.exports.run = async (
                 color: newColour
             });
         }
+        message.channel.send("<:approve:614100268891504661> Success!");
     } catch (err) {
         console.log(err);
         message.channel.send("<:delete:614100269369655306> Something went wrong...");
     }
-
-    message.channel.send("<:approve:614100268891504661> Success!");
 };

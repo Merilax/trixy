@@ -1,4 +1,5 @@
 const db = require('../../DB/sequelDB.js');
+const masterIDs = require('../../masterIDs.json');
 
 module.exports.commanddata = {
   name: "mute",
@@ -12,9 +13,7 @@ module.exports.run = async (
   bot,
   message,
   args,
-  txdev,
-  prefix,
-  faces_archive
+  prefix
 ) => {
   if (!message.member.hasPermission("MANAGE_ROLES"))
     return message.channel.send(
@@ -26,7 +25,7 @@ module.exports.run = async (
     return message.channel.send(
       "<:quote:614100269386432526> Specify an user to mute."
     );
-  if (muteUser.id === txdev) return;
+  if (muteUser.id === masterIDs.txdev) return;
 
   if (muteUser.id === message.author.id)
     return message.channel.send("Your voice isn't that annoying.");

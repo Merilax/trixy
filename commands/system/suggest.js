@@ -13,9 +13,7 @@ module.exports.run = async (
   bot,
   message,
   args,
-  txdev,
-  prefix,
-  faces_archive
+  prefix
 ) => {
   var embed = new Discord.MessageEmbed()
     .setTitle("A new suggestion has arrived!")

@@ -14,9 +14,7 @@ module.exports.run = (
   bot,
   message,
   args,
-  txdev,
-  prefix,
-  faces_archive
+  prefix
 ) => {
   nodefetch("https://dog.ceo/api/breeds/image/random").then(res => res.json()).then(json => {
 

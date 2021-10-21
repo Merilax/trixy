@@ -10,9 +10,7 @@ module.exports.run = (
   bot,
   message,
   args,
-  txdev,
-  prefix,
-  faces_archive
+  prefix
 ) => {
   if (!message.member.hasPermission("KICK_MEMBERS")) {
     return message.channel.send(

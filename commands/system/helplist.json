@@ -5,7 +5,6 @@
         "u": "A curious one, are you?"
     },
 
-
     "help": {
         "t": "You are a funny one, are you?",
         "d": "I appreciate your curiosity, but there is nothing to find here!",
@@ -35,6 +34,11 @@
         "t": "Prefix.",
         "d": "Sets a custom bot prefix for the server. Append `reset` as the command argument to get rid of the custom prefix. Both custom and original prefix will work simultaneously.",
         "u": "`prefix [newprefix | reset]`"
+    },
+    "usercolour": {
+        "t": "Usercolour, aka `colour`.",
+        "d": "Changes the colour assigned to your embeds.",
+        "u": "`usercolour [hex_colour]`"
     },
 
 

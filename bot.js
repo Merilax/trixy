@@ -2,9 +2,7 @@ require('dotenv').config();
 const Discord = require("discord.js");
 const { readdirSync } = require("fs");
 const bot = new Discord.Client({ fetchAllMembers: true });
-const { prefix, txdev, statusquote } = require("./config.json");
-const faces_archive = require("./faces_archive.json");
-const liveresponse = require("./responsejson.json");
+const { prefix, statusquote } = require("./config.json");
 const helplist = require('./commands/system/helplist.json');
 const winston = require("winston");
 const { sep } = require("path");
@@ -297,44 +295,13 @@ bot.on("message", async message => {
 
   try {
     if (command) {
-      command.run(bot, message, args, txdev, prefix, faces_archive);
+      command.run(bot, message, args, prefix);
     }
   } catch (error) {
     console.error(error);
     message.channel.send(
       `<:window_text:614100269524975620> Send to Merilax#1572. An error ocurred during command execution: \n \`\`\`${error}\`\`\``
     );
-  }
-});
-
-
-
-//Autoresponder//==================================================
-
-bot.on("message", async message => {
-  const args = message.content
-    .slice(prefix.length)
-    .trim()
-    .split(/trixy, /g);
-  const command = args.shift().toLowerCase();
-
-  if (
-    message.content.substr(0, prefix.length).toLowerCase() != prefix.toLowerCase()
-  ) return;
-
-  if (command === "send nudes") {
-    if (message.channel.nsfw === true)
-      return message.channel.send("You pig! You thought it would work here?");
-  }
-
-  for (i = 0; i < liveresponse.length; i++) {
-    if (command === liveresponse[i].question) {
-      return message.channel.send(
-        liveresponse[i].answer[
-        Math.floor(Math.random() * liveresponse[i].answer.length)
-        ]
-      );
-    }
   }
 });
 

@@ -14,9 +14,7 @@ module.exports.run = (
   bot,
   message,
   args,
-  txdev,
-  prefix,
-  faces_archive
+  prefix
 ) => {
   nodefetch("https://api.nasa.gov/planetary/apod?api_key=AgoQvLHiG3GAz3RFxNUgnku1kKUh0RyQZdMd3ErA")
     .then(res => res.json()).then(json => {

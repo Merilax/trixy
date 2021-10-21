@@ -15,9 +15,7 @@ module.exports.run = (
   bot,
   message,
   args,
-  txdev,
-  prefix,
-  faces_archive
+  prefix
 ) => {
   if (args[0]) {
     var advhelp = args[0];
@@ -46,7 +44,7 @@ module.exports.run = (
       )
       .addField(
         "**System and information:**",
-        "```md\n# help, invite, levelsystem, suggest, ping.```"
+        "```md\n# help, invite, levelsystem, suggest, ping, prefix, usercolour.```"
       )
       .addField(
         "**Moderation and server management:**",
@@ -64,7 +62,7 @@ module.exports.run = (
         "**Leveling:** _More to come soon!_",
         "```md\n# leaderboard, level, leveldelete.```"
       )
-      .setThumbnail(faces_archive.tv)
+      .setThumbnail("https://media.discordapp.net/attachments/356840100749115395/613738957154418708/1563964604683.png?width=702&height=702")
       .setFooter("Icons by https://dryicons.com")
       .setColor("BLUE")
       .setTimestamp(new Date());

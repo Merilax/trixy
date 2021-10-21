@@ -13,9 +13,7 @@ module.exports.run = async (
   bot,
   message,
   args,
-  txdev,
-  prefix,
-  faces_archive
+  prefix
 ) => {
   let remindContent = args.slice(1).join(" ");
   let remindTiming = args[0];

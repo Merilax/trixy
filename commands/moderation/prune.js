@@ -11,9 +11,7 @@ module.exports.run = (
   bot,
   message,
   args,
-  txdev,
-  prefix,
-  faces_archive
+  prefix
 ) => {
   const amount = parseInt(args[0])+1;
 

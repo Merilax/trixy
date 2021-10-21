@@ -14,9 +14,7 @@ module.exports.run = async (
     bot,
     message,
     args,
-    txdev,
-    prefix,
-    faces_archive
+    prefix
 ) => {
     const xpenable = await db.XPEnabled.findOne({ where: { guild: message.guild.id } });
     if (xpenable.enabled == false) { return } else {

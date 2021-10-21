@@ -10,9 +10,7 @@ module.exports.run = (
   bot,
   message,
   args,
-  txdev,
-  prefix,
-  faces_archive
+  prefix
 ) => {
   if (!message.mentions.users.size) {
     return message.channel.send(

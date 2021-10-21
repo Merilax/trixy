@@ -14,9 +14,7 @@ module.exports.run = (
   bot,
   message,
   args,
-  txdev,
-  prefix,
-  faces_archive
+  prefix
 ) => {
   nodefetch("https://randomfox.ca/floof/?ref=public-apis").then(res => res.json()).then(json => {
     const embed = new Discord.MessageEmbed()

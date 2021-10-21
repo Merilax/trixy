@@ -1,3 +1,5 @@
+const masterIDs = require('../../masterIDs.json');
+
 module.exports.commanddata = {
   name: "retreat",
   cooldown: 2,
@@ -10,11 +12,9 @@ module.exports.run = (
   bot,
   message,
   args,
-  txdev,
-  prefix,
-  faces_archive
+  prefix
 ) => {
-  if (message.author.id !== txdev) {
+  if (message.author.id !== masterIDs.txdev) {
     return;
   } else message.guild.leave();
 };

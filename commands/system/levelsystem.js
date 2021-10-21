@@ -13,9 +13,7 @@ module.exports.run = async (
     bot,
     message,
     args,
-    txdev,
-    prefix,
-    faces_archive
+    prefix
 ) => {
     if (message.author.id !== message.guild.ownerID) {
         return message.channel.send("<:block:614100269004881924> Only the server owner may modify the leveling system!");

@@ -11,9 +11,7 @@ module.exports.run = async (
   bot,
   message,
   args,
-  txdev,
-  prefix,
-  faces_archive
+  prefix
 ) => {
   const m = await message.channel.send("Pinging");
   m.edit(

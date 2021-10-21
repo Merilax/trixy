@@ -13,9 +13,7 @@ module.exports.run = async (
   bot,
   message,
   args,
-  txdev,
-  prefix,
-  faces_archive
+  prefix
 ) => {
   if (!message.member.hasPermission("MANAGE_ROLES"))
     return message.channel.send(

@@ -13,9 +13,7 @@ module.exports.run = (
   bot,
   message,
   args,
-  txdev,
-  prefix,
-  faces_archive
+  prefix
 ) => {
   function checkBots(guild) {
     let botCount = 0;

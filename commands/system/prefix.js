@@ -12,9 +12,7 @@ module.exports.run = async (
     bot,
     message,
     args,
-    txdev,
-    prefix,
-    faces_archive
+    prefix
 ) => {
     const newPrefix = args[0].trim().toLowerCase();
 

@@ -1,3 +1,5 @@
+const masterIDs = require('../../masterIDs.json');
+
 module.exports.commanddata = {
   name: "eval",
   cooldown: 2,
@@ -10,9 +12,7 @@ module.exports.run = (
   bot,
   message,
   args,
-  txdev,
-  prefix,
-  faces_archive
+  prefix
 ) => {
   function clean(text) {
     if (typeof text === "string")
@@ -22,7 +22,7 @@ module.exports.run = (
     else return text;
   }
 
-  if (message.author.id !== txdev) {
+  if (message.author.id !== masterIDs.txdev) {
     return;
   } else {
     try {

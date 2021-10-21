@@ -18,23 +18,22 @@ module.exports.run = async (
 ) => {
     const [xpenable, xpCreated] = await db.XPEnabled.findOrCreate({ where: { guild: message.guild.id }, defaults: { guild: message.guild.id } });
     if (xpenable.enabled === false) { return }
-
-    const newColour = args[0].trim().toLowerCase();
-    if (newColour.match(/^#[0-9a-f]{3,6}$/i) === false) return message.channel.send("<:delete:614100269369655306> Colour must be in hexadecimal format.");
     const userColor = await PersonalCard.findOne({ discordId: message.author.id });
-
-    try {
-        if (userColor) {
-            await PersonalCard.findOneAndUpdate({ discordId: message.author.id }, { color: newColour });
-        } else {
-            await PersonalCard.create({
-                discordId: message.author.id,
-                color: newColour
-            });
+    const newColour = args[0].trim().toLowerCase();
+    if (newColour.match(/^#[0-9a-f]{3,6}$/i) === false) { return message.channel.send("<:delete:614100269369655306> Colour must be in hexadecimal format."); } else {
+        try {
+            if (userColor) {
+                await PersonalCard.findOneAndUpdate({ discordId: message.author.id }, { color: newColour });
+            } else {
+                await PersonalCard.create({
+                    discordId: message.author.id,
+                    color: newColour
+                });
+            }
+            message.channel.send("<:approve:614100268891504661> Success!");
+        } catch (err) {
+            console.log(err);
+            message.channel.send("<:delete:614100269369655306> Something went wrong...");
         }
-        message.channel.send("<:approve:614100268891504661> Success!");
-    } catch (err) {
-        console.log(err);
-        message.channel.send("<:delete:614100269369655306> Something went wrong...");
     }
 };

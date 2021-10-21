@@ -18,11 +18,11 @@ module.exports.run = async (
 ) => {
     const [xpenable, xpCreated] = await db.XPEnabled.findOrCreate({ where: { guild: message.guild.id }, defaults: { guild: message.guild.id } });
     if (xpenable.enabled === false) { return }
-    const userColor = await PersonalCard.findOne({ discordId: message.author.id });
+    const userColour = await PersonalCard.findOne({ discordId: message.author.id });
     const newColour = args[0].trim();
     if (newColour.match(/^#[0-9a-f]{3,6}$/i)) {
         try {
-            if (userColor) {
+            if (userColour) {
                 await PersonalCard.findOneAndUpdate({ discordId: message.author.id }, { color: newColour });
                 message.channel.send("<:approve:614100268891504661> Success!");
             } else {

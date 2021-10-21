@@ -44,7 +44,7 @@ module.exports.run = async (
 
     const xpLimit = (level.level * 100 + 100);
     const progressBar = ((level.xp / xpLimit) * 950);
-    const avatar = await Canvas.loadImage(message.author.displayAvatarURL({ format: 'jpg' }));
+    const avatar = await Canvas.loadImage(user.displayAvatarURL({ format: 'jpg' }));
     const canvas = Canvas.createCanvas(950, 280);
     const ctx = canvas.getContext('2d');
 
@@ -86,7 +86,7 @@ module.exports.run = async (
     ctx.fill();
     ctx.font = '30px arial';
     ctx.fillStyle = '#eee';
-    ctx.fillText(message.author.tag.toUpperCase(), 220, 110, 280);
+    ctx.fillText(user.tag.toUpperCase(), 220, 110, 280);
     ctx.fillText(`LEVEL ${level.level}`, 220, 190, 280);
     ctx.fillStyle = cardColor;
     ctx.moveTo(225, 135);

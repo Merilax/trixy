@@ -24,13 +24,14 @@ module.exports.run = async (
         try {
             if (userColor) {
                 await PersonalCard.findOneAndUpdate({ discordId: message.author.id }, { color: newColour });
+                message.channel.send("<:approve:614100268891504661> Success!");
             } else {
                 await PersonalCard.create({
                     discordId: message.author.id,
                     color: newColour
                 });
+                message.channel.send("<:approve:614100268891504661> Success!");
             }
-            message.channel.send("<:approve:614100268891504661> Success!");
         } catch (err) {
             console.log(err);
             message.channel.send("<:delete:614100269369655306> Something went wrong...");

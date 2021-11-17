@@ -1,7 +1,7 @@
 const router = require('express').Router();
-//const sqldb = require('../DB/sequelDB');
-//const GuildCard = require('../DB/modals/GuildCard');
-const PersonalCard = require('../DB/modals/PersonalCard');
+//const sqldb = require('../../bot/DB/sequelDB');
+//const GuildCard = require('../../bot/DB/modals/GuildCard');
+const PersonalCard = require('../../bot/DB/modals/PersonalCard');
 
 function isAuthorized(req, res, next) {
     if (req.user) { next(); }
@@ -51,7 +51,7 @@ router.post('/', isAuthorized, async (req, res) => {
             } catch (err) {
                 console.log(err);
             }
-        /*
+
         case "prefix-set":
             if (req.body.value === reset) {
                 try {
@@ -62,7 +62,6 @@ router.post('/', isAuthorized, async (req, res) => {
                     console.log(err);
                 }
             } else {
-                
                 if (param.match(/^[\w\d\s\W]{1,10}$/i)) { } else return;
                 try {
                     if (prefixDB) {
@@ -71,11 +70,10 @@ router.post('/', isAuthorized, async (req, res) => {
                 } catch (err) {
                     console.log(err);
                 }
-                
             }
             break;
 
-        
+        /*
         case "guild-card":
             if (param.match(/^#[0-9a-f]{3,6}$/i)) { } else return;
             try {

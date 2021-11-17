@@ -5,7 +5,7 @@ module.exports.commanddata = {
   cooldown: 2,
   args: true,
   guildOnly: false,
-  category: "dev_only"
+  category: "devlocked"
 };
 
 module.exports.run = (

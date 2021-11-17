@@ -63,4 +63,12 @@
 2.15.1 >> Added `leveldelete` command.
 2.15.2 >> Fixed all moderation commands, improved level system and fixed `leaderboard` command. Minor code cleanup.
 2.16.0 >> Added `prefix` command for custom prefix support. Reworked `remind` and `mute` commands to work on databases. `mute` command now accepts durations again. Fixed more commands, minor code cleanup. Fixed an issue with `weather` timezones. `help` command now includes command usages.
-2.16.1 >> Added `usercolour` command to change xp card colour (and any future user defined colours) from a command rather than the web dashboard. Major code cleanup. Second Core takedown.
+
+---
+
+# TRIXY V3
+
+3.0.0 >> Set up Express, finished basic website, linked databases. All music commands and dependencies removed to comply with YouTube ToS.
+3.1.0 >> Implemented Canvas for the `level` command. Bugfixes.
+3.1.1 >> Added `usercolour` command to change xp card colour (and any future user defined colours) from a command rather than the web dashboard. Major code cleanup. Bugfixes. Second Core takedown.
+3.2.0 >> Restructured folder system and adjusted paths. Code cleanup.

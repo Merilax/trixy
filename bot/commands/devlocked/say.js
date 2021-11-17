@@ -5,7 +5,7 @@ module.exports.commanddata = {
   cooldown: 2,
   guildOnly: false,
   args: true,
-  category: "dev_only"
+  category: "devlocked"
 };
 
 module.exports.run = (
@@ -14,7 +14,7 @@ module.exports.run = (
   args,
   prefix
 ) => {
-  if (message.author.id == masterIDs.txdev) {
+  if (message.author.id === masterIDs.txdev) {
     let say = args.slice().join(" ");
     message.delete().catch(trashlog => {});
     message.channel.send(say);

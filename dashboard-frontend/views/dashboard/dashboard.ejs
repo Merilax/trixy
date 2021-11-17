@@ -24,13 +24,13 @@
 
     <div class="container select">
         <button onclick="selectThis('personal')">Personal configuration</button>
-        <button onclick="selectThis('guild')">Guild configuration (WIP)</button>
+        <button onclick="selectThis('guild')">Guild configuration</button>
     </div>
 
     <main class="container-md conf" id="pconf">
         <div class="container level-card">
             <h2>Level card</h2>
-            <span>Select a color to apply to your level card: (WIP)</span>
+            <span>Select a color to apply to your level card:</span>
             <input type="color" id="personal-card" value="#6633BB" /> <!-- MAKE THIS DYNAMIC -->
             <button onclick="updateDB('personal-card')">Submit</button>
             <button onclick="updateDB('personal-card-reset')">Use Guild default</button>

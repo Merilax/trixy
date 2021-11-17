@@ -1,11 +1,11 @@
 {
-  "name": "trixy2",
+  "name": "trixy3",
   "version": "",
   "description": "",
-  "main": "bot.js",
+  "main": "bot/bot.js",
   "scripts": {
-    "start": "node bot.js",
-    "dev": "nodemon bot.js"
+    "start": "node bot/bot.js",
+    "dev": "nodemon bot/bot.js"
   },
   "dependencies": {
     "canvas": "^2.8.0",

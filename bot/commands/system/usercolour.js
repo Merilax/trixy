@@ -3,7 +3,6 @@ const PersonalCard = require('../../DB/modals/PersonalCard');
 
 module.exports.commanddata = {
     name: "usercolour",
-    aliases: ['colour'],
     category: "system",
     cooldown: 10,
     guildOnly: false,

@@ -62,17 +62,17 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 const session = require('express-session');
 const passport = require('passport');
-const DiscordStrategy = require('./strategies/discordstrategy');
+const DiscordStrategy = require('../dashboard-backend/strategies/discordstrategy');
 
 // Routes
-const authRoute = require('./routes/auth');
-const dashboardRoute = require('./routes/dashboard');
-const dbupdateRoute = require('./routes/dbupdate');
-const commandsRoute = require('./routes/commands');
-const cookiesRoute = require('./routes/legal/cookie-policy');
-const disclaimersRoute = require('./routes/legal/disclaimers');
-const privacyRoute = require('./routes/legal/privacy-policy');
-const termsRoute = require('./routes/legal/terms-and-conditions');
+const authRoute = require('../dashboard-backend/routes/auth');
+const dashboardRoute = require('../dashboard-backend/routes/dashboard');
+const dbupdateRoute = require('../dashboard-backend/routes/dbupdate');
+const commandsRoute = require('../dashboard-backend/routes/commands');
+const cookiesRoute = require('../dashboard-backend/routes/legal/cookie-policy');
+const disclaimersRoute = require('../dashboard-backend/routes/legal/disclaimers');
+const privacyRoute = require('../dashboard-backend/routes/legal/privacy-policy');
+const termsRoute = require('../dashboard-backend/routes/legal/terms-and-conditions');
 
 app.use(session({
   secret: 'secretHere',
@@ -89,9 +89,9 @@ app.use(passport.session());
 
 // Middleware
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
-app.use(express.static(path.join(__dirname, 'public')));
-app.use('partials', express.static(path.join(__dirname, 'views/partials')));
+app.set('views', path.join(__dirname, `../dashboard-frontend/views`));
+app.use(express.static(path.join(__dirname, `../dashboard-frontend/public`)));
+app.use('partials', express.static(path.join(__dirname, `../dashboard-frontend/views/partials`)));
 
 app.use(express.json());
 app.use(express.urlencoded());
@@ -126,13 +126,13 @@ app.listen(PORT, () => { console.log(`Node server running on http://localhost:${
 
 ["commands", "aliases"].forEach(x => (bot[x] = new Discord.Collection()));
 
-const load = (dir = "./commands/") => {
+const load = (dir = "./bot/commands") => {
   readdirSync(dir).forEach(dirs => {
     const commands = readdirSync(`${dir}${sep}${dirs}${sep}`).filter(files =>
       files.endsWith(".js")
     );
     for (const file of commands) {
-      const pull = require(`${dir}/${dirs}/${file}`);
+      const pull = require(`../bot/commands/${dirs}/${file}`);
       if (
         pull.commanddata &&
         typeof pull.commanddata.name === "string" &&

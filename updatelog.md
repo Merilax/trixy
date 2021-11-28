@@ -70,5 +70,6 @@
 
 3.0.0 >> Set up Express, finished basic website, linked databases. All music commands and dependencies removed to comply with YouTube ToS.
 3.1.0 >> Implemented Canvas for the `level` command. Bugfixes.
-3.1.1 >> Added `usercolour` command to change xp card colour (and any future user defined colours) from a command rather than the web dashboard. Major code cleanup. Bugfixes. Second Core takedown.
+3.1.1 >> Added `usercolor` command to change xp card colour (and any future user defined colours) from a command rather than the web dashboard. Major code cleanup. Bugfixes. Second Core takedown.
 3.2.0 >> Restructured folder system and adjusted paths. Code cleanup.
+3.3.0 >> Added `guildcolor` command. Implemented Canvas into the `leaderboard` command. Improved `leveldelete` command to work with IDs. Fixed some discrepancies with database model handling.

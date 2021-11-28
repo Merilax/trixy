@@ -30,7 +30,7 @@ module.exports.run = async (
 
     const level = await db.Levels.findOne({ where: { guild: message.guild.id, userId: user.id } });
     const userColor = await PersonalCard.findOne({ discordId: user.id });
-    const guildColor = await GuildCard.findOne({ discordId: user.id });
+    const guildColor = await GuildCard.findOne({ discordId: message.guild.id });
     let cardColor;
     
     if (level === null) {

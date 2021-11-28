@@ -5,10 +5,10 @@
         "u": "A curious one, are you?"
     },
 
-    "guildcolour": {
-        "t": "Guildcolour.",
-        "d": "Changes the colour assigned to your embeds in a specific guild. Personal user colours have priority.",
-        "u": "`guildcolour [hex_colour]`"
+    "guildcolor": {
+        "t": "Guildcolor.",
+        "d": "Changes the color assigned to your embeds in a specific guild. Personal user colors have priority over guild colors.",
+        "u": "`guildcolor [hex_color]`"
     },
     "help": {
         "t": "You are a funny one, are you?",
@@ -40,10 +40,10 @@
         "d": "Sets a custom bot prefix for the server. Append `reset` as the command argument to get rid of the custom prefix. Both custom and original prefix will work simultaneously.",
         "u": "`prefix [newprefix | reset]`"
     },
-    "usercolour": {
-        "t": "Usercolour.",
-        "d": "Changes the colour assigned to your embeds.",
-        "u": "`usercolour [hex_colour]`"
+    "usercolor": {
+        "t": "Usercolor.",
+        "d": "Changes the color assigned to your embeds.",
+        "u": "`usercolor [hex_color]`"
     },
 
 
@@ -165,6 +165,6 @@
     "leveldelete": {
         "t": "Leveldelete, aka `lvldelete`, `rankdelete`.",
         "d": "Erases a member from the guild's level database.",
-        "u": "`leveldelete [@member]`"
+        "u": "`leveldelete [user_id]`"
     }
 }

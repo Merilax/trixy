@@ -2,7 +2,7 @@ const db = require('../../DB/sequelDB.js');
 const PersonalCard = require('../../DB/modals/PersonalCard');
 
 module.exports.commanddata = {
-    name: "usercolour",
+    name: "usercolor",
     category: "system",
     cooldown: 10,
     guildOnly: false,

@@ -2,7 +2,7 @@ const db = require('../../DB/sequelDB.js');
 const GuildCard = require('../../DB/modals/GuildCard');
 
 module.exports.commanddata = {
-    name: "guildcolour",
+    name: "guildcolor",
     category: "system",
     cooldown: 10,
     guildOnly: true,
@@ -17,16 +17,16 @@ module.exports.run = async (
 ) => {
     const [xpenable, xpCreated] = await db.XPEnabled.findOrCreate({ where: { guild: message.guild.id }, defaults: { guild: message.guild.id } });
     if (xpenable.enabled === false) { return }
-    const guildColour = await GuildCard.findOne({ discordId: message.author.id });
+    const guildColour = await GuildCard.findOne({ discordId: message.guild.id });
     const newColour = args[0].trim();
     if (newColour.match(/^#[0-9a-f]{3,6}$/i)) {
         try {
             if (guildColour) {
-                await GuildCard.findOneAndUpdate({ discordId: message.author.id }, { color: newColour });
+                await GuildCard.findOneAndUpdate({ discordId: message.guild.id }, { color: newColour });
                 message.channel.send("<:approve:614100268891504661> Success!");
             } else {
                 await GuildCard.create({
-                    discordId: message.author.id,
+                    discordId: message.guild.id,
                     color: newColour
                 });
                 message.channel.send("<:approve:614100268891504661> Success!");
@@ -36,6 +36,6 @@ module.exports.run = async (
             message.channel.send("<:delete:614100269369655306> Something went wrong...");
         }
     } else {
-        return message.channel.send("<:delete:614100269369655306> Colour must be in hexadecimal format.");
+        return message.channel.send("<:delete:614100269369655306> Color must be in hexadecimal format.");
     }
 };

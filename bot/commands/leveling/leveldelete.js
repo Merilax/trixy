@@ -18,13 +18,13 @@ module.exports.run = async (
 ) => {
     if (message.author.id !== message.guild.ownerID) return message.channel.send("<:block:614100269004881924> Only the server owner may erase level progress!");
 
-    const member = message.mentions.members.first();
-    const level = await db.Levels.findOne({ where: { guild: message.guild.id, userId: member.user.id } });
+    const deleteId = args[0];
+    const level = await db.Levels.findOne({ where: { guild: message.guild.id, userId: deleteId } });
 
     if (level == null) {
-        return message.channel.send("<:delete:614100269369655306> This user was not found.");
+        return message.channel.send("<:delete:614100269369655306> This user was not found. Remember to use IDs.");
     } else {
-        await db.Levels.destroy({ where: { guild: message.guild.id, userId: member.user.id } });
-        message.channel.send(`<:delete:614100269369655306> Successfully removed ${member.user.tag}.`);
+        await db.Levels.destroy({ where: { guild: message.guild.id, userId: deleteId } });
+        message.channel.send(`<:delete:614100269369655306> Successfully removed from database.`);
     }
 };

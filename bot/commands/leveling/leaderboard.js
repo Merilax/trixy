@@ -91,9 +91,9 @@ module.exports.run = async (
         const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'leaderboard.png');
         const embed = new Discord.MessageEmbed()
             .setTitle(`**Leaderboard for** ${message.guild.name}`)
-            .attachFiles(attachment)
-            .setImage('attachment://leaderboard.png')
-            .setColor(guildColor)
+            .attachFiles(attachment)                  //V12
+            .setImage('attachment://leaderboard.png') //V12
+            .setColor(barColor)
             .setTimestamp(new Date());
         //message.channel.send({ embeds: [embed1], files: [attachment] }); DiscordV13
 

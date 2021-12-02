@@ -44,7 +44,7 @@ module.exports.run = async (
         for (let i = 0; i < 10; i++) {
             if (!xplist[i]) break;
             const xpLimit = (xplist[i].level * 100 + 100);
-            const progressBar = (Math.floor(xplist[i].xp / xpLimit) * 800);
+            const progressBar = ((xplist[i].xp / xpLimit) * 800);
             var splitSpace = i * 100;
 
             try { lbUser = message.guild.members.cache.find(m => m.user.id === xplist[i].userId).user.tag }

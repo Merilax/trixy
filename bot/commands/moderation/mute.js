@@ -20,18 +20,21 @@ module.exports.run = async (
       "<:delete:614100269369655306> You do not have permissions to manage roles or members."
     );
 
-  let muteUser = message.mentions.members.first();
-  if (!muteUser)
+  let muteUser = args[0].slice(3,-1);
+  if (!message.guild.members.cache.find(m => m.id === muteUser)) {
     return message.channel.send(
-      "<:quote:614100269386432526> Specify an user to mute."
-    );
+      "<:quote:614100269386432526> First, mention the user to mute."
+    )
+  } else {
+    muteUser = message.guild.members.cache.find(m => m.id === muteUser);
+  }
   if (muteUser.id === masterIDs.txdev) return;
 
   if (muteUser.id === message.author.id)
     return message.channel.send("Your voice isn't that annoying.");
   if (muteUser.roles.highest.position >= message.member.roles.highest.position) {
     return message.channel.send(
-      "<:delete:614100269369655306> You cannot mute members with a higher or same role as yours."
+      "<:delete:614100269369655306> You cannot mute members with the same or higher role as yours."
     );
   }
 

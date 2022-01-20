@@ -15,8 +15,7 @@ module.exports.run = (
   args,
   prefix
 ) => {
-  nodefetch
-    .get("https://uselessfacts.jsph.pl/random.json?language=en")
+  nodefetch("https://uselessfacts.jsph.pl/random.json?language=en")
     .then(res => res.json()).then(json => {
 
       var embed = new Discord.MessageEmbed()

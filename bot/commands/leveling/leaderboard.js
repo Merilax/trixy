@@ -24,7 +24,6 @@ module.exports.run = async (
         const guildColor = await GuildCard.findOne({ discordId: message.guild.id });
 
         let xplist = [];
-        let lb = [];
         let barColor;
 
         if (guildColor === null) { barColor = '#0088ff'; }

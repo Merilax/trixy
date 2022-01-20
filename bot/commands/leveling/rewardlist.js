@@ -18,7 +18,7 @@ module.exports.run = async (
 ) => {
     await db.XPRewardType.findOrCreate({ where: { guild: message.guild.id }, defaults: { guild: message.guild.id, isCumulative: true } });
     const rewards = await db.XPRewards.findAll({ where: { guild: message.guild.id }});
-    if(!rewards) return message.channel.send("<:delete:614100269369655306> There are no role rewards set for this server.")
+    if(rewards == null) return message.channel.send("<:delete:614100269369655306> There are no role rewards set for this server.")
 
     let rolelist = [];
     for (i = 0; ; i++) {
@@ -31,7 +31,7 @@ module.exports.run = async (
     for (i = 0; i < rolelist.length; i++) {
         list.push(`LVL ${rolelist[i].level}: ${message.guild.roles.cache.find(r => r.id === rolelist[i].roleId)}`);
     };
-    
+
     const embed = new Discord.MessageEmbed()
         .setTitle("Here are all the rewards for the server:")
         .setDescription(list)

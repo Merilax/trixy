@@ -67,6 +67,32 @@ const Levels = sequelize.define('levels', {
     },
 });
 
+const XPRewardType = sequelize.define('xprewardtype', {
+    guild: {
+        type: Sequelize.STRING,
+        allowNull: false,
+    },
+    isCumulative: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: true,
+    },
+});
+
+const XPRewards = sequelize.define('xprewards', {
+    guild: {
+        type: Sequelize.STRING,
+        allowNull: false,
+    },
+    roleId: {
+        type: Sequelize.STRING,
+        allowNull: false,
+    },
+    level: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+    },
+});
+
 const Mutes = sequelize.define('mutes', {
     userName: {
         type: Sequelize.STRING,
@@ -108,4 +134,4 @@ const Prefix = sequelize.define('prefix', {
 });
 
 sequelize.sync({force:false});
-module.exports = { XPEnabled, Levels, Mutes, Reminders, Prefix };
+module.exports = { XPEnabled, Levels, XPRewardType, XPRewards, Mutes, Reminders, Prefix };

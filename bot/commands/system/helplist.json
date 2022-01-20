@@ -152,19 +152,39 @@
 
 
 
+    "addreward": {
+        "t": "Addreward, aka `addr`, `ar`.",
+        "d": "Adds a role to the list of rewardable roles, to be given at a specified XP level by the levelling system. Only one role can be rewarded per XP level. Using this command on an already added role will update it's required XP level.",
+        "u": "`addreward [role_id] [level]`"
+    },
     "leaderboard": {
         "t": "Leaderboard, aka `lb`, `levels`.",
-        "d": "Shows the top 10 users by Level and XP points in the guild.",
+        "d": "Shows the top 10 users by XP level and XP points in the guild.",
         "u": "`leaderboard`"
     },
     "level": {
         "t": "Level, aka `lvl`, `rank`, `xp`.",
-        "d": "Gets someones Level and XP points.",
+        "d": "Gets someone's XP level and XP points.",
         "u": "`level (@member)`"
     },
     "leveldelete": {
         "t": "Leveldelete, aka `lvldelete`, `rankdelete`.",
         "d": "Erases a member from the guild's level database.",
         "u": "`leveldelete [user_id]`"
+    },
+    "removereward": {
+        "t": "Removereward, aka `remover`, `rr`.",
+        "d": "Removes a role from the rewardable roles. If you only want to change the target XP level, use `addreward` instead.",
+        "u": "`removereward [role_id]`"
+    },
+    "rewardlist": {
+        "t": "Rewardlist, aka `rlist`, `rl`.",
+        "d": "Shows all the reward roles set for the guild.",
+        "u": "`rewardlist`"
+    },
+    "rewardtype": {
+        "t": "Rewardtype, aka `rtype`, `rt`.",
+        "d": "Dictates the behaviour for reward roles. By default set to `true`. If `true`, roles will stack up. If `false`, only the top reward role will be kept, and the rest, removed.",
+        "u": "`rewardtype [true | false]`"
     }
 }

@@ -44,12 +44,35 @@ async function addXP(message) {
 }
 
 async function levelUp(message) {
-  var level = await db.Levels.findOne({ where: { guild: message.guild.id, userId: message.author.id }, defaults: { guild: message.guild.id, user: message.author.tag } });
+  var level = await db.Levels.findOne({ where: { guild: message.guild.id, userId: message.author.id } });
   const xpLimit = (level.level * 100 + 100);
 
   if (level.xp >= xpLimit) {
     await db.Levels.update({ level: level.level + 1, xp: level.xp - xpLimit }, { where: { guild: message.guild.id, userId: message.author.id } });
     message.channel.send(`<:add:614100269327974405> You leveled up! You are now Level ${level.level + 1}.`);
+
+    var rewardType = await db.XPRewardType.findOne({ where: { guild: message.guild.id } });
+
+    if (rewardType.isCumulative === false) {
+      var rewards = await db.XPRewards.findAll({ where: { guild: message.guild.id } });
+
+      let rolelist = [];
+      for (i = 0; i < rewards.length; i++) {
+        rolelist.push(rewards[i].dataValues);
+      };
+
+      let toRemoveFromMember = [];
+      for (i = 0; i < rolelist.length; i++) {
+        if (rolelist[i].level !== level.level + 1) {
+          toRemoveFromMember.push(message.guild.roles.cache.find(r => r.id === rolelist[i].roleId));
+        }
+      };
+      await message.member.roles.remove(toRemoveFromMember);
+    }
+
+    var rewards = await db.XPRewards.findOne({ where: { guild: message.guild.id, level: level.level + 1 } });
+
+    message.member.roles.add(message.guild.roles.cache.find(r => r.id === rewards.roleId));
   }
 }
 
@@ -174,7 +197,7 @@ bot.on("message", async message => {
 
   if (levelCooldown.has(message.author.id)) { } else {
     levelCooldown.add(message.author.id);
-    addXP(message);
+    if (message.guild) addXP(message);
     setTimeout(() => {
       levelCooldown.delete(message.author.id);
     }, levelDBTimeout);

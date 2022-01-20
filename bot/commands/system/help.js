@@ -59,8 +59,8 @@ module.exports.run = (
         "```md\n# avatar, remindme, server, user, weather.```"
       )
       .addField(
-        "**Leveling:** _More to come soon!_",
-        "```md\n# leaderboard, level, leveldelete.```"
+        "**Leveling:**",
+        "```md\n# addreward, leaderboard, level, leveldelete, removereward, rewardlist, rewardtype.```"
       )
       .setThumbnail("https://media.discordapp.net/attachments/356840100749115395/613738957154418708/1563964604683.png?width=702&height=702")
       .setFooter("Icons by https://dryicons.com")

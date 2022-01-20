@@ -36,6 +36,6 @@ module.exports.run = async (
             message.channel.send("<:delete:614100269369655306> Something went wrong...");
         }
     } else {
-        return message.channel.send("<:delete:614100269369655306> Color must be in hexadecimal format.");
+        return message.channel.send("<:quote:614100269386432526> Color must be in hexadecimal format.");
     }
 };

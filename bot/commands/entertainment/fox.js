@@ -1,4 +1,4 @@
-const nodefetch = require("node-fetch");
+import fetch from "node-fetch";
 const Discord = require("discord.js");
 
 module.exports.commanddata = {
@@ -16,7 +16,7 @@ module.exports.run = (
   args,
   prefix
 ) => {
-  nodefetch("https://randomfox.ca/floof/?ref=public-apis").then(res => res.json()).then(json => {
+  fetch("https://randomfox.ca/floof/?ref=public-apis").then(res => res.json()).then(json => {
     const embed = new Discord.MessageEmbed()
       .setImage(json.image)
       .setTitle("Here you go! :fox:")

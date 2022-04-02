@@ -307,8 +307,7 @@ bot.on("message", async message => {
       return message.channel.send(
         `<:hourglass2:614100269332037662> Please wait ${timeLeft.toFixed(
           1
-        )} more second(s) before using the \`${command.commanddata.name
-        }\` command.`
+        )} more second(s) before using the \`${command.commanddata.name}\` command.`
       );
     }
   } // Command cooldown

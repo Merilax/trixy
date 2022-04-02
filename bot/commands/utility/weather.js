@@ -1,4 +1,4 @@
-const nodefetch = require("node-fetch");
+import fetch from "node-fetch";
 const Discord = require("discord.js");
 
 module.exports.commanddata = {
@@ -24,7 +24,7 @@ module.exports.run = (
 
   let URL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=73639e85030b2d8d0e183f862678d6d4`;
 
-  nodefetch(URL).then(res => res.json()).then(json => {
+  fetch(URL).then(res => res.json()).then(json => {
 
     if (!json.wind.deg) var windangle = "";
     if (json.wind.deg)

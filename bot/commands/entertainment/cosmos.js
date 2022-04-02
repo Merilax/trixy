@@ -1,4 +1,4 @@
-const nodefetch = require("node-fetch");
+import fetch from "node-fetch";
 const Discord = require("discord.js");
 
 module.exports.commanddata = {
@@ -16,7 +16,7 @@ module.exports.run = (
   args,
   prefix
 ) => {
-  nodefetch("https://api.nasa.gov/planetary/apod?api_key=AgoQvLHiG3GAz3RFxNUgnku1kKUh0RyQZdMd3ErA")
+  fetch("https://api.nasa.gov/planetary/apod?api_key=AgoQvLHiG3GAz3RFxNUgnku1kKUh0RyQZdMd3ErA")
     .then(res => res.json()).then(json => {
       var hdlink = `Click [here](${json.hdurl})`;
       if (!json.hdurl) {

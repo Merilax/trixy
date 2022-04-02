@@ -1,4 +1,4 @@
-const nodefetch = require("node-fetch");
+import fetch from "node-fetch";
 const Discord = require("discord.js");
 
 module.exports.commanddata = {
@@ -15,7 +15,7 @@ module.exports.run = (
   args,
   prefix
 ) => {
-  nodefetch("https://uselessfacts.jsph.pl/random.json?language=en")
+  fetch("https://uselessfacts.jsph.pl/random.json?language=en")
     .then(res => res.json()).then(json => {
 
       var embed = new Discord.MessageEmbed()

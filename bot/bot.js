@@ -152,7 +152,7 @@ app.listen(PORT, () => { console.log(`Node server running on http://localhost:${
 const load = (dir = "./bot/commands") => {
   readdirSync(dir).forEach(dirs => {
     const commands = readdirSync(`${dir}${sep}${dirs}${sep}`).filter(files =>
-      files.endsWith(".js")
+      (files.endsWith(".js") /*|| files.endsWith(".cjs")*/)
     );
     for (const file of commands) {
       const pull = require(`../bot/commands/${dirs}/${file}`);

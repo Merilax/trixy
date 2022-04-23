@@ -1,4 +1,4 @@
-import fetch from "node-fetch";
+const fetch = require("node-fetch");
 const Discord = require("discord.js");
 
 module.exports.commanddata = {

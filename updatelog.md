@@ -73,3 +73,4 @@
 3.1.1 >> Added `usercolor` command to change xp card colour (and any future user defined colours) from a command rather than the web dashboard. Major code cleanup. Bugfixes. Second Core takedown.
 3.2.0 >> Restructured folder system and adjusted paths. Code cleanup.
 3.3.0 >> Added `guildcolor` command. Implemented Canvas into the `leaderboard` command. Improved `leveldelete` command to work with IDs. Fixed some discrepancies with database model handling.
+3.4.0 >> Added role rewards by XP. Added `addreward`, `removereward`, `rewardlist` and `rewardtype` commands. Fixed typos and incoherent messages.

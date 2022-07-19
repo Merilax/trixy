@@ -1,5 +1,6 @@
 const fetch = require("node-fetch");
 const Discord = require("discord.js");
+const TxTE = require("../../TxTE.json");
 
 module.exports.commanddata = {
   name: "cosmos",
@@ -23,16 +24,16 @@ module.exports.run = (
         var hdlink = "No HD image provided.";
       }
 
-      const embed = new Discord.MessageEmbed()
+      const embed = new Discord.EmbedBuilder()
         .setTitle(`Image of the day: ${json.title}`)
         .setDescription(json.explanation)
         .setImage(json.url)
-        .addField("HD image", hdlink)
-        .setFooter(`api.nasa.gov, ${json.date}.`);
-      message.channel.send(embed).catch(error => {
+        .addFields([{ name: "HD image", value: hdlink}])
+        .setFooter({ text:`api.nasa.gov, ${json.date}.` });
+      message.channel.send({ embeds: [embed] }).catch(error => {
         message.channel.send(
-          "<:delete:614100269369655306> Something went wrong..."
+          `${TxTE.emoji.x} Something went wrong...`
         );
-      });;
+      });
     });
 };

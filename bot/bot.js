@@ -1,9 +1,9 @@
 require('dotenv').config();
-const Discord = require("discord.js");
+const { Client, GatewayIntentBits, Partials, Collection } = require("discord.js");
 const { readdirSync } = require("fs");
-const bot = new Discord.Client({ fetchAllMembers: true });
 const { prefix, statusquote } = require("./config.json");
 const helplist = require('./commands/system/helplist.json');
+const TxTE = require("./TxTE.json");
 const winston = require("winston");
 const { sep } = require("path");
 const { success, error, warning } = require("log-symbols");
@@ -20,7 +20,18 @@ const logger = winston.createLogger({
   )
 });
 
-
+const bot = new Client({
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMembers,
+    GatewayIntentBits.GuildBans,
+    GatewayIntentBits.GuildPresences,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.DirectMessages,
+    GatewayIntentBits.MessageContent
+  ],
+  partials: [Partials.Channel]
+});
 
 // DATABASE ===============================================================================
 
@@ -49,7 +60,7 @@ async function levelUp(message) {
 
   if (level.xp >= xpLimit) {
     await db.Levels.update({ level: level.level + 1, xp: level.xp - xpLimit }, { where: { guild: message.guild.id, userId: message.author.id } });
-    message.channel.send(`<:add:614100269327974405> You leveled up! You are now Level ${level.level + 1}.`);
+    message.channel.send({ content: `${TxTE.emoji.add} You leveled up! You are now Level ${level.level + 1}.` });
 
     var rewardType = await db.XPRewardType.findOne({ where: { guild: message.guild.id } });
 
@@ -147,7 +158,7 @@ app.listen(PORT, () => { console.log(`Node server running on http://localhost:${
 
 // LOADING COMMANDS =========================================================================
 
-["commands", "aliases"].forEach(x => (bot[x] = new Discord.Collection()));
+["commands", "aliases"].forEach(x => (bot[x] = new Collection()));
 
 const load = (dir = "./bot/commands") => {
   readdirSync(dir).forEach(dirs => {
@@ -190,9 +201,9 @@ const load = (dir = "./bot/commands") => {
 };
 load();
 
-const cooldowns = new Discord.Collection();
+const cooldowns = new Collection();
 
-bot.on("message", async message => {
+bot.on("messageCreate", async message => {
   if (message.author.bot) return;
 
   if (levelCooldown.has(message.author.id)) { } else {
@@ -208,13 +219,13 @@ bot.on("message", async message => {
       var mentionForHelp = message.content.trim().split(' ');
       switch (mentionForHelp[1]) {
         case "help":
-        case "prefix": return message.channel.send("Try using `Trixy, help`");
+        case "prefix": return message.channel.send({ content: "Try using `Trixy, help`" });
       }
     }
   } // Reacts to bot mention.
   switch (message.content.trim().toLowerCase()) {
     case "hi trixy": case "hello trixy": case "trixy, hi": case "trixy, hello":
-      return message.channel.send(`Hello ${message.author.username}!`);
+      return message.channel.send({ content: `Hello ${message.author.username}!`, reply: { messageReference: message.id } });
   } // Reacts to friendliness. Hi Trixy!
 
   if (message.author.bot || message.content.includes("@here") || message.content.includes("@everyone")) return; //Returns when author is a bot or when mass mentioned
@@ -277,12 +288,12 @@ bot.on("message", async message => {
     command = bot.commands.get(bot.aliases.get(cmd));
   else return;
 
-  if (command.commanddata.guildOnly && message.channel.type !== "text") {
-    return message.channel.send("<:block:614100269004881924> I can't execute that command inside DMs!");
+  if (command.commanddata.guildOnly && message.channel.type !== 0) {
+    return message.channel.send({ content: `${TxTE.emoji.block} I can't execute that command inside DMs!` });
   } // GuildOnly command.
 
   if (command.commanddata.args && !args.length) {
-    let reply = `<:quote:614100269386432526> You didn't provide any arguments, ${message.author}!`;
+    let reply = `${TxTE.emoji.quote} You didn't provide any arguments, ${message.author}!`;
 
     if (helplist[command]) {
       reply += `\nThe proper usage would be: \`${prefix}${helplist[command].u}\``;
@@ -292,7 +303,7 @@ bot.on("message", async message => {
   } // Appends command usage if no args found.
 
   if (!cooldowns.has(command.commanddata.name)) {
-    cooldowns.set(command.commanddata.name, new Discord.Collection());
+    cooldowns.set(command.commanddata.name, new Collection());
   }
 
   const now = Date.now();
@@ -304,11 +315,9 @@ bot.on("message", async message => {
 
     if (now < expirationTime) {
       const timeLeft = (expirationTime - now) / 1000;
-      return message.channel.send(
-        `<:hourglass2:614100269332037662> Please wait ${timeLeft.toFixed(
-          1
-        )} more second(s) before using the \`${command.commanddata.name}\` command.`
-      );
+      return message.channel.send({
+        content: `${TxTE.emoji.time} Please wait ${timeLeft.toFixed(1)} more second(s) before using the \`${command.commanddata.name}\` command.`
+      });
     }
   } // Command cooldown
 
@@ -321,9 +330,9 @@ bot.on("message", async message => {
     }
   } catch (error) {
     console.error(error);
-    message.channel.send(
-      `<:window_text:614100269524975620> Send to Merilax#1572. An error ocurred during command execution: \n \`\`\`${error}\`\`\``
-    );
+    message.channel.send({
+      content: `${TxTE.emoji.windowText} Send to Merilax#1572. An error ocurred during command execution: \n \`\`\`${error}\`\`\``
+    });
   }
 });
 
@@ -342,15 +351,15 @@ bot.on("ready", async () => {
     `\n\n\nBot has started, with ${bot.users.cache.size} cached users, in ${bot.channels.cache.size} channels of ${bot.guilds.cache.size} guilds.\n\n\n`
   );
 
-  bot.setInterval(async () => {
+  setInterval(async () => {
     const muteDB = await db.Mutes.findAll();
     const remindDB = await db.Reminders.findAll();
 
     for (i = 0; ; i++) {
       if (!muteDB[i]) break;
 
-      let muteguildID = muteDB[i].guildId;
-      let muteguild = bot.guilds.cache.get(muteguildID);
+      let muteguildId = muteDB[i].guildId;
+      let muteguild = bot.guilds.cache.get(muteguildId);
       if (!muteguild) {
         await db.Mutes.destroy({ where: { guildId: muteDB[i].guildId, userId: muteDB[i].userId } });
       }
@@ -362,7 +371,7 @@ bot.on("ready", async () => {
 
       if (muteDB[i].duration == 0) { continue } else if (Date.now() > muteDB[i].duration) {
         mutemember.roles.remove(muterole);
-        await db.Mutes.destroy({ where: { guildId: muteguildID, userId: muteDB[i].userId } })
+        await db.Mutes.destroy({ where: { guildId: muteguildId, userId: muteDB[i].userId } })
           .catch(e => console.log(e));
       }
     }
@@ -370,16 +379,16 @@ bot.on("ready", async () => {
     for (i = 0; ; i++) {
       if (!remindDB[i]) break;
 
-      let userID = remindDB[i].userId;
-      let remindUser = bot.users.cache.get(userID);
+      let DBUserId = remindDB[i].userId;
+      let remindUser = bot.users.cache.get(DBUserId);
       if (!remindUser) {
-        await db.Reminders.destroy({ where: { userId: userID, duration: remindDB[i].duration, text: remindDB[i].text } });
+        await db.Reminders.destroy({ where: { userId: DBUserId, duration: remindDB[i].duration, text: remindDB[i].text } });
       }
 
       if (Date.now() > remindDB[i].duration) {
-        remindUser.send(`A reminder arrived:`).catch(e => { });
-        remindUser.send(remindDB[i].text).catch(e => { });
-        await db.Reminders.destroy({ where: { userId: userID, duration: remindDB[i].duration, text: remindDB[i].text } })
+        remindUser.send({ content: `A reminder arrived:` }).catch(e => { });
+        remindUser.send({ content: remindDB[i].text }).catch(e => { });
+        await db.Reminders.destroy({ where: { userId: DBUserId, duration: remindDB[i].duration, text: remindDB[i].text } })
           .catch(e => console.log(e));
       }
     }
@@ -391,7 +400,7 @@ bot.on("ready", async () => {
     { type: "WATCHING" }
   );
 
-  bot.setInterval(() => {
+  setInterval(() => {
     bot.user.setActivity(
       `${bot.guilds.cache.size} servers, ${bot.users.cache.size} users.\n@Trixy help. ` +
       `${statusquote[Math.floor(Math.random() * statusquote.length)]}`,

@@ -1,5 +1,6 @@
 const fetch = require("node-fetch");
 const Discord = require("discord.js");
+const TxTE = require("../../TxTE.json");
 
 module.exports.commanddata = {
   name: "fox",
@@ -17,14 +18,14 @@ module.exports.run = (
   prefix
 ) => {
   fetch("https://randomfox.ca/floof/?ref=public-apis").then(res => res.json()).then(json => {
-    const embed = new Discord.MessageEmbed()
+    const embed = new Discord.EmbedBuilder()
       .setImage(json.image)
       .setTitle("Here you go! :fox:")
-      .setColor("BLUE")
-      .setFooter("https://randomfox.ca/floof/?ref=public-apis");
-    message.channel.send(embed).catch(error => {
+      .setColor("#4badeb")
+      .setFooter({ text:"https://randomfox.ca/floof/?ref=public-apis" });
+    message.channel.send({ embeds: [embed] }).catch(error => {
       message.channel.send(
-        "<:delete:614100269369655306> Something went wrong..."
+        `${TxTE.emoji.x} Something went wrong...`
       );
     });;
   });

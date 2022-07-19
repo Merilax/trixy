@@ -1,3 +1,6 @@
+const { PermissionsBitField } = require('discord.js');
+const TxTE = require("../../TxTE.json");
+
 module.exports.commanddata = {
   name: "removerole",
   aliases: ["remove"],
@@ -13,8 +16,8 @@ module.exports.run = (
   args,
   prefix
 ) => {
-  if (!message.member.hasPermission("MANAGE_ROLES"))
-    return message.channel.send("<:delete:614100269369655306> You cannot manage roles.");
+  if (!message.member.permissions.has(PermissionsBitField.Flags.ManageRoles))
+    return message.channel.send({ content: `${TxTE.emoji.x} You cannot manage roles.` });
 
   function checkRoleType(arg) {
     if (message.guild.roles.cache.find(r => r.name === arg)) {
@@ -30,17 +33,17 @@ module.exports.run = (
   var removeRole = checkRoleType(args[1]);
 
   if (!removeMember)
-    return message.channel.send("<<:quote:614100269386432526> Please mention a user.");
+    return message.channel.send({ content: `${TxTE.emoji.quote} Please mention an user.` });
   if (!removeRole)
-    return message.channel.send("<:quote:614100269386432526> I didn't find that role.");
+    return message.channel.send({ content: `${TxTE.emoji.quote} I didn't find that role.` });
   if (!removeMember.roles.cache.some(r => r.id === removeRole.id))
-    return message.channel.send("<:delete:614100269369655306> But you don't have that role...");
+    return message.channel.send({ content: `${TxTE.emoji.x} User does not have that role.` });
 
   try {
     removeMember.roles.remove(checkRoleType(args[1]));
-    message.channel.send(`<:approve:614100268891504661> Removed **${removeRole.name}** from **${removeMember}**.`);
+    message.channel.send({ content: `${TxTE.emoji.ok} Removed **${removeRole.name}** from **${removeMember}**.` });
   } catch (e) {
     console.log(e);
-    message.channel.send("<:delete:614100269369655306> I seem to be unable to manage this role or user.");
+    message.channel.send({ content: `${TxTE.emoji.x} I seem to be unable to manage this role or user.` });
   }
 };

@@ -1,5 +1,6 @@
 const fetch = require("node-fetch");
 const Discord = require("discord.js");
+const TxTE = require("../../TxTE.json");
 
 module.exports.commanddata = {
   name: "fact",
@@ -18,13 +19,14 @@ module.exports.run = (
   fetch("https://uselessfacts.jsph.pl/random.json?language=en")
     .then(res => res.json()).then(json => {
 
-      var embed = new Discord.MessageEmbed()
-        .addField("Did you know...", json.text)
-        .setColor("BLUE")
-        .setFooter("uselessfacts.jsph.pl");
-      message.channel.send(embed).catch(error => {
+      var embed = new Discord.EmbedBuilder()
+        .setTitle("Did you know...")
+        .setDescription(json.text)
+        .setColor("#4badeb")
+        .setFooter({ text:"uselessfacts.jsph.pl" });
+      message.channel.send({ embeds: [embed] }).catch(error => {
         message.channel.send(
-          "<:delete:614100269369655306> Something went wrong..."
+          `${emoji.x} Something went wrong...`
         );
       });;
     });

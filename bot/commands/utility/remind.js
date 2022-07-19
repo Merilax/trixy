@@ -1,4 +1,5 @@
 const db = require('../../DB/sequelDB.js');
+const TxTE = require("../../TxTE.json");
 
 module.exports.commanddata = {
   name: "remind",
@@ -19,20 +20,20 @@ module.exports.run = async (
   let remindTiming = args[0];
 
   if (!remindContent)
-    return message.channel.send("<:quote:614100269386432526> You should tell me what to remind you.");
+    return message.channel.send({ content: `${TxTE.emoji.quote} You should tell me what to remind you.` });
   if (remindTiming.match(/^\d+$/) != null) { } else {
-    return message.channel.send("<:quote:614100269386432526> For how long? The input will be in minutes, as the first argument.");
+    return message.channel.send({ content: `${TxTE.emoji.quote} For how long? The input will be in minutes, as the first argument.` });
   }
 
   if (remindTiming && (remindTiming < 525600) && (remindTiming > 0)) {
     var remindThen = Date.now() + (parseInt(remindTiming) * 60000);
   } else {
-    return message.channel.send("<:delete:614100269369655306> That's not right, you may set a maximum of 525600 minutes, which is actually a year.");
+    return message.channel.send({ content: `${TxTE.emoji.x} Can't do, you may set a maximum of 525600 minutes, which is actually a year.` });
   }
 
   try {
     await db.Reminders.create({ userId: message.author.id, duration: remindThen, text: remindContent });
-    message.channel.send(`<:approve:614100268891504661> Alright! I will remind you in ${remindTiming} minutes.`);
+    message.channel.send({ content: `${TxTE.emoji.ok} ${TxTE.affirmation[Math.floor(Math.random() * TxTE.affirmation.length)]} I will remind you in ${remindTiming} minutes.` });
   } catch (e) {
     console.log(e);
   }

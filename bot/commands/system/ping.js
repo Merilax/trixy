@@ -1,3 +1,5 @@
+const TxTE = require("../../TxTE.json");
+
 module.exports.commanddata = {
   name: "ping",
   aliases: ["latency"],
@@ -13,9 +15,9 @@ module.exports.run = async (
   args,
   prefix
 ) => {
-  const m = await message.channel.send("Pinging");
+  const m = await message.channel.send({ content: "Pinging" });
   m.edit(
-    `<:bar_chart2:614100269306871819> Latency: ${m.createdTimestamp -
+    `${TxTE.emoji.chart} Latency: ${m.createdTimestamp -
       message.createdTimestamp}ms, API Latency: ${Math.round(bot.ws.ping)}ms`
   );
 };

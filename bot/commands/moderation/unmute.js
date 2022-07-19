@@ -1,5 +1,6 @@
-const fs = require("fs");
 const db = require('../../DB/sequelDB.js');
+const { PermissionsBitField } = require('discord.js');
+const TxTE = require("../../TxTE.json");
 
 module.exports.commanddata = {
   name: "unmute",
@@ -15,22 +16,16 @@ module.exports.run = async (
   args,
   prefix
 ) => {
-  if (!message.member.hasPermission("MANAGE_ROLES"))
-    return message.channel.send(
-      "<:delete:614100269369655306> You do not have permissions to manage roles."
-    );
+  if (!message.member.permissions.has(PermissionsBitField.Flags.ManageRoles))
+    return message.channel.send({ content: `${TxTE.emoji.x} You do not have permissions to manage roles.` });
 
   let muteUser = message.mentions.members.first();
   if (!muteUser)
-    return message.channel.send(
-      "<:quote:614100269386432526> Specify an user to unmute."
-    );
-  if (muteUser.id === message.author.id)
-    return message.channel.send("How can you unmute yourself?");
+    return message.channel.send({ content: `${TxTE.emoji.quote} Specify an user to unmute.` });
+  if (muteUser.user.id === message.author.id)
+    return message.channel.send({ content: `How can you unmute yourself?` });
   if (muteUser.roles.highest.position >= message.member.roles.highest.position)
-    return message.channel.send(
-      "<:delete:614100269369655306> You cannot unmute members with a higher or same role as yours."
-    );
+    return message.channel.send({ content: `${TxTE.emoji.x} You cannot unmute members with a higher or same role as yours.` });
 
   let txMuteRole = message.guild.roles.cache.find(r => r.name === "Trixy Mute");
   if (!txMuteRole) {
@@ -44,30 +39,26 @@ module.exports.run = async (
       });
 
       message.guild.channels.cache.forEach(async (channel, id) => {
-        await channel.updateOverwrite(txMuteRole, {
+        await channel.permissionOverwrites.edit(txMuteRole, {
           SEND_MESSAGES: false,
           ADD_REACTIONS: false
         });
       });
-      return message.channel.send("<:fix:614100269449347082> I have created a Mute role, please check if its position is correct and working. Please do not change its name or I won't find it!");
+      return message.channel.send({ content: `${TxTE.emoji.fix} I have created a Mute role, please check if its position is correct and working. Please do not change its name or I won't find it!` });
     } catch (e) {
       console.log(e);
-      return message.channel.send("<:delete:614100269369655306> Could not create Mute role! Am I administrator?");
+      return message.channel.send({ content: `${TxTE.emoji.x} Could not create Mute role! Am I administrator?` });
     }
   }
 
   if (muteUser.roles.cache.has(txMuteRole.id) === false) {
-    return message.channel.send(
-      "<:delete:614100269369655306> This user can't be any louder."
-    )
+    return message.channel.send({ content: `${TxTE.emoji.x} This user can't be any louder.` })
   } 
 
   try {
     await db.Mutes.destroy({ where: { guildId: message.guild.id, userId: muteUser.user.id } });
     await muteUser.roles.remove(txMuteRole);
-    message.channel.send(
-      `<:approve:614100268891504661> User ${args[0]} has been succesfully unmuted.`
-    );
+    message.channel.send({ content: `${TxTE.emoji.ok} User ${args[0]} has been succesfully unmuted.` });
   } catch (e) {
     console.log(e);
   }

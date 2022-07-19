@@ -1,5 +1,6 @@
 const fetch = require("node-fetch");
 const Discord = require("discord.js");
+const TxTE = require("../../TxTE.json");
 
 module.exports.commanddata = {
   name: "cat",
@@ -17,15 +18,16 @@ module.exports.run = (
   prefix
 ) => {
   fetch("https://aws.random.cat/meow").then(res => res.json()).then(json => {
-    const embed = new Discord.MessageEmbed()
+    const file = new Discord.AttachmentBuilder()
+    const embed = new Discord.EmbedBuilder()
       .setImage(json.file)
       .setTitle("Here you go! :cat:")
-      .setColor("BLUE")
-      .setFooter("https://aws.random.cat/meow");
-    return message.channel.send(embed)
+      .setColor("#4badeb")
+      .setFooter({text:"https://aws.random.cat/meow"});
+    return message.channel.send({ embeds: [embed] })
       .catch(error => {
         message.channel.send(
-          "<:delete:614100269369655306> Something went wrong..."
+          `${TxTE.emoji.x} Something went wrong...`
         );
       });
   });

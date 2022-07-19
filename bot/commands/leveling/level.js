@@ -34,7 +34,7 @@ module.exports.run = async (
     let cardColor;
     
     if (level === null) {
-        return message.channel.send("<:delete:614100269369655306> No XP gained yet.");
+        return message.channel.send({ content: `${TxTE.emoji.x} No XP gained yet.` });
     }
 
     if (userColor === null) {
@@ -44,7 +44,7 @@ module.exports.run = async (
 
     const xpLimit = (level.level * 100 + 100);
     const progressBar = ((level.xp / xpLimit) * 950);
-    const avatar = await Canvas.loadImage(user.displayAvatarURL({ format: 'jpg' }));
+    const avatar = await Canvas.loadImage(user.displayAvatarURL({ extension: 'jpg' }));
     const canvas = Canvas.createCanvas(950, 280);
     const ctx = canvas.getContext('2d');
 
@@ -109,6 +109,6 @@ module.exports.run = async (
 	ctx.clip();
     ctx.drawImage(avatar, 40, 65, 150, 150);
 
-    const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'level.png');
+    const attachment = new Discord.AttachmentBuilder(canvas.toBuffer(), {name:"level.png"});
     message.channel.send({ files: [attachment] });
 };

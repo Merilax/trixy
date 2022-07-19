@@ -61,7 +61,7 @@ module.exports.run = async (
                 const avatar = await Canvas.loadImage(
                     message.guild.members.cache.find(
                         m => m.user.id === xplist[i].userId)
-                        .user.displayAvatarURL({ format: 'jpg' }));
+                        .user.displayAvatarURL({ extension: 'jpg' }));
                 ctx.drawImage(avatar, 0, splitSpace, 75, 75);
             } catch (e) {
                 const nouser = new Canvas.Image();
@@ -87,15 +87,12 @@ module.exports.run = async (
             ctx.fillText(`LVL ${xplist[i].level}`, 580, splitSpace + 51, 130);
         }
 
-        const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'leaderboard.png');
-        const embed = new Discord.MessageEmbed()
+        const attachment = new Discord.AttachmentBuilder(canvas.toBuffer(), {name:'leaderboard.png'});
+        const embed = new Discord.EmbedBuilder()
             .setTitle(`**Leaderboard for** ${message.guild.name}`)
-            .attachFiles(attachment)                  //V12
-            .setImage('attachment://leaderboard.png') //V12
+            .setImage('attachment://leaderboard.png')
             .setColor(barColor)
             .setTimestamp(new Date());
-        //message.channel.send({ embeds: [embed1], files: [attachment] }); DiscordV13
-
-        message.channel.send(embed);
+    message.channel.send({ embeds: [embed], files: [attachment] });
     }
 };

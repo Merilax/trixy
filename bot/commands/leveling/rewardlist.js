@@ -1,5 +1,6 @@
 const Discord = require("discord.js");
 const db = require('../../DB/sequelDB.js');
+const TxTE = require("../../TxTE.json");
 
 module.exports.commanddata = {
     name: "rewardlist",
@@ -18,7 +19,7 @@ module.exports.run = async (
 ) => {
     await db.XPRewardType.findOrCreate({ where: { guild: message.guild.id }, defaults: { guild: message.guild.id, isCumulative: true } });
     const rewards = await db.XPRewards.findAll({ where: { guild: message.guild.id }});
-    if(rewards == null) return message.channel.send("<:delete:614100269369655306> There are no role rewards set for this server.")
+    if(rewards == null) return message.channel.send({ content: `${TxTE.emoji.x} There are no role rewards set for this server.` })
 
     let rolelist = [];
     for (i = 0; ; i++) {
@@ -32,9 +33,9 @@ module.exports.run = async (
         list.push(`LVL ${rolelist[i].level}: ${message.guild.roles.cache.find(r => r.id === rolelist[i].roleId)}`);
     };
 
-    const embed = new Discord.MessageEmbed()
+    const embed = new Discord.EmbedBuilder()
         .setTitle("Here are all the rewards for the server:")
         .setDescription(list)
-        .setColor("BLUE");
-    message.channel.send(embed);
+        .setColor("#4badeb");
+    message.channel.send({ embeds: [embed] });
 };

@@ -1,4 +1,4 @@
-const masterIDs = require('../../masterIDs.json');
+const masterIds = require('../../masterIds.json');
 
 module.exports.commanddata = {
   name: "eval",
@@ -22,7 +22,7 @@ module.exports.run = (
     else return text;
   }
 
-  if (message.author.id !== masterIDs.txdev) {
+  if (message.author.id !== masterIds.txdev) {
     return;
   } else {
     try {
@@ -31,9 +31,9 @@ module.exports.run = (
 
       if (typeof evaled !== "string") evaled = require("util").inspect(evaled);
 
-      message.channel.send(clean(evaled), { code: "xl" });
+      message.channel.send({ contents: (clean(evaled), { code: "xl" }) });
     } catch (err) {
-      message.channel.send(`\`ERROR\` \`\`\`xl\n${clean(err)}\n\`\`\``);
+      message.channel.send({ content: `\`ERROR\` \`\`\`xl\n${clean(err)}\n\`\`\`` });
     }
   }
 };

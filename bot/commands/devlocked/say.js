@@ -1,4 +1,4 @@
-const masterIDs = require('../../masterIDs.json');
+const masterIds = require('../../masterIds.json');
 
 module.exports.commanddata = {
   name: "say",
@@ -14,10 +14,10 @@ module.exports.run = (
   args,
   prefix
 ) => {
-  if (message.author.id === masterIDs.txdev) {
+  if (message.author.id === masterIds.txdev) {
     let say = args.slice().join(" ");
     message.delete().catch(trashlog => {});
-    message.channel.send(say);
+    message.channel.send({ contents: say });
   } else {
     return;
   }

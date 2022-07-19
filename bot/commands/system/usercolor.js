@@ -1,5 +1,6 @@
 const db = require('../../DB/sequelDB.js');
 const PersonalCard = require('../../DB/modals/PersonalCard');
+const TxTE = require("../../TxTE.json");
 
 module.exports.commanddata = {
     name: "usercolor",
@@ -23,19 +24,19 @@ module.exports.run = async (
         try {
             if (userColour) {
                 await PersonalCard.findOneAndUpdate({ discordId: message.author.id }, { color: newColour });
-                message.channel.send("<:approve:614100268891504661> Success!");
+                message.channel.send({ content: `${TxTE.emoji.ok} ${TxTE.success[Math.floor(Math.random() * TxTE.success.length)]}` });
             } else {
                 await PersonalCard.create({
                     discordId: message.author.id,
                     color: newColour
                 });
-                message.channel.send("<:approve:614100268891504661> Success!");
+                message.channel.send({ content: `${TxTE.emoji.ok} ${TxTE.success[Math.floor(Math.random() * TxTE.success.length)]}` });
             }
         } catch (err) {
             console.log(err);
-            message.channel.send("<:delete:614100269369655306> Something went wrong...");
+            message.channel.send({ content: `${TxTE.emoji.x} Something went wrong...` });
         }
     } else {
-        return message.channel.send("<:quote:614100269386432526> Colour must be in hexadecimal format.");
+        return message.channel.send({ content: `${TxTE.emoji.quote} Colour must be in hexadecimal format.` });
     }
 };

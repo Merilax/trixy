@@ -14,6 +14,7 @@ const sequelize = new Sequelize('database', 'user', 'password', {
 const sequelize = new Sequelize(process.env.SEQUELDB_URL, {
     dialect: 'postgres',
     protocol: 'postgres',
+    logging: false,
     dialectOptions: {
         ssl: {
             require: true,

@@ -1,3 +1,5 @@
+const TxTE = require("../../TxTE.json");
+
 module.exports.commanddata = {
   name: "invite",
   category: "system",
@@ -13,12 +15,8 @@ module.exports.run = (
   prefix
 ) => {
   message.author
-    .send(
-      "https://discordapp.com/api/oauth2/authorize?client_id=583006737322475550&permissions=8&scope=bot"
-    )
+    .send({ content: "https://discordapp.com/api/oauth2/authorize?client_id=583006737322475550&permissions=8&scope=bot" })
     .catch(error => {
-      message.channel.send(
-        "<:delete:614100269369655306> It seems like I can't DM you!"
-      );
+      message.channel.send({ content: "${TxTE.emoji.x} It seems like I can't DM you!" });
     });
 };

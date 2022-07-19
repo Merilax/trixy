@@ -1,3 +1,6 @@
+const { PermissionsBitField } = require('discord.js');
+const TxTE = require("../../TxTE.json");
+
 module.exports.commanddata = {
   name: "kick",
   category: "moderation",
@@ -12,36 +15,25 @@ module.exports.run = (
   args,
   prefix
 ) => {
-  if (!message.member.hasPermission("KICK_MEMBERS")) {
-    return message.channel.send(
-      "<:delete:614100269369655306> You cannot kick members."
-    );
+  if (!message.member.permissions.has(PermissionsBitField.Flags.KickMembers)) {
+    return message.channel.send({ content: `${TxTE.emoji.x} You cannot kick members.` });
   }
 
   if (!message.mentions.users.size) {
-    return message.channel.send(
-      "<:quote:614100269386432526> You need to tag a member."
-    );
+    return message.channel.send({ content: `${TxTE.emoji.quote} You need to tag a member.` });
   }
 
   const kickuser = message.mentions.members.first();
   let reason = args.slice(1).join(" ");
 
-
   if (kickuser === message.author) {
-    return message.channel.send(
-      "<:delete:614100269369655306> You can't kick yourself."
-    );
+    return message.channel.send({ content: `${TxTE.emoji.x} You can't kick yourself.` });
   }
 
   if (kickuser.kickable == false) {
-    return message.channel.send(
-      "<:delete:614100269369655306> I cannot kick this user."
-    );
+    return message.channel.send({ content: `${TxTE.emoji.x} I cannot kick this user.` });
   } else {
     kickuser.kick();
-    message.channel.send(
-      `<:approve:614100268891504661> ${message.author} succesfully kicked **${kickuser.user.username}**. Reason: ${reason}`
-    );
+    message.channel.send({ content: `${TxTE.emoji.ok} ${message.author} succesfully kicked **${kickuser.user.username}**. Reason: ${reason}` });
   }
 };

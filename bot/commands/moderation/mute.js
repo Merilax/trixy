@@ -1,5 +1,7 @@
 const db = require('../../DB/sequelDB.js');
-const masterIDs = require('../../masterIDs.json');
+const masterIds = require('../../masterIds.json');
+const { PermissionsBitField } = require('discord.js');
+const TxTE = require("../../TxTE.json");
 
 module.exports.commanddata = {
   name: "mute",
@@ -15,32 +17,27 @@ module.exports.run = async (
   args,
   prefix
 ) => {
-  if (!message.member.hasPermission("MANAGE_ROLES"))
-    return message.channel.send(
-      "<:delete:614100269369655306> You do not have permissions to manage roles or members."
-    );
+  if (!message.member.permissions.has(PermissionsBitField.Flags.ManageRoles))
+    return message.channel.send({ content: `${TxTE.emoji.x} You do not have permissions to manage roles.` });
 
-  let muteUser = args[0].slice(3,-1);
-  if (!message.guild.members.cache.find(m => m.id === muteUser)) {
-    return message.channel.send(
-      "<:quote:614100269386432526> First, mention the user to mute."
-    )
+  //return console.log(message.mentions.members.first().user.id);
+  let muteUser = message.mentions.members.first(); //args[0].slice(3,-1); What is this?
+  if (!message.guild.members.cache.find(m => m.user.id === muteUser.user.id)) {
+    return message.channel.send({ content: `${TxTE.emoji.quote} First, mention the user to mute.` })
   } else {
-    muteUser = message.guild.members.cache.find(m => m.id === muteUser);
+    muteUser = message.guild.members.cache.find(m => m.user.id === muteUser.user.id);
   }
-  if (muteUser.id === masterIDs.txdev) return;
+  if (muteUser.user.id === masterIds.txdev) return;
 
-  if (muteUser.id === message.author.id)
-    return message.channel.send("Your voice isn't that annoying.");
+  if (muteUser.user.id === message.author.id)
+    return message.channel.send({ content: "Quite a peculiar petition, is it not?" });
   if (muteUser.roles.highest.position >= message.member.roles.highest.position) {
-    return message.channel.send(
-      "<:delete:614100269369655306> You cannot mute members with the same or higher role as yours."
-    );
+    return message.channel.send({ content: `${TxTE.emoji.x} You cannot mute members with the same or higher role as yours.` });
   }
 
   //const [mutes, created] = 
 
-  let self = message.guild.members.cache.find(m => m.id === bot.user.id);
+  let self = message.guild.members.cache.find(m => m.user.id === bot.user.id);
   let txMuteRole = message.guild.roles.cache.find(r => r.name === "Trixy Mute");
   if (!txMuteRole) {
     try {
@@ -53,22 +50,20 @@ module.exports.run = async (
       });
 
       message.guild.channels.cache.forEach(async (channel, id) => {
-        await channel.updateOverwrite(txMuteRole, {
+        await channel.permissionOverwrites.edit(txMuteRole, {
           SEND_MESSAGES: false,
           ADD_REACTIONS: false
         });
       });
-      message.channel.send("<:fix:614100269449347082> I have created a Mute role, please check if its position is correct and working. Please do not change its name or I won't find it!");
+      message.channel.send({ content: `${TxTE.emoji.fix} I have created a Mute role, please check if its position is correct and working. Please do not change its name or I won't find it!` });
     } catch (e) {
       console.log(e);
-      return message.channel.send("<:delete:614100269369655306> Could not create Mute role! Am I administrator?");
+      return message.channel.send({ content: `${TxTE.emoji.x} Could not create Mute role! Am I administrator?` });
     }
   }
 
   if (muteUser.roles.cache.has(txMuteRole.id)) {
-    return message.channel.send(
-      "<:delete:614100269369655306> This user can't be any more silent."
-    );
+    return message.channel.send({ content: `${TxTE.emoji.x} This user can't be any more silent.` });
   }
 
   if (args[1] && (args[1] < 1000000) && (args[1] > 0)) {
@@ -80,9 +75,7 @@ module.exports.run = async (
   try {
     await db.Mutes.findOrCreate({ where: { guildId: message.guild.id }, defaults: { userName: muteUser.user.tag, userId: muteUser.user.id, guildId: message.guild.id, duration: muteExpire } });
     await muteUser.roles.add(txMuteRole);
-    message.channel.send(
-      `<:approve:614100268891504661> User ${args[0]} has been succesfully muted for ${args[1]} minutes.`
-    );
+    message.channel.send({ content: `${TxTE.emoji.ok} User ${args[0]} has been succesfully muted for ${args[1]} minutes.` });
   } catch (e) {
     console.log(e);
   }

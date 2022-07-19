@@ -1,5 +1,6 @@
 const Discord = require("discord.js");
 const db = require('../../DB/sequelDB.js');
+const TxTE = require("../../TxTE.json");
 
 module.exports.commanddata = {
     name: "leveldelete",
@@ -16,15 +17,15 @@ module.exports.run = async (
     args,
     prefix
 ) => {
-    if (message.author.id !== message.guild.ownerID) return message.channel.send("<:block:614100269004881924> Only the server owner may erase level progress!");
+    if (message.author.id !== message.guild.ownerId) return message.channel.send({ content: `${TxTE.emoji.block} Only the server owner may erase level progress!` });
 
     const deleteId = args[0];
     const level = await db.Levels.findOne({ where: { guild: message.guild.id, userId: deleteId } });
 
     if (level == null) {
-        return message.channel.send("<:delete:614100269369655306> This user was not found. Remember to use IDs.");
+        return message.channel.send({ content: `${TxTE.emoji.x} This user was not found. Remember to use an Id.` });
     } else {
         await db.Levels.destroy({ where: { guild: message.guild.id, userId: deleteId } });
-        message.channel.send(`<:delete:614100269369655306> Successfully removed from database.`);
+        message.channel.send({ content: `${TxTE.emoji.x} Successfully removed from database.` });
     }
 };

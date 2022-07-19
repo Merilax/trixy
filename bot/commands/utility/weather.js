@@ -1,5 +1,6 @@
 const fetch = require("node-fetch");
 const Discord = require("discord.js");
+const TxTE = require("../../TxTE.json");
 
 module.exports.commanddata = {
   name: "weather",
@@ -18,9 +19,7 @@ module.exports.run = (
   let city = args.slice().join(" ");
 
   if (!city)
-    return message.channel.send(
-      "Please provide a city name, like this: \n```css\nTrixy, weather london```"
-    );
+    return message.channel.send({ content: "Please provide a city name." });
 
   let URL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=73639e85030b2d8d0e183f862678d6d4`;
 
@@ -71,31 +70,27 @@ module.exports.run = (
       default: timezone = "Not found"
     }
 
-    const embed = new Discord.MessageEmbed()
-      .addField("City", `${city} (${json.sys.country})`, true)
-      .addField(
-        "Coordinates",
-        `${json.coord.lon}, ${json.coord.lat}`,
-        true
-      )
-      .addField("Timezone", timezone, true)
-      .addField("Weather", json.weather[0].description, true)
-      .addField("Temperature", `${json.main.temp}°C`, true)
-      .addField("Humidity", `${json.main.humidity}%`, true)
-      .addField("Pressure", `${json.main.pressure}hPa`, true)
-      .addField("Wind", `${json.wind.speed}m/s${windangle}`, true)
-      .addField("Cloudiness", `${json.clouds.all}%`, true)
-      .addField("Rain", rainvolume, true)
-      .addField("Snow", snowvolume, true)
-      .addField("Visibility", visible, true)
-      .setColor("BLUE")
-      .setFooter("Powered by OpenWeather");
-    message.channel.send(embed);
+    const embed = new Discord.EmbedBuilder()
+      .addFields([
+        { name: "City", value: `${city} (${json.sys.country})` },
+        { name: "Coordinates", value: `${json.coord.lon}, ${json.coord.lat}` },
+        { name: "Timezone", value: timezone },
+        { name: "Weather", value: json.weather[0].description },
+        { name: "Temperature", value: `${json.main.temp}°C` },
+        { name: "Humidity", value: `${json.main.humidity}%` },
+        { name: "Pressure", value: `${json.main.pressure}hPa` },
+        { name: "Wind", value: `${json.wind.speed}m/s${windangle}` },
+        { name: "Cloudiness", value: `${json.clouds.all}%` },
+        { name: "Rain", value: rainvolume },
+        { name: "Snow", value: snowvolume },
+        { name: "Visibility", value: visible }
+      ])
+      .setColor("#4badeb")
+      .setFooter({ text:"Powered by OpenWeather" });
+    message.channel.send({ embeds: [embed] });
   })
     .catch(error => {
-      message.channel.send(
-        "<:delete:614100269369655306> That city is not being monitored, or the webpage is down."
-      );
+      message.channel.send({ content: `${TxTE.emoji.x} That city is not being monitored, or the webpage is down.` });
       console.error(err);
     });
 };

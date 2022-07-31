@@ -8,7 +8,7 @@
     "guildcolor": {
         "t": "Guildcolor.",
         "d": "Changes the color assigned to your embeds in a specific guild. Personal user colors have priority over guild colors.",
-        "u": "`guildcolor [hex_color]`"
+        "u": "`guildcolor (hex_color)`"
     },
     "help": {
         "t": "You are a funny one, are you?",
@@ -23,12 +23,12 @@
     "levelsystem": {
         "t": "Levelsystem, aka `lvlsys`, `xpsystem`, `xpsys`.",
         "d": "Enables or disables the leveling system in a guild.",
-        "u": "`levelsystem [enable | disable]`"
+        "u": "`levelsystem ('enable' | 'disable')`"
     },
     "suggest": {
         "t": "Suggest.",
         "d": "Sends your feedback directly to the support server.",
-        "u": "`suggest [message]`"
+        "u": "`suggest (message)`"
     },
     "ping": {
         "t": "Ping, aka `latency`.",
@@ -38,12 +38,12 @@
     "prefix": {
         "t": "Prefix.",
         "d": "Sets a custom bot prefix for the server. Append `reset` as the command argument to get rid of the custom prefix. Both custom and original prefix will work simultaneously.",
-        "u": "`prefix [newprefix | reset]`"
+        "u": "`prefix (newprefix | 'reset')`"
     },
     "usercolor": {
         "t": "Usercolor.",
         "d": "Changes the color assigned to your embeds.",
-        "u": "`usercolor [hex_color]`"
+        "u": "`usercolor (hex_color)`"
     },
 
 
@@ -51,37 +51,37 @@
     "prune": {
         "t": "Prune, aka `purge`, `delete`, `bulk`.",
         "d": "Deletes from 1 to 100 messages in the given chat, as long as it's a server channel.",
-        "u": "`prune [delete_count]`"
+        "u": "`prune (number)`"
     },
     "kick": {
         "t": "Kick.",
         "d": "Kicks a member.",
-        "u": "`kick [@member]`"
+        "u": "`kick (@member)`"
     },
     "ban": {
         "t": "Ban.",
         "d": "Bans a member.",
-        "u": "`ban [@member] (reason)`"
+        "u": "`ban (@member) [reason]`"
     },
     "mute": {
         "t": "Mute.",
         "d": "Mutes a member for a given ammount of time in minutes. Mutes without time don't expire.",
-        "u": "`mute (minutes) [@member]`"
+        "u": "`mute [minutes] (@member)`"
     },
     "unmute": {
         "t": "Unmute.",
         "d": "Unmutes a member.",
-        "u": "`unmute [@member]`"
+        "u": "`unmute (@member)`"
     },
     "addrole": {
         "t": "Addrole, aka `add`.",
-        "d": "Adds a role to a member.",
-        "u": "`addrole [@member] [role_name_caseSensitive | role_id | @role]`"
+        "d": "Adds a role to a member. Case sensitive.",
+        "u": "`addrole (@member) (role_name | role_id | @role)`"
     },
     "removerole": {
         "t": "Removerole, aka `remove`.",
-        "d": "Removes a role from a member.",
-        "u": "`removerole [@member] [role_name_caseSensitive | role_id | @role]`"
+        "d": "Removes a role from a member. Case sensitive.",
+        "u": "`removerole (@member) (role_name | role_id | @role)`"
     },
 
 
@@ -89,7 +89,7 @@
     "roll": {
         "t": "Roll, aka `dice`, `random`.",
         "d": "Rolls a dice with the given amount of sides, even negatives, because why not!",
-        "u": "`roll [number]`"
+        "u": "`roll (number)`"
     },
     "bird": {
         "t": "Bird, aka `birb`.",
@@ -127,27 +127,27 @@
     "avatar": {
         "t": "Avatar.",
         "d": "Gets the avatar of the mentioned user.",
-        "u": "`avatar (@member)`"
+        "u": "`avatar [@member]`"
     },
     "remind": {
         "t": "Remind, aka `remindme`, `note`.",
         "d": "DMs you a reminder of something after a given amount of time in minutes.",
-        "u": "`remind [number] [message]`"
+        "u": "`remind (number) (message)`"
     },
     "server": {
         "t": "Server, aka `serverinfo`.",
-        "d": "Gets the properties of a server",
-        "u": "`server`"
+        "d": "Gets the properties of a server. Gets the role list if `roles` is used as an argument.",
+        "u": "`server [roles]`"
     },
     "user": {
         "t": "User, aka `userinfo`, `whois`.",
         "d": "Gets the properties of an user",
-        "u": "`user (@member)`"
+        "u": "`user [@member]`"
     },
     "weather": {
         "t": "Weather.",
         "d": "Gets the current weather of a city, powered by [openweather](https://api.openweathermap.org).",
-        "u": "`weather [city]`"
+        "u": "`weather (city)`"
     },
 
 
@@ -155,7 +155,7 @@
     "addreward": {
         "t": "Addreward, aka `addr`, `ar`.",
         "d": "Adds a role to the list of rewardable roles, to be given at a specified XP level by the levelling system. Only one role can be rewarded per XP level. Using this command on an already added role will update it's required XP level.",
-        "u": "`addreward [role_id] [level]`"
+        "u": "`addreward (role_id) (level)`"
     },
     "leaderboard": {
         "t": "Leaderboard, aka `lb`, `levels`.",
@@ -165,17 +165,17 @@
     "level": {
         "t": "Level, aka `lvl`, `rank`, `xp`.",
         "d": "Gets someone's XP level and XP points.",
-        "u": "`level (@member)`"
+        "u": "`level [@member]`"
     },
     "leveldelete": {
         "t": "Leveldelete, aka `lvldelete`, `rankdelete`.",
         "d": "Erases a member from the guild's level database.",
-        "u": "`leveldelete [user_id]`"
+        "u": "`leveldelete (user_id)`"
     },
     "removereward": {
         "t": "Removereward, aka `remover`, `rr`.",
-        "d": "Removes a role from the rewardable roles. If you only want to change the target XP level, use `addreward` instead.",
-        "u": "`removereward [role_id]`"
+        "d": "Removes a role from the reward list. If you only want to change the target XP level, use `addreward` instead.",
+        "u": "`removereward (role_id)`"
     },
     "rewardlist": {
         "t": "Rewardlist, aka `rlist`, `rl`.",
@@ -183,8 +183,8 @@
         "u": "`rewardlist`"
     },
     "rewardtype": {
-        "t": "Rewardtype, aka `rtype`, `rt`.",
+        "t": "Rewardstack, aka `rtype`, `rt`.",
         "d": "Dictates the behaviour for reward roles. By default set to `true`. If `true`, roles will stack up. If `false`, only the top reward role will be kept, and the rest, removed.",
-        "u": "`rewardtype [true | false]`"
+        "u": "`rewardstack (true | false)`"
     }
 }

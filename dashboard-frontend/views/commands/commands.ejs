@@ -18,166 +18,206 @@
 <body>
     <%- include('../partials/header') -%>
 
-    <%- include('../partials/nav') -%>
+        <%- include('../partials/nav') -%>
 
-    <main class="container-md">
-        <div class="primary">
-            <ul>
-                <li><button onclick="changeDiv('system')">System</button></li>
-                <li><button onclick="changeDiv('moderation')">Moderation</button></li>
-                <li><button onclick="changeDiv('entertainment')">Entertainment</button></li>
-                <li><button onclick="changeDiv('utility')">Utility</button></li>
-                <li><button onclick="changeDiv('leveling')">Leveling</button></li>
-            </ul>
-        </div>
+            <main class="container-md">
+                <div class="primary">
+                    <ul>
+                        <li><button onclick="changeDiv('system')">System</button></li>
+                        <li><button onclick="changeDiv('moderation')">Moderation</button></li>
+                        <li><button onclick="changeDiv('entertainment')">Entertainment</button></li>
+                        <li><button onclick="changeDiv('utility')">Utility</button></li>
+                        <li><button onclick="changeDiv('leveling')">Leveling</button></li>
+                    </ul>
+                </div>
 
-        <div class="secondary">
-            <div class="comlist" id="system">
-                <span class="comhead">Command</span>
-                <span class="comhead">Description</span>
-                <span class="comhead">Usage</span>
+                <div class="secondary">
+                    <div class="comlist" id="system">
+                        <span class="comhead">Command</span>
+                        <span class="comhead">Description</span>
+                        <span class="comhead">Usage</span>
 
-                <span class="title">help</span>
-                <span class="description">Does what you would expect it to do.</span>
-                <span class="usage">Trixy, help (command)</span>
+                        <span class="title">help</span>
+                        <span class="description">Does what you would expect it to do.</span>
+                        <span class="usage">help [command]</span>
 
-                <span class="title">invite</span>
-                <span class="description">Shares an invite with you that adds trixy to a server.</span>
-                <span class="usage">Trixy, invite</span>
+                        <span class="title">invite</span>
+                        <span class="description">Shares an invite with you that adds Trixy to a server.</span>
+                        <span class="usage">invite</span>
 
-                <span class="title">levelsystem</span>
-                <span class="description">Enables or disables the leveling system in a guild.</span>
-                <span class="usage">Trixy, levelsystem [enable | disable]</span>
+                        <span class="title">ping</span>
+                        <span class="description">Gets Trixy's client ping and message endpoint ping.</span>
+                        <span class="usage">ping</span>
 
-                <span class="title">suggest</span>
-                <span class="description">Sends your feedback directly to the support server.</span>
-                <span class="usage">Trixy, suggest [message]</span>
+                        <span class="title">prefix</span>
+                        <span class="description">Sets a custom bot prefix for the server. Use "reset" as the new prefix
+                            to
+                            disable it. Both custom and original prefix will work.</span>
+                        <span class="usage">prefix (newprefix | "reset")</span>
 
-                <span class="title">ping</span>
-                <span class="description">Gets Trixy's client ping and message endpoint ping.</span>
-                <span class="usage">Trixy, ping</span>
+                        <span class="title">suggest</span>
+                        <span class="description">Sends your feedback directly to the support server.</span>
+                        <span class="usage">suggest (message)</span>
 
-                <span class="title">prefix</span>
-                <span class="description">Sets a custom bot prefix for the server. Use "reset" as the new prefix to
-                    disable it. Both custom and original prefix will work.</span>
-                <span class="usage">Trixy, prefix [newprefix | reset]</span>
-            </div>
+                        <span class="title">levelsystem</span>
+                        <span class="description">Enables or disables the leveling system in a guild.</span>
+                        <span class="usage">levelsystem ("enable" | "disable")</span>
 
-            <div class="comlist" id="moderation">
-                <span class="comhead">Command</span>
-                <span class="comhead">Description</span>
-                <span class="comhead">Usage</span>
+                        <span class="title">guildcolor</span>
+                        <span class="description">Changes the color assigned to your embeds in a specific guild.
+                            Personal user colors have priority over guild colors.</span>
+                        <span class="usage">guildcolor (hex_color)</span>
 
-                <span class="title">prune</span>
-                <span class="description">Deletes from 1 to 100 messages in the given chat, as long as it's a server channel.</span>
-                <span class="usage">Trixy, prune [delete_count]</span>
+                        <span class="title">usercolor</span>
+                        <span class="description">Changes the color assigned to your embeds.</span>
+                        <span class="usage">usercolor (hex_color)</span>
+                    </div>
 
-                <span class="title">kick</span>
-                <span class="description">Kicks a member.</span>
-                <span class="usage">Trixy, kick [@member]</span>
+                    <div class="comlist" id="moderation">
+                        <span class="comhead">Command</span>
+                        <span class="comhead">Description</span>
+                        <span class="comhead">Usage</span>
 
-                <span class="title">ban</span>
-                <span class="description">Bans a member.</span>
-                <span class="usage">Trixy, ban [@member] (reason)</span>
+                        <span class="title">prune</span>
+                        <span class="description">Deletes from 1 to 100 messages in the given chat, as long as it's a
+                            server channel.</span>
+                        <span class="usage">prune (number)</span>
 
-                <span class="title">mute</span>
-                <span class="description">Mutes a member for a given ammount of time in minutes. Mutes without time don't expire.</span>
-                <span class="usage">Trixy, mute (minutes) [@member]</span>
+                        <span class="title">kick</span>
+                        <span class="description">Kicks a member.</span>
+                        <span class="usage">kick (@member)</span>
 
-                <span class="title">unmute</span>
-                <span class="description">Unmutes a member.</span>
-                <span class="usage">Trixy, unmute [@member]</span>
+                        <span class="title">ban</span>
+                        <span class="description">Bans a member.</span>
+                        <span class="usage">ban (@member) (reason)</span>
 
-                <span class="title">addrole</span>
-                <span class="description">Adds a role to a member.</span>
-                <span class="usage">Trixy, addrole [@member] [role_name | role_id | @role]</span>
+                        <span class="title">mute</span>
+                        <span class="description">Mutes a member for a given ammount of time in minutes. Mutes without
+                            time don't expire.</span>
+                        <span class="usage">mute [minutes] (@member)</span>
 
-                <span class="title">removerole</span>
-                <span class="description">Removes a role from a member.</span>
-                <span class="usage">Trixy, removerole [@member] [role_name | role_id | @role]</span>
-            </div>
+                        <span class="title">unmute</span>
+                        <span class="description">Unmutes a member.</span>
+                        <span class="usage">unmute (@member)</span>
 
-            <div class="comlist" id="entertainment">
-                <span class="comhead">Command</span>
-                <span class="comhead">Description</span>
-                <span class="comhead">Usage</span>
+                        <span class="title">addrole</span>
+                        <span class="description">Adds a role to a member. Case sensitive.</span>
+                        <span class="usage">addrole (@member) (role_name | role_id | @role)</span>
 
-                <span class="title">roll</span>
-                <span class="description">Rolls a dice with the given amount of sides, even negatives, because why not!</span>
-                <span class="usage">Trixy, roll [number]</span>
+                        <span class="title">removerole</span>
+                        <span class="description">Removes a role from a member. Case sensitive.</span>
+                        <span class="usage">removerole (@member) (role_name | role_id | @role)</span>
+                    </div>
 
-                <span class="title">bird</span>
-                <span class="description">Gets a random image of a bird.</span>
-                <span class="usage">Trixy, bird</span>
+                    <div class="comlist" id="entertainment">
+                        <span class="comhead">Command</span>
+                        <span class="comhead">Description</span>
+                        <span class="comhead">Usage</span>
 
-                <span class="title">cat</span>
-                <span class="description">Gets a random image of a cat.</span>
-                <span class="usage">Trixy, cat</span>
+                        <span class="title">roll</span>
+                        <span class="description">Rolls a dice with the given amount of sides, even negatives, because
+                            why not!</span>
+                        <span class="usage">roll (number)</span>
 
-                <span class="title">cosmos</span>
-                <span class="description">Gets the daily space image from NASA.</span>
-                <span class="usage">Trixy, cosmos</span>
+                        <span class="title">bird</span>
+                        <span class="description">Gets a random image of a bird.</span>
+                        <span class="usage">bird</span>
 
-                <span class="title">dog</span>
-                <span class="description">Gets a random image of a dog.</span>
-                <span class="usage">Trixy, dog</span>
+                        <span class="title">cat</span>
+                        <span class="description">Gets a random image of a cat.</span>
+                        <span class="usage">cat</span>
 
-                <span class="title">fact</span>
-                <span class="description">Gets a random fact.</span>
-                <span class="usage">Trixy, fact</span>
+                        <span class="title">cosmos</span>
+                        <span class="description">Gets the daily space image from NASA.</span>
+                        <span class="usage">cosmos</span>
 
-                <span class="title">fox</span>
-                <span class="description">Gets a random image of a fox.</span>
-                <span class="usage">Trixy, fox</span>
-            </div>
+                        <span class="title">dog</span>
+                        <span class="description">Gets a random image of a dog.</span>
+                        <span class="usage">dog</span>
 
-            <div class="comlist" id="utility">
-                <span class="comhead">Command</span>
-                <span class="comhead">Description</span>
-                <span class="comhead">Usage</span>
+                        <span class="title">fact</span>
+                        <span class="description">Gets a random fact.</span>
+                        <span class="usage">fact</span>
 
-                <span class="title">avatar</span>
-                <span class="description">Gets the avatar of the mentioned user.</span>
-                <span class="usage">Trixy, avatar (@member)</span>
+                        <span class="title">fox</span>
+                        <span class="description">Gets a random image of a fox.</span>
+                        <span class="usage">fox</span>
+                    </div>
 
-                <span class="title">remind</span>
-                <span class="description">DMs you a reminder of something after a given amount of time in minutes.</span>
-                <span class="usage">Trixy, remind [number] [message]</span>
+                    <div class="comlist" id="utility">
+                        <span class="comhead">Command</span>
+                        <span class="comhead">Description</span>
+                        <span class="comhead">Usage</span>
 
-                <span class="title">server</span>
-                <span class="description">Gets the properties of a server</span>
-                <span class="usage">Trixy, server</span>
+                        <span class="title">avatar</span>
+                        <span class="description">Gets the avatar of the mentioned user.</span>
+                        <span class="usage">avatar [@member]</span>
 
-                <span class="title">user</span>
-                <span class="description">Gets the properties of an user</span>
-                <span class="usage">Trixy, user (@member)</span>
+                        <span class="title">remind</span>
+                        <span class="description">DMs you a reminder of something after a given amount of time in
+                            minutes.</span>
+                        <span class="usage">remind (minutes) (message)</span>
 
-                <span class="title">weather</span>
-                <span class="description">Gets the current weather of a city, powered by <a href="https://api.openweathermap.org">openweather</a>.</span>
-                <span class="usage">Trixy, [city]</span>
-            </div>
+                        <span class="title">server</span>
+                        <span class="description">Gets the properties of a server. Gets the role list if "roles" is used
+                            as an argument.</span>
+                        <span class="usage">server [roles]</span>
 
-            <div class="comlist" id="leveling">
-                <span class="comhead">Command</span>
-                <span class="comhead">Description</span>
-                <span class="comhead">Usage</span>
+                        <span class="title">user</span>
+                        <span class="description">Gets the properties of an user.</span>
+                        <span class="usage">user [@member]</span>
 
-                <span class="title">leaderboard</span>
-                <span class="description">Shows the top 10 users by Level and XP points in the guild.</span>
-                <span class="usage">Trixy, leaderboard</span>
+                        <span class="title">weather</span>
+                        <span class="description">Gets the current weather of a city, powered by <a
+                                href="https://api.openweathermap.org">openweather</a>.</span>
+                        <span class="usage">weather (city)</span>
+                    </div>
 
-                <span class="title">level</span>
-                <span class="description">Gets someones Level and XP points.</span>
-                <span class="usage">Trixy, level (@member)</span>
+                    <div class="comlist" id="leveling">
+                        <span class="comhead">Command</span>
+                        <span class="comhead">Description</span>
+                        <span class="comhead">Usage</span>
 
-                <span class="title">leveldelete</span>
-                <span class="description">Erases a member from the guild's level database.</span>
-                <span class="usage">Trixy, leveldelete [@member]</span>
-            </div>
-        </div>
-    </main>
+                        <span class="title">leaderboard</span>
+                        <span class="description">Shows the top 10 users by Level and XP points in the guild.</span>
+                        <span class="usage">Trixy, leaderboard</span>
 
-    <%- include('../partials/footer') -%>
+                        <span class="title">level</span>
+                        <span class="description">Gets someones Level and XP points.</span>
+                        <span class="usage">Trixy, level (@member)</span>
+
+                        <span class="title">leveldelete</span>
+                        <span class="description">Erases a member from the guild's level database.</span>
+                        <span class="usage">Trixy, leveldelete [@member]</span>
+
+                        <span class="title">addreward</span>
+                        <span class="description">Adds a role to the list of rewardable roles, to be given at a
+                            specified XP level by the levelling system. Only one role can be rewarded per XP level.
+                            Using this command on an already added role will update the required XP level.</span>
+                        <span class="usage">addreward (role_id) (level)</span>
+
+                        <span class="title">removereward</span>
+                        <span class="description">Removes a role from the reward list. If you only want to change
+                            the target XP level, use the command <i>addreward</i> instead.</span>
+                        <span class="usage">removereward (role_id)</span>
+
+                        <span class="title">rewardlist</span>
+                        <span class="description">Shows all the reward roles set for the guild.</span>
+                        <span class="usage">rewardlist</span>
+
+                        <span class="title">rewardstack</span>
+                        <span class="description">Dictates the behaviour for reward roles. By default set to
+                            <i>true</i>. If
+                            <i>true</i>, roles will stack up. If <i>false</i>, only the top reward role will be kept,
+                            and the
+                            rest, removed.</span>
+                        <span class="usage">rewardstack (true | false)</span>
+                    </div>
+                </div>
+            </main>
+
+            <%- include('../partials/footer') -%>
+            <script src="/scripts/commandlist.js"></script>
 </body>
 
 </html>

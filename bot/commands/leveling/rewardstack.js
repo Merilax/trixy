@@ -2,8 +2,8 @@ const db = require('../../DB/sequelDB.js');
 const TxTE = require("../../TxTE.json");
 
 module.exports.commanddata = {
-    name: "rewardtype",
-    aliases: ["rtype", "rt"],
+    name: "rewardstack",
+    aliases: ["rstack", "rs"],
     category: "levels",
     cooldown: 5,
     guildOnly: true,

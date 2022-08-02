@@ -27,7 +27,7 @@ const sequelize = new Sequelize(process.env.SEQUELDB_URL, {
 sequelize.authenticate();
 console.log("Database Auth Success!");
 
-const XPEnabled = sequelize.define('xpenable', {
+const XPEnabled = sequelize.define('xpenables', {
     guild: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -68,7 +68,7 @@ const Levels = sequelize.define('levels', {
     },
 });
 
-const XPRewardType = sequelize.define('xprewardtype', {
+const XPRewardType = sequelize.define('xprewardtypes', {
     guild: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -122,7 +122,7 @@ const Reminders = sequelize.define('reminders', {
     duration: Sequelize.INTEGER,
 });
 
-const Prefix = sequelize.define('prefix', {
+const Prefix = sequelize.define('prefixes', {
     guildId: {
         type: Sequelize.STRING,
         allowNull: false,

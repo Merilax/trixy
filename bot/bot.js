@@ -95,6 +95,7 @@ const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 3001;
 const session = require('express-session');
+const MongoStore = require('connect-mongo');
 const passport = require('passport');
 const DiscordStrategy = require('../dashboard-backend/strategies/discordstrategy');
 
@@ -111,10 +112,12 @@ const termsRoute = require('../dashboard-backend/routes/legal/terms-and-conditio
 app.use(session({
   secret: 'secretHere',
   cookie: {
-    maxAge: 60000 * 60 * 8
+    maxAge: 60000 * 60 * 24
   },
   saveUninitialized: false,
+  resave: false,
   name: 'discord.oauth2',
+  store: MongoStore.create({ mongoUrl:`mongodb+srv://Trixy:${process.env.MONGODB_PASSWORD}@trixy-mondodb.sv0er.mongodb.net/main?retryWrites=true&w=majority` })
 }));
 
 // Passport
@@ -411,8 +414,16 @@ bot.on("ready", async () => {
 bot.on("guildCreate", guild => {
   console.log(`New guild joined: ${guild.name} (id: ${guild.id}).`);
 });
-bot.on("guildDelete", guild => {
-  console.log(`I have been removed from: ${guild.name} (id: ${guild.id})`);
+bot.on("guildDelete", async guild => {
+  console.log(`I have been removed from: ${guild.name} (${guild.id})`);
+  await db.Levels.destroyAll({ where: { guild: guild.id }});
+  await db.XPEnabled.destroyAll({ where: { guild: guild.id }});
+  await db.XPRewards.destroyAll({ where: { guild: guild.id }});
+  await db.XPRewardType.destroyAll({ where: { guild: guild.id }});
+  await db.Mutes.destroyAll({ where: { guildId: guild.id }});
+  await db.Prefix.destroy({ where: { guildId: guild.id }});
+  const GuildCard = require('./DB/modals/GuildCard');
+  await GuildCard.destroy({ where: { discordId: guild.id }});
 });
 
 //bot.on('debug', console.log);

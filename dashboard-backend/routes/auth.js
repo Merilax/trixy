@@ -8,10 +8,12 @@ router.get('/redirect', passport.authenticate('discord', {
 }), (req, res) => {
     res.send(200);
 });
-router.get('/logout', (req, res) => {
-    if(req.user) {
-        req.logout();
-        res.redirect('/');
+router.get('/logout', (req, res, next) => {
+    if (req.user) {
+        req.logout(err => {
+            if (err) return next(err);
+            res.redirect('/');
+        });
     } else {
         res.redirect('/');
     }

@@ -13,8 +13,8 @@
     justify-self: left;
     justify-content: center;
 }
-#dashlogo a h2 { text-decoration: none; margin: 0; color: var(--nav-a); }
-#dashlogo a:hover h2 { color: var(--nav-a-hover); }
+#dashlogo a h2 { text-decoration: none; margin: 0; }
+
 #dashlogo img { border-radius: 50%; margin-right: 10px; }
 
 .select {
@@ -27,20 +27,18 @@
 }
 @media (max-width: 576px) { .select { flex-wrap: wrap; width: 100%;} }
 .select button {
-    background-color: var(--nav);
     margin: 10px 30px;
     border-radius: 10px;
     padding: 10px;
     border-style: none;
     width: 100%;
     text-align: center;
-    color: var(--nav-a);
     transition: background-color 0.5s, color 0.5s;
 }
 
 
 
-/* || PERSONAL CONFIG */
+/* PERSONAL CONFIG */
 
 #pconf {
     display: none;
@@ -70,19 +68,48 @@
     padding: 5px;
     border-style: none;
     text-align: center;
-    color: var(--txt);
     transition: background-color 0.5s, color 0.5s;
 }
 
+/* GUILD SELECT */
 
-/* || GUILD CONFIG */
+#guild-select-list {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    width: 100%;
+    flex-wrap: wrap;
+    list-style: none;
+    border-radius: 20px;
+    padding: 20px 30px 20px 20px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+#guild-select-list li {
+    width: 76px;
+    height: 76px;
+}
+.guild-select-button {
+    overflow: hidden;
+    width: 68px;
+    height: 68px;
+    margin: 4px;
+    border-radius: 50%;
+    border: 2px;
+    border-style: solid;
+    padding: 0px;
+}
+.guild-select-button img {
+    border-radius: 50%;
+}
+
+/* GUILD CONFIG */
 
 #gconf {
     display: none;
     flex-direction: column;
     flex-wrap: wrap;
 }
-#gconf ul {
+#module-select {
     width: 200px;
     list-style: none;
     text-indent: 5px;
@@ -90,7 +117,7 @@
     padding: 20px 30px 20px 20px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
-#gconf li button {
+#module-select li button {
     background-color: transparent;
     margin: 5px 0;
     border-radius: 10px;
@@ -98,7 +125,6 @@
     border-style: none;
     width: 100%;
     text-align: left;
-    color: var(--txt);
     transition: background-color 0.5s, color 0.5s;
 }
 @media (max-width: 992px) {
@@ -109,8 +135,6 @@
     #gconf li button { text-align: center; }
 }
 .module { display: none; }
-
-
 
 #gconf2 {
     display: none;
@@ -137,6 +161,5 @@
     min-width: 20px;
     border-style: none;
     text-align: center;
-    color: var(--txt);
     transition: background-color 0.5s, color 0.5s;
 }

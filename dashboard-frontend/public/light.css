@@ -239,6 +239,10 @@ footer a { text-decoration: none; color: var(--txt3); }
 
 /* || DASHBOARD */
 
+#dashlogo a h2 { color: var(--nav-a); }
+#dashlogo a:hover h2 { color: var(--nav-a-hover); }
+
+.select button { background-color: var(--nav); color: var(--nav-a); }
 .select button:hover, .select button:focus { background-color: var(--light-layer5); color: var(--txt6); }
 
 #pconf, #gconf2 {
@@ -250,11 +254,16 @@ footer a { text-decoration: none; color: var(--txt3); }
 #gconf li button{ background-color: var(--light-layer3); }
 #gconf li:hover button, #gconf li button:focus { background-color: var(--light-layer5); color: var(--txt6); }
 
+#guild-select-list { scrollbar-color: var(--blue2); }
+.guild-select-button { border-color: var(--light-layer-3); }
+.guild-select-button:hover, .guild-select-button:focus { border-color: var(--blue); }
+#module-select li button { color: var(--txt); }
+
 .level-card {
     background-color: var(--light-layer3);
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
-.level-card button { background-color: var(--light-layer3); }
+.level-card button { background-color: var(--light-layer3); color: var(--txt); }
 .level-card button:hover { background-color: var(--light-layer5); color: var(--txt6); }
-.prefix button { background-color: var(--light-layer3); }
+.prefix button { background-color: var(--light-layer3); color: var(--txt); }
 .prefix button:hover { background-color: var(--light-layer5); color: var(--txt6); }

@@ -1,10 +1,9 @@
 const fetch = require('node-fetch');
-const TOKEN = process.env.TOKEN;
 async function getBotGuilds() {
     const response = await fetch("http://discord.com/api/v6/users/@me/guilds", {
         method: 'GET',
         headers: {
-            Authorization: `Bot ${TOKEN}`
+            Authorization: `Bot ${process.env.TOKEN}`
         }
     });
     return response.json();

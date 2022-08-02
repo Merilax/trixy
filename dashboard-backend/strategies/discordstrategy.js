@@ -2,11 +2,11 @@ const DiscordStrategy = require('passport-discord').Strategy;
 const passport = require('passport');
 const DiscordUser = require('../../bot/DB/modals/DiscordUser')
 
-passport.serializeUser( (user, done) => {
+passport.serializeUser((user, done) => {
     done(null, user.id);
 });
 
-passport.deserializeUser( async (id, done) => {
+passport.deserializeUser(async (id, done) => {
     const user = await DiscordUser.findById(id);
     if (user) done(null, user);
 });
@@ -19,8 +19,10 @@ passport.use(new DiscordStrategy({
 }, async (accessToken, refreshToken, profile, done) => {
     try {
         const user = await DiscordUser.findOne({ discordId: profile.id });
-        if(user) {
-            done(null, user);
+        if (user) {
+            await user.updateOne({ username: profile.username, useravatar: profile.avatar, guilds: profile.guilds });
+            const updatedUser = await DiscordUser.findOne({ discordId: profile.id });
+            done(null, updatedUser);
         } else {
             const newUser = await DiscordUser.create({
                 discordId: profile.id,

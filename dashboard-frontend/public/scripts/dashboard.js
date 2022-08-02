@@ -33,6 +33,20 @@ function changeModule(selected) {
     document.getElementById("gconf2").style.display = "flex";
 }
 
+// Submit value
+
+function setGuild(id) {
+    var guildList = document.getElementsByClassName('guild-select-button');
+    for (let i = 0; i < guildList.length; i++) {
+        if (id !== "addGuild") {
+            guildList[i].attributes.selected.value = "false";
+        }
+    }
+    if (id !== "addGuild") {
+        document.getElementById(id).attributes.selected.value = "true";
+    }
+}
+
 function updateDB(inputType) {
     var xhr = new XMLHttpRequest();
     xhr.open('POST', '/dbupdate', true);
@@ -41,10 +55,17 @@ function updateDB(inputType) {
         if (this.readyState === XMLHttpRequest.DONE && this.status === 200) { }
     };
     try {
-        var param = document.getElementById(inputType).value
+        var guilds = document.getElementsByClassName("guild-select-button");
+
+        for (let i = 0; i < guilds.length; i++) {
+            if (guilds[i].attributes.selected.value === "true") { var guildId = guilds[i].attributes.id.value; }
+        }
+        var param = document.getElementById(inputType).value;
     } catch (e) {
-        var param = "reset";
+        var guildId = "guild error";
+        var param = "param error";
     }
-    xhr.send(`edit=${inputType}&value=${param}`);
-    console.log("Trigger, dashPost");
+    //console.log(inputType + ", " + param + ", " + guildId);
+    xhr.send(`edit=${inputType}&value=${param}&guild=${guildId}`);
+
 }

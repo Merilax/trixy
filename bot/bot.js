@@ -93,7 +93,7 @@ async function levelUp(message) {
 
 const express = require("express");
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const passport = require('passport');
@@ -110,7 +110,7 @@ const privacyRoute = require('../dashboard-backend/routes/legal/privacy-policy')
 const termsRoute = require('../dashboard-backend/routes/legal/terms-and-conditions');
 
 app.use(session({
-  secret: 'secretHere',
+  secret: process.env.COOKIE_SECRET,
   cookie: {
     maxAge: 60000 * 60 * 24
   },

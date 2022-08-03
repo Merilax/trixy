@@ -33,7 +33,7 @@
     "winston": "^3.8.1"
   },
   "engines": {
-    "node": "12.x"
+    "node": "16.x"
   },
   "license": "MIT"
 }

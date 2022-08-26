@@ -20,7 +20,7 @@
     "json": ">=10.0.0",
     "log-symbols": "^4.1.0",
     "moment": "^2.29.4",
-    "mongoose": "^6.4.5",
+    "mongoose": "^6.4.6",
     "node-fetch": "^2.6.7",
     "passport": "^0.6.0",
     "passport-discord": "^0.1.4",

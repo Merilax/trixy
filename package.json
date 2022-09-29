@@ -25,7 +25,6 @@
     "passport": "^0.6.0",
     "passport-discord": "^0.1.4",
     "path": "^0.12.7",
-    "pg": "^8.7.3",
     "request": "^2.88.2",
     "sequelize": "^6.21.3",
     "util": "^0.12.4",

@@ -46,9 +46,9 @@ const db = require('./DB/sequelDB.js');
 async function addXP(message) {
   if (!message.guild) return;
   var [xpenable, xpCreated] = await db.XPEnabled.findOrCreate({ where: { guild: message.guild.id }, defaults: { guild: message.guild.id } });
-  var [level, levelCreated] = await db.Levels.findOrCreate({ where: { guild: message.guild.id, userId: message.author.id }, defaults: { guild: message.guild.id, user: message.author.tag } });
 
   if (xpenable.enabled === false) { return } else {
+    var [level, levelCreated] = await db.Levels.findOrCreate({ where: { guild: message.guild.id, userId: message.author.id }, defaults: { guild: message.guild.id, user: message.author.tag } });
     await db.Levels.update({ message_count: level.message_count + 1, xp: level.xp + xpRandom }, { where: { guild: message.guild.id, userId: message.author.id } });
     levelUp(message);
   }
@@ -117,7 +117,7 @@ app.use(session({
   saveUninitialized: false,
   resave: false,
   name: 'discord.oauth2',
-  store: MongoStore.create({ mongoUrl:`mongodb+srv://Trixy:${process.env.MONGODB_PASSWORD}@trixy-mondodb.sv0er.mongodb.net/main?retryWrites=true&w=majority` })
+  store: MongoStore.create({ mongoUrl: `mongodb+srv://Trixy:${process.env.MONGODB_PASSWORD}@trixy-mondodb.sv0er.mongodb.net/main?retryWrites=true&w=majority` })
 }));
 
 // Passport
@@ -223,6 +223,7 @@ bot.on("messageCreate", async message => {
       switch (mentionForHelp[1]) {
         case "help":
         case "prefix": return message.channel.send({ content: "Try using `Trixy, help`" });
+        default: { };
       }
     }
   } // Reacts to bot mention.
@@ -400,14 +401,14 @@ bot.on("ready", async () => {
   bot.user.setActivity(
     `${bot.guilds.cache.size} servers, ${bot.users.cache.size} users.\n@Trixy help. ` +
     `${statusquote[Math.floor(Math.random() * statusquote.length)]}`,
-    { type: "WATCHING" }
+    { type: 3 }
   );
 
   setInterval(() => {
     bot.user.setActivity(
       `${bot.guilds.cache.size} servers, ${bot.users.cache.size} users.\n@Trixy help. ` +
       `${statusquote[Math.floor(Math.random() * statusquote.length)]}`,
-      { type: "WATCHING" }
+      { type: 3 }
     );
   }, 120 * 1000);
 });
@@ -416,14 +417,14 @@ bot.on("guildCreate", guild => {
 });
 bot.on("guildDelete", async guild => {
   console.log(`I have been removed from: ${guild.name} (${guild.id})`);
-  await db.Levels.destroyAll({ where: { guild: guild.id }});
-  await db.XPEnabled.destroyAll({ where: { guild: guild.id }});
-  await db.XPRewards.destroyAll({ where: { guild: guild.id }});
-  await db.XPRewardType.destroyAll({ where: { guild: guild.id }});
-  await db.Mutes.destroyAll({ where: { guildId: guild.id }});
-  await db.Prefix.destroy({ where: { guildId: guild.id }});
+  await db.Levels.destroyAll({ where: { guild: guild.id } });
+  await db.XPEnabled.destroyAll({ where: { guild: guild.id } });
+  await db.XPRewards.destroyAll({ where: { guild: guild.id } });
+  await db.XPRewardType.destroyAll({ where: { guild: guild.id } });
+  await db.Mutes.destroyAll({ where: { guildId: guild.id } });
+  await db.Prefix.destroy({ where: { guildId: guild.id } });
   const GuildCard = require('./DB/modals/GuildCard');
-  await GuildCard.destroy({ where: { discordId: guild.id }});
+  await GuildCard.destroy({ where: { discordId: guild.id } });
 });
 
 //bot.on('debug', console.log);

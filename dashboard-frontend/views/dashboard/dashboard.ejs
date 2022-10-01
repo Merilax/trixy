@@ -40,7 +40,7 @@
             <% guilds.forEach(guild => { %>
                 <li><button class="guild-select-button" selected="false" id="<%=guild.id%>" onclick="setGuild('<%=guild.id%>')"><img src="https://cdn.discordapp.com/icons/<%=guild.id%>/<%=guild.icon%>.webp?size=64" alt="<%=guild.name%>"></button></li>
             <% }) %>
-            <li><button class="guild-select-button" id="addGuild"><a href="https://discord.com/api/oauth2/authorize?client_id=583006737322475550&redirect_uri=https%3A%2F%2Ftrixy-v3.herokuapp.com%2Fauth%2Fredirect&response_type=code&scope=identify%20email%20guilds">+</a></button></li>
+            <li><button class="guild-select-button" id="addGuild"><a href="https://discord.com/api/oauth2/authorize?client_id=583006737322475550&redirect_uri=https%3A%2F%2Ftrixy.onrender.com%2Fauth%2Fredirect&response_type=code&scope=identify%20email%20guilds">+</a></button></li>
         </ul>
         
         <ul id="module-select">

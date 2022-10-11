@@ -134,5 +134,5 @@ const Prefix = sequelize.define('prefixes', {
     },
 });
 
-sequelize.sync({force:false});
+sequelize.sync({ force: false, alter: true });
 module.exports = { XPEnabled, Levels, XPRewardType, XPRewards, Mutes, Reminders, Prefix };

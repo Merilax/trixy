@@ -98,6 +98,13 @@
     border-style: solid;
     padding: 0px;
 }
+.guild-select-button:focus img {
+    animation: bounce 0.3 ease-in-out alternate ;
+}
+@keyframes bounce {
+    from { width: auto; height: auto;}
+    to { width: 55px; height: 55px;}
+}
 .guild-select-button img {
     border-radius: 50%;
 }

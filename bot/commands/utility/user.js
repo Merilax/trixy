@@ -24,7 +24,7 @@ module.exports.run = (
     user = message.author;
   }
 
-  const member = message.guild.members.cache.get(user);
+  const member = message.guild.members.cache.get(user.id);
   const userStatus = {
     online: "Online",
     idle: "Idle",
@@ -36,7 +36,7 @@ module.exports.run = (
     .setColor("#4badeb")
     .setThumbnail(user.avatarURL())
     .addFields([
-      { name: `${TxTE.emoji.user} User:`, value: `${user}#${user.discriminator}` },
+      { name: `${TxTE.emoji.user} User:`, value: `${user.username}#${user.discriminator}` },
       { name: `${TxTE.emoji.user} Id:`, value: `${user.id}` },
       { name: `${TxTE.emoji.comment} Nickname:`, value: `${member.nickname !== null ? `${member.nickname}` : "None"}` },
       { name: `${TxTE.emoji.quote} Status:`, value: `${userStatus[user.presence.status]}` },

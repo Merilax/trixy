@@ -31,7 +31,7 @@ module.exports.run = (
     return memberCount;
   }
   var serverembed = new Discord.EmbedBuilder()
-    .setAuthor(`${message.guild.name}`, message.guild.iconURL())
+    .setAuthor({ name: message.guild.name, iconURL: message.guild.iconURL()})
     .setColor("#4badeb")
     .addFields([
       { name: `${TxTE.emoji.user} Server owner`, value: message.guild.owner },
@@ -47,7 +47,7 @@ module.exports.run = (
     .setTimestamp(message.guild.createdAt);
 
   var roleembed = new Discord.EmbedBuilder()
-    .setAuthor(`${message.guild.name}`, message.guild.iconURL())
+    .setAuthor({ name: message.guild.name, iconURL: message.guild.iconURL()})
     .setColor("#4badeb")
     .setTitle("Roles are not in order.")
     .setDescription(message.guild.roles.cache.map(r => r.name).join("\n"))

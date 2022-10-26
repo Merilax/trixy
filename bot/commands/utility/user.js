@@ -24,7 +24,7 @@ module.exports.run = (
     user = message.author;
   }
 
-  const member = message.guild.member(user);
+  const member = message.guild.members.cache.get(user);
   const userStatus = {
     online: "Online",
     idle: "Idle",

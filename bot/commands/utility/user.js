@@ -25,21 +25,14 @@ module.exports.run = (
   }
 
   const member = message.guild.members.cache.get(user.id);
-  const userStatus = {
-    online: "Online",
-    idle: "Idle",
-    dnd: "Do Not Disturb",
-    offline: "Offline"
-  }
 
   const embed = new Discord.EmbedBuilder()
     .setColor("#4badeb")
     .setThumbnail(user.avatarURL())
     .addFields([
-      { name: `${TxTE.emoji.user} User:`, value: `${user.username}#${user.discriminator}` },
+      { name: `${TxTE.emoji.user} User:`, value: `${user.tag}` },
       { name: `${TxTE.emoji.user} Id:`, value: `${user.id}` },
       { name: `${TxTE.emoji.comment} Nickname:`, value: `${member.nickname !== null ? `${member.nickname}` : "None"}` },
-      { name: `${TxTE.emoji.quote} Status:`, value: `${userStatus[user.presence.status]}` },
       { name: `${TxTE.emoji.quote} Custom Status:`, value: `${user.presence.activities[0] ? user.presence.activities[0].state : "None"}` },
       { name: `${TxTE.emoji.card} Activity:`, value: `${user.presence.activities[1] ? user.presence.activities[1].name : "None"}` },
       { name: `${TxTE.emoji.puzzle} Bot:`, value: `${user.bot}` },

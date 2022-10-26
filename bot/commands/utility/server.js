@@ -34,13 +34,13 @@ module.exports.run = (
     .setAuthor({ name: message.guild.name, iconURL: message.guild.iconURL()})
     .setColor("#4badeb")
     .addFields([
-      { name: `${TxTE.emoji.user} Server owner`, value: message.guild.owner },
-      { name: `${TxTE.emoji.network} Verification level`, value: message.guild.verificationLevel },
-      { name: `${TxTE.emoji.comment} Channel count`, value: message.guild.channels.cache.size },
-      { name: `${TxTE.emoji.db} Roles count`, value: message.guild.roles.cache.size },
-      { name: `${TxTE.emoji.chart} Total member count`, value: message.guild.memberCount },
-      { name: `${TxTE.emoji.user} Humans`, value: checkMembers(message.guild) },
-      { name: `${TxTE.emoji.puzzle} Bots`, value: checkBots(message.guild) }
+      { name: `${TxTE.emoji.user} Server owner`, value: `${message.guild.owner}` },
+      { name: `${TxTE.emoji.network} Verification level`, value: `${message.guild.verificationLevel}` },
+      { name: `${TxTE.emoji.comment} Channel count`, value: `${message.guild.channels.cache.size}` },
+      { name: `${TxTE.emoji.db} Roles count`, value: `${message.guild.roles.cache.size}` },
+      { name: `${TxTE.emoji.chart} Total member count`, value: `${message.guild.memberCount}` },
+      { name: `${TxTE.emoji.user} Humans`, value: `${checkMembers(message.guild)}` },
+      { name: `${TxTE.emoji.puzzle} Bots`, value: `${checkBots(message.guild)}` }
     ])
     .setThumbnail(message.guild.iconURL())
     .setFooter({ text:`Use command \`server roles\` to show a list of roles. Guild created at:` })

@@ -34,7 +34,8 @@ module.exports.run = (
     .setAuthor({ name: message.guild.name, iconURL: message.guild.iconURL()})
     .setColor("#4badeb")
     .addFields([
-      { name: `${TxTE.emoji.user} Server owner`, value: `${message.guild.owner}` },
+      { bame: `${TxTE.emoji.user} ID`, value: `${message.guild.id}`},
+      { name: `${TxTE.emoji.user} Server owner`, value: `${message.guild.members.cache.get(message.guild.ownerId).user.tag}` },
       { name: `${TxTE.emoji.network} Verification level`, value: `${message.guild.verificationLevel}` },
       { name: `${TxTE.emoji.comment} Channel count`, value: `${message.guild.channels.cache.size}` },
       { name: `${TxTE.emoji.db} Roles count`, value: `${message.guild.roles.cache.size}` },

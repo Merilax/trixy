@@ -12,13 +12,14 @@ module.exports.run = (
   args,
   prefix
 ) => {
-  if (!message.mentions.users.size) {
+  if (!message.guild) {
     return message.channel.send({ content: `Your avatar: ${message.author.displayAvatarURL()}` });
   }
 
-  const avatarList = message.mentions.users.map(user => {
-    return `${user.username}'s avatar: ${user.displayAvatarURL()}`;
-  });
+  let member = message.mentions.members.first();
+  if (!member) {
+    return message.channel.send({ content: `Your avatar: ${message.author.displayAvatarURL()}` });
+  }
 
-  message.channel.send({ content: avatarList });
+  message.channel.send({ content: `${member.user.username}'s avatar: ${member.user.displayAvatarURL()}` });
 };

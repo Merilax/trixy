@@ -22,7 +22,7 @@ module.exports.run = async (
     if (!message.guild.roles.cache.find(r => r.id === args[0])) { message.channel.send({ content: `${TxTE.emoji.quote} I couldn't find a matching role, did you copy the right Id?` }); }
 
     const found = await db.XPRewards.findOne({ where: { guild: message.guild.id, roleId: args[0] }});
-    if (!found) return message.channel.send({ content: `${TxTE.emoji.x} The role ${message.guild.roles.cache.find(r => r.id === args[0]).name} is not being rewarded.` });
+    if (!found) return message.channel.send({ content: `${TxTE.emoji.x} This role is not being rewarded.` });
     await db.XPRewards.destroy({ where: { guild: message.guild.id, roleId: args[0] } });
-    message.channel.send({ content: `${TxTE.emoji.ok} The role **${message.guild.roles.cache.find(r => r.id === args[0]).name}** won't be rewarded anymore.` });
+    message.channel.send({ content: `${TxTE.emoji.ok} This role won't be rewarded anymore.` });
 };

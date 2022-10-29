@@ -48,22 +48,22 @@ async function addXP(message) {
   var [xpenable, xpCreated] = await db.XPEnabled.findOrCreate({ where: { guild: message.guild.id }, defaults: { guild: message.guild.id } });
 
   if (xpenable.enabled === false) { return } else {
-    var [level, levelCreated] = await db.Levels.findOrCreate({ where: { guild: message.guild.id, userId: message.author.id }, defaults: { guild: message.guild.id, user: message.author.tag } });
-    await db.Levels.update({ message_count: level.message_count + 1, xp: level.xp + xpRandom }, { where: { guild: message.guild.id, userId: message.author.id } });
+    var [xpLevel, levelCreated] = await db.Levels.findOrCreate({ where: { guild: message.guild.id, userId: message.author.id }, defaults: { guild: message.guild.id, user: message.author.tag } });
+    await db.Levels.update({ message_count: xpLevel.message_count + 1, xp: xpLevel.xp + xpRandom }, { where: { guild: message.guild.id, userId: message.author.id } });
     levelUp(message);
   }
 }
 
 async function levelUp(message) {
-  var level = await db.Levels.findOne({ where: { guild: message.guild.id, userId: message.author.id } });
-  const xpLimit = (level.level * 100 + 100);
+  var xpLevel = await db.Levels.findOne({ where: { guild: message.guild.id, userId: message.author.id } });
+  const xpLimit = (xpLevel.level * 100 + 100);
 
-  if (level.xp >= xpLimit) {
-    await db.Levels.update({ level: level.level + 1, xp: level.xp - xpLimit }, { where: { guild: message.guild.id, userId: message.author.id } });
-    message.channel.send({ content: `${TxTE.emoji.add} You leveled up! You are now Level ${level.level + 1}.` });
+  if (xpLevel.xp >= xpLimit) {
+    await db.Levels.update({ level: xpLevel.level + 1, xp: xpLevel.xp - xpLimit }, { where: { guild: message.guild.id, userId: message.author.id } });
+    message.channel.send({ content: `${TxTE.emoji.add} You leveled up! You are now Level ${xpLevel.level + 1}.` });
 
     var rewardType = await db.XPRewardType.findOne({ where: { guild: message.guild.id } });
-
+    if (!rewardType) return;
     if (rewardType.isCumulative === false) {
       var rewards = await db.XPRewards.findAll({ where: { guild: message.guild.id } });
 
@@ -74,14 +74,14 @@ async function levelUp(message) {
 
       let toRemoveFromMember = [];
       for (i = 0; i < rolelist.length; i++) {
-        if (rolelist[i].level !== level.level + 1) {
+        if (rolelist[i].level !== xpLevel.level + 1) {
           toRemoveFromMember.push(message.guild.roles.cache.find(r => r.id === rolelist[i].roleId));
         }
       };
       await message.member.roles.remove(toRemoveFromMember);
     }
 
-    var rewards = await db.XPRewards.findOne({ where: { guild: message.guild.id, level: level.level + 1 } });
+    var rewards = await db.XPRewards.findOne({ where: { guild: message.guild.id, level: xpLevel.level + 1 } });
 
     message.member.roles.add(message.guild.roles.cache.find(r => r.id === rewards.roleId));
   }
@@ -332,10 +332,10 @@ bot.on("messageCreate", async message => {
     if (command) {
       command.run(bot, message, args, prefix);
     }
-  } catch (error) {
-    console.error(error);
+  } catch (e) {
+    console.error(e);
     message.channel.send({
-      content: `${TxTE.emoji.windowText} Send to Merilax#1572. An error ocurred during command execution: \n \`\`\`${error}\`\`\``
+      content: `${TxTE.emoji.windowText} Send to Merilax#1572. An error ocurred during command execution: \n \`\`\`${e}\`\`\``
     });
   }
 });

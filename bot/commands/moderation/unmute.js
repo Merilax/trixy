@@ -34,7 +34,7 @@ module.exports.run = async (
         data: {
           name: "Trixy Mute",
           color: "#000001",
-          position: self.roles.highest.position - 1
+          position: message.guild.members.me.roles.highest.position - 1
         }
       });
 

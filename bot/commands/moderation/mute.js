@@ -22,8 +22,9 @@ module.exports.run = async (
 
   //return console.log(message.mentions.members.first().user.id);
   let muteUser = message.mentions.members.first(); //args[0].slice(3,-1); What is this?
+  if(!muteUser) return message.channel.send({ content: `${TxTE.emoji.quote} First, mention the user to mute.` });
   if (!message.guild.members.cache.find(m => m.user.id === muteUser.user.id)) {
-    return message.channel.send({ content: `${TxTE.emoji.quote} First, mention the user to mute.` })
+    return message.channel.send({ content: `${TxTE.emoji.quote} Couldn't find member in cache.` })
   } else {
     muteUser = message.guild.members.cache.find(m => m.user.id === muteUser.user.id);
   }
@@ -37,7 +38,6 @@ module.exports.run = async (
 
   //const [mutes, created] = 
 
-  let self = message.guild.members.cache.find(m => m.user.id === bot.user.id);
   let txMuteRole = message.guild.roles.cache.find(r => r.name === "Trixy Mute");
   if (!txMuteRole) {
     try {
@@ -45,7 +45,7 @@ module.exports.run = async (
         data: {
           name: "Trixy Mute",
           color: "#000001",
-          position: self.roles.highest.position - 1
+          position: message.guild.members.me.roles.highest.position - 1
         }
       });
 

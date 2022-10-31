@@ -259,35 +259,44 @@ bot.on("messageCreate", async message => {
 
   if (message.guild) {
     const prefixDB = await db.guildConfigDB.findOne({ where: { guildId: message.guild.id } });
-    if (prefixDB === null) {
-      if (
-        message.content.substr(0, prefix.length).toLowerCase() != prefix.toLowerCase()
-      ) {
+    if (prefixDB !== null) {
+      if (prefixDB.prefix !== null) {
+        if (
+          message.content.substr(0, prefixDB.prefix.length).toLowerCase() != prefixDB.prefix
+          && message.content.substr(0, prefix.length).toLowerCase() != prefix.toLowerCase()
+        ) {
+          return;
+        } else {
+          if (message.content.substr(0, prefix.length).toLowerCase() === prefix.toLowerCase()) {
+            var args = message.content
+              .slice(prefix.length)
+              .trim()
+              .split(/ +/g);
+          } else {
+            var args = message.content
+              .slice(prefixDB.prefix.length)
+              .trim()
+              .split(/ +/g);
+          }
+        }
+      } else {
+        if (message.content.substr(0, prefix.length).toLowerCase() != prefix.toLowerCase()) {
+          return;
+        } else {
+          var args = message.content
+            .slice(prefix.length)
+            .trim()
+            .split(/ +/g);
+        }
+      }
+    } else {
+      if (message.content.substr(0, prefix.length).toLowerCase() != prefix.toLowerCase()) {
         return;
       } else {
         var args = message.content
           .slice(prefix.length)
           .trim()
           .split(/ +/g);
-      }
-    } else {
-      if (
-        message.content.substr(0, prefixDB.prefix.length).toLowerCase() != prefixDB.prefix
-        && message.content.substr(0, prefix.length).toLowerCase() != prefix.toLowerCase()
-      ) {
-        return;
-      } else {
-        if (message.content.substr(0, prefix.length).toLowerCase() === prefix.toLowerCase()) {
-          var args = message.content
-            .slice(prefix.length)
-            .trim()
-            .split(/ +/g);
-        } else {
-          var args = message.content
-            .slice(prefixDB.prefix.length)
-            .trim()
-            .split(/ +/g);
-        }
       }
     } // Returns unless prefix included and declares args accordingly to prefix used.
   } else {

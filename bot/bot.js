@@ -419,13 +419,13 @@ bot.on("ready", async () => {
 
       let remindUser = bot.users.cache.get(remindDB[i].userId);
       if (!remindUser) {
-        await Reminders.findOneAndRemove({ userId: remindDB[i].userId, duration: remindDB[i].duration, content: remindDB[i].text });
+        await Reminder.findOneAndRemove({ userId: remindDB[i].userId, duration: remindDB[i].duration, content: remindDB[i].text });
       }
 
       if (Date.now() > remindDB[i].duration) {
         remindUser.send({ content: `A reminder arrived:` }).catch(e => { });
         remindUser.send({ content: remindDB[i].content }).catch(e => { });
-        await Reminders.findOneAndRemove({ userId: remindDB[i].userId, duration: remindDB[i].duration, content: remindDB[i].text })
+        await Reminder.findOneAndRemove({ userId: remindDB[i].userId, duration: remindDB[i].duration, content: remindDB[i].text })
           .catch(e => console.log(e));
       }
     }
@@ -453,10 +453,9 @@ bot.on("guildCreate", async guild => {
 
 bot.on("guildDelete", async guild => {
   console.log(`I have been removed from: ${guild.name} (${guild.id})`);
-  const Mutes = require("./DB/modals/Mutes.js");
   await db.guildConfigDB.destroyAll({ where: { guildId: guild.id } });
   await db.guildLevelConfigDB.destroyAll({ where: { guildId: guild.id } });
-  await Mutes.deleteMany({ guildId: guild.id });
+  await Mute.deleteMany({ guildId: guild.id });
 });
 
 //bot.on('debug', console.log);

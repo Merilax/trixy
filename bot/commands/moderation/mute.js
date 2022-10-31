@@ -1,4 +1,4 @@
-const Mutes = require('../../DB/modals/Mutes.js');
+const Mute = require('../../DB/modals/Mutes.js');
 const masterIds = require('../../masterIds.json');
 const { PermissionsBitField } = require('discord.js');
 const TxTE = require("../../TxTE.json");
@@ -71,11 +71,11 @@ module.exports.run = async (
   }
 
   try {
-    const Mute = await Mutes.findOne({ userId: muteUser.user.id, guildId: message.guild.id });
-    if (Mute) {
+    const Mutes = await Mute.findOne({ userId: muteUser.user.id, guildId: message.guild.id });
+    if (Mutes) {
       message.channel.send({ content: `${TxTE.emoji.x} This user is already muted in database.` });
     } else {
-      await Mutes.create({
+      await Mute.create({
         userId: muteUser.user.id,
         guildId: message.guild.id,
         username: muteUser.user.tag,

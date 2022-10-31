@@ -399,7 +399,7 @@ bot.on("ready", async () => {
 
       let muteGuild = bot.guilds.cache.get(muteDB[i].guildId);
       if (!muteGuild) {
-        await Mutes.findOneAndRemove({ guildId: muteDB[i].guildId, userId: muteDB[i].userId });
+        await Mute.findOneAndRemove({ guildId: muteDB[i].guildId, userId: muteDB[i].userId });
       }
       let muteMember = muteGuild.members.cache.get(muteDB[i].userId);
       if (!muteMember) continue;
@@ -409,7 +409,7 @@ bot.on("ready", async () => {
 
       if (muteDB[i].duration == 0) { continue } else if (Date.now() > muteDB[i].duration) {
         muteMember.roles.remove(muteRole);
-        await Mutes.findOneAndRemove({ guildId: muteDB[i].guildId, userId: muteDB[i].userId })
+        await Mute.findOneAndRemove({ guildId: muteDB[i].guildId, userId: muteDB[i].userId })
           .catch(e => console.log(e));
       }
     }

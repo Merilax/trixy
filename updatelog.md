@@ -75,4 +75,4 @@
 3.3.0 >> Added `guildcolor` command. Implemented Canvas into the `leaderboard` command. Improved `leveldelete` command to work with IDs. Fixed some discrepancies with database model handling.
 3.4.0 >> Added role rewards by XP. Added `addreward`, `removereward`, `rewardlist` and `rewardtype` commands. Fixed typos and incoherent messages.
 3.5.0 >> Bumped Discord.JS to 14.0.2. Fixed `mute` and `unmute` command.
-3.6.0 >> Restructured both databases and adjusted code accordingly. Added `levelchannel` command. Minor bugfixes.
+3.6.0 >> Restructured both databases and adjusted code accordingly. Added `levelchannel`, `levelmention` and `mentionoverride` commands. Minor bugfixes.

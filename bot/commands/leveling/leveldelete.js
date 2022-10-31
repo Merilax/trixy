@@ -18,6 +18,7 @@ module.exports.run = async (
     prefix
 ) => {
     if (message.author.id !== message.guild.ownerId) return message.channel.send({ content: `${TxTE.emoji.block} Only the server owner may erase level progress!` });
+    await db.guildLevelConfigDB.findOrCreate({ where: { guildId: message.guild.id }, defaults: { guildId: message.guild.id, isCumulative: true } });
 
     const deleteId = args[0];
     const level = await db.Levels.findOne({ where: { guild: message.guild.id, userId: deleteId } });

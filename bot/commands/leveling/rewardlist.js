@@ -17,7 +17,7 @@ module.exports.run = async (
     args,
     prefix
 ) => {
-    await db.guildLevelConfigDB.findOrCreate({ where: { guildId: message.guild.id }, defaults: { guildId: message.guild.id, isCumulative: true } });
+    await db.guildLevelConfigDB.findOrCreate({ where: { guildId: message.guild.id }, defaults: { guildId: message.guild.id } });
     const rewards = await db.XPRewards.findAll({ where: { guild: message.guild.id }});
     if(rewards == null) return message.channel.send({ content: `${TxTE.emoji.x} There are no role rewards set for this server.` })
 

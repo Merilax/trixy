@@ -18,7 +18,7 @@ module.exports.run = async (
     prefix
 ) => {
     if (message.author.id !== message.guild.ownerId) return message.channel.send({ content: `${TxTE.emoji.block} Only the server owner may add XP rewards!` });
-    await db.guildLevelConfigDB.findOrCreate({ where: { guildId: message.guild.id }, defaults: { guildId: message.guild.id, isCumulative: true } });
+    await db.guildLevelConfigDB.findOrCreate({ where: { guildId: message.guild.id }, defaults: { guildId: message.guild.id } });
 
     if (!message.guild.roles.cache.find(r => r.id === args[0])) return message.channel.send({ content: `${TxTE.emoji.quote} I couldn't find a matching role, did you copy the right Id?` });
     if (args[1] > 999 || args[1] < 1) return message.channel.send({ content: `${TxTE.emoji.quote} Invalid target level, must be between 1 and 999.` });

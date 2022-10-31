@@ -68,7 +68,7 @@ const userConfigDB = sequelize.define('userconfig', {
     },
     doMentionOverride: {
         type: Sequelize.BOOLEAN,
-        allowNull: false,
+        allowNull: true,
         defaultValue: false
     }
 });

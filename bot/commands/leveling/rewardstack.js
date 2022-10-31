@@ -17,13 +17,14 @@ module.exports.run = async (
     prefix
 ) => {
     if (message.author.id !== message.guild.ownerId) return message.channel.send({ content: `${TxTE.emoji.block} Only the server owner may change the XP reward type!` });
-    await db.guildLevelConfigDB.findOrCreate({ where: { guildId: message.guild.id }, defaults: { guildId: message.guild.id, isCumulative: true } });
+    await db.guildLevelConfigDB.findOrCreate({ where: { guildId: message.guild.id }, defaults: { guildId: message.guild.id } });
     
     if (args[0].trim().match(/^(true|false)$/i)) {
-        await db.guildLevelConfigDB.update({ isCumulative: args[0] }, { where: { guildId: message.guild.id } });
         if (args[0] === "true") {
+            await db.guildLevelConfigDB.update({ isCumulative: 1 }, { where: { guildId: message.guild.id } });
             message.channel.send({ content: `${TxTE.emoji.ok} ${TxTE.affirmation[Math.floor(Math.random() * TxTE.affirmation.length)]} Roles will now stack up as rewarded.` });
         } else {
+            await db.guildLevelConfigDB.update({ isCumulative: 0 }, { where: { guildId: message.guild.id } });
             message.channel.send({ content: `${TxTE.emoji.ok} ${TxTE.affirmation[Math.floor(Math.random() * TxTE.affirmation.length)]} Members will only keep their highest reward role.` });
         }
     } else {

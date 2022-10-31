@@ -18,6 +18,7 @@ module.exports.run = async (
 ) => {
 
     if (message.author.id !== message.guild.ownerId) return message.channel.send({ content: `${TxTE.emoji.block} Only the server owner may change the level-up channel!` });
+    await db.guildLevelConfigDB.findOrCreate({ where: { guildId: message.guild.id }, defaults: { guildId: message.guild.id, isCumulative: true } });
 
     if (args[0] === "reset") {
         await db.guildLevelConfigDB.update({ targetChannel: null }, { where: { guildId: message.guild.id } });

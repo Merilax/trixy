@@ -177,6 +177,16 @@
         "d": "Erases a member from the guild's level database.",
         "u": "`leveldelete (user_id)`"
     },
+    "levelmention": {
+        "t": "levelmention, aka `lvlmention`.",
+        "d": "Dictates wether members should be mentioned upon levelling up or not. Is overriden by user configuration.",
+        "u": "levelmention (true | false)"
+    },
+    "mentionoverride": {
+        "t": "mentionoverride, aka `morr`.",
+        "d": "Dictates wether you should be mentioned upon levelling up or not. Overrides guild configuration, unless you append `reset`.",
+        "u": "mentionoverride (true | false | reset)"
+    },
     "removereward": {
         "t": "Removereward, aka `remover`, `rr`.",
         "d": "Removes a role from the reward list. If you only want to change the target XP level, use `addreward` instead.",

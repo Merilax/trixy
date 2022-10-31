@@ -62,12 +62,31 @@ async function levelUp(message) {
     await db.Levels.update({ level: xpLevel.level + 1, xp: xpLevel.xp - xpLimit }, { where: { guild: message.guild.id, userId: message.author.id } });
 
     var [guildLevelConfig, chCreated] = await db.guildLevelConfigDB.findOrCreate({ where: { guildId: message.guild.id }, defaults: { guildId: message.guild.id } });
+    var [userConfig, uCreated] = await db.userConfigDB.findOrCreate({ where: { userId: message.author.id }, defaults: { userId: message.author.id } });
+
+
+
+
     if (guildLevelConfig) {
+      if (userConfig) {
+        if (userConfig.doMentionOverride === true) {
+          var doMention = "<@" + message.author.id + ">";
+        } else {
+          var doMention = "";
+        }
+      } else {
+        if (guildLevelConfig.doMention === true) {
+          var doMention = "<@" + message.author.id + ">";
+        } else {
+          var doMention = "";
+        }
+      }
+
       try {
-        message.guild.channels.cache.find(ch => ch.id === guildLevelConfig.targetChannel).send({ content: `${TxTE.emoji.add} You leveled up! You are now Level ${xpLevel.level + 1}.` });
+        message.guild.channels.cache.find(ch => ch.id === guildLevelConfig.targetChannel).send({ content: `${TxTE.emoji.add} ` + doMention + ` You leveled up! You are now Level ${xpLevel.level + 1}.` });
       } catch (e) { }
     } else {
-      message.channel.send({ content: `${TxTE.emoji.add} You leveled up! You are now Level ${xpLevel.level + 1}.` }); // Add user mention.
+      message.channel.send({ content: `${TxTE.emoji.add} ` + doMention + ` You leveled up! You are now Level ${xpLevel.level + 1}.` });
     }
 
 

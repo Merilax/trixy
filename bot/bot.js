@@ -259,10 +259,10 @@ bot.on("messageCreate", async message => {
       return message.channel.send({ content: `Hello ${message.author.username}!`, reply: { messageReference: message.id } });
   } // Reacts to friendliness. Hi Trixy!
 
-  if (message.author.bot || message.content.includes("@here") || message.content.includes("@everyone")) return; //Returns when author is a bot or when mass mentioned
+  if (message.author.bot || message.content.includes("@here") || message.content.includes("@everyone")) return; // Returns when author is a bot or when mass mentioned
 
   if (message.guild) {
-    const prefixDB = await db.Prefix.findOne({ where: { guildId: message.guild.id } });
+    const prefixDB = await db.guildConfigDB.findOne({ where: { guildId: message.guild.id } });
     if (prefixDB === null) {
       if (
         message.content.substr(0, prefix.length).toLowerCase() != prefix.toLowerCase()

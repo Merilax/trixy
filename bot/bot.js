@@ -42,6 +42,8 @@ const levelCooldown = new Set();
 const levelDBTimeout = 60 * 1000;
 const xpRandom = Math.floor(Math.random() * 15 + 15);
 const db = require('./DB/sequelDB.js');
+const Mutes = require("./DB/modals/Mutes.js");
+const Reminders = require("./DB/modals/Reminders.js");
 
 async function addXP(message) {
   if (!message.guild) return;
@@ -388,8 +390,7 @@ bot.on("ready", async () => {
   );
 
   setInterval(async () => {
-    const Mutes = require("./DB/modals/Mutes.js");
-    const Reminders = require("./DB/modals/Reminders.js");
+
     const muteDB = await Mutes.findAll();
     const remindDB = await Reminders.findAll();
 
@@ -444,10 +445,12 @@ bot.on("ready", async () => {
     );
   }, 120 * 1000);
 });
+
 bot.on("guildCreate", async guild => {
   console.log(`New guild joined: ${guild.name} (id: ${guild.id}).`);
   await db.guildConfigDB.findOrCreate({ where: { guildId: guild.id }, defaults: { guildId: guild.id } });
 });
+
 bot.on("guildDelete", async guild => {
   console.log(`I have been removed from: ${guild.name} (${guild.id})`);
   const Mutes = require("./DB/modals/Mutes.js");

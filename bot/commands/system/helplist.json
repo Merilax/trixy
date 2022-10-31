@@ -167,6 +167,11 @@
         "d": "Gets someone's XP level and XP points.",
         "u": "`level [@member]`"
     },
+    "levelchannel": {
+        "t": "Levelchannel, aka `setchannel`, `lvlchannel`, `setch`, `lvlch`.",
+        "d": "Desigantes a channel for Trixy to announce member level-ups. Append `reset` to disable this behaviour.",
+        "u": "`levelchannel (channel_id | 'reset')`"
+    },
     "leveldelete": {
         "t": "Leveldelete, aka `lvldelete`, `rankdelete`.",
         "d": "Erases a member from the guild's level database.",

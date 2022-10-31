@@ -6,4 +6,4 @@ const MuteSchema = new mongoose.Schema({
     guildId: { type: String, required: true},
     duration: { type: Number, required: true}
 });
-const Mutes = module.exports = mongoose.model('Reminder', MuteSchema);
+const Mutes = module.exports = mongoose.model('Mute', MuteSchema);

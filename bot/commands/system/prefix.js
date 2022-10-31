@@ -22,14 +22,13 @@ module.exports.run = async (
     if (newPrefix.match(/^[\w\d\s\W]{1,10}$/i) === false) return message.channel.send({ content: `${TxTE.emoji.quote} Prefix can only contain letters, numbers, special characters like ! or - and whitespaces.` });
 
     const [prefixDB, created] = await db.Prefix.findOrCreate({ where: { guildId: message.guild.id }, defaults: { guildId: message.guild.id, prefix: newPrefix } });
-    if (created) {
-        return message.channel.send({ content: `${TxTE.emoji.ok} Prefix updated to \`${newPrefix}\`! I will still respond to the original prefix too, just in case.` });
-    } else {
+    if (created) { } else {
         if (newPrefix === "reset") {
             await db.Prefix.destroy({ where: { guildId: message.guild.id } });
             return message.channel.send({ content: `${TxTE.emoji.ok} Custom prefix deleted.` });
         }
         await db.Prefix.update({ prefix: newPrefix }, { where: { guildId: message.guild.id } });
-        return message.channel.send({ content: `${TxTE.emoji.ok} Prefix updated to \`${newPrefix}\`! I will still respond to the original prefix too, just in case.` });
+        message.channel.send({ content: `${TxTE.emoji.ok} Prefix updated to \`${newPrefix}\`! I will still respond to the original prefix too, just in case.` });
     }
+    
 };

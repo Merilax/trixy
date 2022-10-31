@@ -16,8 +16,8 @@ module.exports.run = (
 ) => {
   if (message.author.id === masterIds.txdev) {
     let say = args.slice().join(" ");
-    message.delete().catch(trashlog => {});
-    message.channel.send({ contents: say });
+    message.delete().catch(e => {});
+    message.channel.send({ content: say });
   } else {
     return;
   }

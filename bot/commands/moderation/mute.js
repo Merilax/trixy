@@ -1,4 +1,4 @@
-const db = require('../../DB/sequelDB.js');
+const db = require('../../DB/modals/Mutes.js');
 const masterIds = require('../../masterIds.json');
 const { PermissionsBitField } = require('discord.js');
 const TxTE = require("../../TxTE.json");
@@ -22,7 +22,7 @@ module.exports.run = async (
 
   //return console.log(message.mentions.members.first().user.id);
   let muteUser = message.mentions.members.first(); //args[0].slice(3,-1); What is this?
-  if(!muteUser) return message.channel.send({ content: `${TxTE.emoji.quote} First, mention the user to mute.` });
+  if (!muteUser) return message.channel.send({ content: `${TxTE.emoji.quote} First, mention the user to mute.` });
   if (!message.guild.members.cache.find(m => m.user.id === muteUser.user.id)) {
     return message.channel.send({ content: `${TxTE.emoji.quote} Couldn't find member in cache.` })
   } else {
@@ -73,7 +73,17 @@ module.exports.run = async (
   }
 
   try {
-    await db.Mutes.findOrCreate({ where: { guildId: message.guild.id }, defaults: { userName: muteUser.user.tag, userId: muteUser.user.id, guildId: message.guild.id, duration: muteExpire } });
+    const Mute = await db.Mutes.findOne({ userId: muteUser.user.id, guildId: message.guild.id });
+    if (Mute) {
+      message.channel.send({ conent: `${TxTE.emoji.x} This user is already muted in database.` });
+    } else {
+      await db.Mutes.create({
+        userId: muteUser.user.id,
+        guildId: message.guild.id,
+        username: muteUser.user.tag,
+        duration: muteExpire
+      });
+    }
     await muteUser.roles.add(txMuteRole);
     message.channel.send({ content: `${TxTE.emoji.ok} User ${args[0]} has been succesfully muted for ${args[1]} minutes.` });
   } catch (e) {

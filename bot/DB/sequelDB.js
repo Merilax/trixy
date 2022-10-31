@@ -23,20 +23,8 @@ const sequelize = new Sequelize(process.env.SEQUELDB_URL, {
     }
 });
 
-
 sequelize.authenticate();
 console.log("Database Auth Success!");
-
-const XPEnabled = sequelize.define('xpenables', {
-    guild: {
-        type: Sequelize.STRING,
-        allowNull: false,
-    },
-    enabled: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false,
-    },
-});
 
 const Levels = sequelize.define('levels', {
     user: {
@@ -68,8 +56,44 @@ const Levels = sequelize.define('levels', {
     },
 });
 
-const XPRewardType = sequelize.define('xprewardtypes', {
-    guild: {
+const userConfigDB = sequelize.define('userconfig', {
+    userId: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true
+    },
+    color: {
+        type: Sequelize.STRING,
+        defaultValue: null
+    },
+    doMentionOverride: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+    }
+});
+
+const guildConfigDB = sequelize.define('guildconfig', {
+    guildId: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true
+    },
+    prefix: {
+        type: Sequelize.STRING(10)
+    },
+    color: {
+        type: Sequelize.STRING,
+        defaultValue: null
+    },
+    xpEnabled: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
+    }
+});
+
+const guildLevelConfigDB = sequelize.define('guildlevelconfig', {
+    guildId: {
         type: Sequelize.STRING,
         allowNull: false,
     },
@@ -77,6 +101,15 @@ const XPRewardType = sequelize.define('xprewardtypes', {
         type: Sequelize.BOOLEAN,
         defaultValue: true,
     },
+    targetChannel: {
+        type: Sequelize.STRING,
+        defaultValue: null
+    },
+    doMention: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: true
+    }
 });
 
 const XPRewards = sequelize.define('xprewards', {
@@ -94,45 +127,5 @@ const XPRewards = sequelize.define('xprewards', {
     },
 });
 
-const Mutes = sequelize.define('mutes', {
-    userName: {
-        type: Sequelize.STRING,
-        allowNull: false,
-    },
-    userId: {
-        type: Sequelize.STRING,
-        allowNull: false,
-    },
-    guildId: {
-        type: Sequelize.STRING,
-        allowNull: false,
-    },
-    duration: Sequelize.BIGINT,
-});
-
-const Reminders = sequelize.define('reminders', {
-    userId: {
-        type: Sequelize.STRING,
-        allowNull: false,
-    },
-    text: {
-        type: Sequelize.STRING(1999),
-        allowNull: false,
-    },
-    duration: Sequelize.INTEGER,
-});
-
-const Prefix = sequelize.define('prefixes', {
-    guildId: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true,
-    },
-    prefix: {
-        type: Sequelize.STRING(10),
-        allowNull: false,
-    },
-});
-
 sequelize.sync({ force: false, alter: true });
-module.exports = { XPEnabled, Levels, XPRewardType, XPRewards, Mutes, Reminders, Prefix };
+module.exports = { Levels, XPRewards, userConfigDB, guildConfigDB, guildLevelConfigDB };

@@ -1,5 +1,4 @@
 const db = require('../../DB/sequelDB.js');
-const PersonalCard = require('../../DB/modals/PersonalCard');
 const TxTE = require("../../TxTE.json");
 
 module.exports.commanddata = {
@@ -16,27 +15,24 @@ module.exports.run = async (
     args,
     prefix
 ) => {
-    const [xpenable, xpCreated] = await db.XPEnabled.findOrCreate({ where: { guild: message.guild.id }, defaults: { guild: message.guild.id } });
-    if (xpenable.enabled === false) { return }
-    const userColour = await PersonalCard.findOne({ discordId: message.author.id });
     const newColour = args[0].trim();
     if (newColour.match(/^#[0-9a-f]{3,6}$/i)) {
         try {
-            if (userColour) {
-                await PersonalCard.findOneAndUpdate({ discordId: message.author.id }, { color: newColour });
-                message.channel.send({ content: `${TxTE.emoji.ok} ${TxTE.success[Math.floor(Math.random() * TxTE.success.length)]}` });
-            } else {
-                await PersonalCard.create({
-                    discordId: message.author.id,
-                    color: newColour
-                });
-                message.channel.send({ content: `${TxTE.emoji.ok} ${TxTE.success[Math.floor(Math.random() * TxTE.success.length)]}` });
+            const [userColour, created] = await db.userConfigDB.findOrCreate({ where: { userId: message.author.id }, defaults: { color: newColour } });
+            if (created) { } else {
+                if (newColour === "#000000" || newColour === "#000") {
+                    await db.userConfigDB.update({ color: null }, { where: { userId: message.author.id } });
+                    message.channel.send({ content: `${TxTE.emoji.ok} Custom colour disabled. Try #001 if you wanted black.` });
+                } else {
+                    await db.userConfigDB.update({ color: newColour }, { where: { userId: message.author.id } });
+                    message.channel.send({ content: `${TxTE.emoji.ok} ${TxTE.success[Math.floor(Math.random() * TxTE.success.length)]}` });
+                }
             }
         } catch (err) {
             console.log(err);
             message.channel.send({ content: `${TxTE.emoji.x} Something went wrong...` });
         }
     } else {
-        return message.channel.send({ content: `${TxTE.emoji.quote} Colour must be in hexadecimal format.` });
+        message.channel.send({ content: `${TxTE.emoji.quote} Colour must be in hexadecimal format.` });
     }
 };

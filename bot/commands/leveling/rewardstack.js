@@ -17,10 +17,10 @@ module.exports.run = async (
     prefix
 ) => {
     if (message.author.id !== message.guild.ownerId) return message.channel.send({ content: `${TxTE.emoji.block} Only the server owner may change the XP reward type!` });
-    await db.XPRewardType.findOrCreate({ where: { guild: message.guild.id }, defaults: { guild: message.guild.id, isCumulative: true } });
-    console.log()
+    await db.guildLevelConfigDB.findOrCreate({ where: { guildId: message.guild.id }, defaults: { guildId: message.guild.id, isCumulative: true } });
+    
     if (args[0].trim().match(/^(true|false)$/i)) {
-        await db.XPRewardType.update({ isCumulative: args[0] }, { where: { guild: message.guild.id } });
+        await db.guildLevelConfigDB.update({ isCumulative: args[0] }, { where: { guildId: message.guild.id } });
         if (args[0] === "true") {
             message.channel.send({ content: `${TxTE.emoji.ok} ${TxTE.affirmation[Math.floor(Math.random() * TxTE.affirmation.length)]} Roles will now stack up as rewarded.` });
         } else {

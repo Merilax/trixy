@@ -1,6 +1,5 @@
 const Discord = require("discord.js");
 const db = require('../../DB/sequelDB.js');
-const GuildCard = require('../../DB/modals/GuildCard');
 const Canvas = require('canvas');
 
 module.exports.commanddata = {
@@ -18,16 +17,16 @@ module.exports.run = async (
     args,
     prefix
 ) => {
-    const xpenable = await db.XPEnabled.findOne({ where: { guild: message.guild.id } });
-    if (xpenable.enabled == false) { return } else {
-        const level = (await db.Levels.findAll({ where: { guild: message.guild.id } }));
-        const guildColor = await GuildCard.findOne({ discordId: message.guild.id });
+    const xpenable = await db.guildConfigDB.findOne({ where: { guild: message.guild.id } });
+    if (xpenable.xpEnabled == false) { return } else {
+        const level = await db.Levels.findAll({ where: { guild: message.guild.id } });
+        const guildConfig = await db.guildConfigDB.findOne({ where: { guildId: message.guild.id } });
 
         let xplist = [];
         let barColor;
 
-        if (guildColor === null) { barColor = '#0088ff'; }
-        else { barColor = guildColor.color; }
+        if (guildConfig === null) { barColor = '#0088ff'; }
+        else { barColor = guildConfig.color; }
 
         for (let i = 0; ; i++) {
             if (!level[i]) break;
@@ -87,12 +86,12 @@ module.exports.run = async (
             ctx.fillText(`LVL ${xplist[i].level}`, 580, splitSpace + 51, 130);
         }
 
-        const attachment = new Discord.AttachmentBuilder(canvas.toBuffer(), {name:'leaderboard.png'});
+        const attachment = new Discord.AttachmentBuilder(canvas.toBuffer(), { name: 'leaderboard.png' });
         const embed = new Discord.EmbedBuilder()
             .setTitle(`**Leaderboard for** ${message.guild.name}`)
             .setImage('attachment://leaderboard.png')
             .setColor(barColor)
             .setTimestamp(new Date());
-    message.channel.send({ embeds: [embed], files: [attachment] });
+        message.channel.send({ embeds: [embed], files: [attachment] });
     }
 };

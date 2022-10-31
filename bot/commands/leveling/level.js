@@ -1,7 +1,5 @@
 const Discord = require("discord.js");
 const db = require('../../DB/sequelDB.js');
-const PersonalCard = require('../../DB/modals/PersonalCard');
-const GuildCard = require('../../DB/modals/GuildCard');
 const Canvas = require('canvas');
 
 module.exports.commanddata = {
@@ -19,8 +17,8 @@ module.exports.run = async (
     args,
     prefix
 ) => {
-    const [xpenable, xpCreated] = await db.XPEnabled.findOrCreate({ where: { guild: message.guild.id }, defaults: { guild: message.guild.id } });
-    if (xpenable.enabled === false) { return }
+    const [guildConfig, created] = await db.guildConfigDB.findOrCreate({ where: { guild: message.guild.id }, defaults: { guild: message.guild.id } });
+    if (guildConfig.xpEnabled === false) { return }
 
     if (!args[0]) {
         var user = message.author;
@@ -29,10 +27,10 @@ module.exports.run = async (
     };
 
     const level = await db.Levels.findOne({ where: { guild: message.guild.id, userId: user.id } });
-    const userColor = await PersonalCard.findOne({ discordId: user.id });
-    const guildColor = await GuildCard.findOne({ discordId: message.guild.id });
+    const userColor = await db.userConfigDB.findOne({ where: { userId: user.id } });
+    const guildColor = await db.guildConfigDB.findOne({ where: { guildId: message.guild.id } });
     let cardColor;
-    
+
     if (level === null) {
         return message.channel.send({ content: `${TxTE.emoji.x} No XP gained yet.` });
     }
@@ -52,11 +50,11 @@ module.exports.run = async (
     ctx.fillStyle = cardColor;
     ctx.fillRect(0, 0, progressBar, 280);
     ctx.save();
-    ctx.moveTo(progressBar-1, 0);
+    ctx.moveTo(progressBar - 1, 0);
     ctx.lineTo(progressBar, 0);
-    ctx.lineTo(progressBar+50, 140);
+    ctx.lineTo(progressBar + 50, 140);
     ctx.lineTo(progressBar, 280);
-    ctx.lineTo(progressBar-1, 280);
+    ctx.lineTo(progressBar - 1, 280);
     ctx.lineTo(progressBar, 0);
     ctx.clip();
     ctx.fill();
@@ -73,13 +71,13 @@ module.exports.run = async (
 
     // Name and Level
     ctx.save();
-    ctx.moveTo(0,50);
+    ctx.moveTo(0, 50);
     ctx.beginPath();
-    ctx.lineTo(500,50);
-    ctx.lineTo(530,140);
-    ctx.lineTo(500,230);
-    ctx.lineTo(0,230);
-    ctx.lineTo(0,50);
+    ctx.lineTo(500, 50);
+    ctx.lineTo(530, 140);
+    ctx.lineTo(500, 230);
+    ctx.lineTo(0, 230);
+    ctx.lineTo(0, 50);
     ctx.closePath();
     ctx.clip();
     ctx.fillStyle = '#444';
@@ -103,12 +101,12 @@ module.exports.run = async (
     ctx.restore();
 
     // Avatar
-	ctx.beginPath();
-	ctx.arc(115, 140, 75, 0, Math.PI * 2, true);
+    ctx.beginPath();
+    ctx.arc(115, 140, 75, 0, Math.PI * 2, true);
     ctx.closePath();
-	ctx.clip();
+    ctx.clip();
     ctx.drawImage(avatar, 40, 65, 150, 150);
 
-    const attachment = new Discord.AttachmentBuilder(canvas.toBuffer(), {name:"level.png"});
+    const attachment = new Discord.AttachmentBuilder(canvas.toBuffer(), { name: "level.png" });
     message.channel.send({ files: [attachment] });
 };

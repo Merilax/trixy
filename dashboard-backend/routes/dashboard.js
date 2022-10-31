@@ -7,7 +7,7 @@ function isAuthorized(req, res, next) {
 
 router.get('/', isAuthorized, async (req, res) => {
     res.render('dashboard/dashboard.ejs', {
-        discordId: req.user.discordId,
+        userId: req.user.userId,
         username: req.user.username,
         useravatar: req.user.useravatar,
         guilds: req.user.guilds

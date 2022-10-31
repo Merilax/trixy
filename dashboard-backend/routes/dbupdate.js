@@ -1,7 +1,5 @@
 const router = require('express').Router();
 const sqldb = require('../../bot/DB/sequelDB');
-const GuildCard = require('../../bot/DB/modals/GuildCard');
-const PersonalCard = require('../../bot/DB/modals/PersonalCard');
 
 function isAuthorized(req, res, next) {
     if (req.user) { next(); }
@@ -9,7 +7,7 @@ function isAuthorized(req, res, next) {
 }
 
 router.post('/', isAuthorized, async (req, res) => {
-    const discordId = req.user.discordId;
+    const dashUserId = req.user.userId;
     //const username = req.user.username;
     //const useravatar = req.user.useravatar;
 
@@ -17,9 +15,8 @@ router.post('/', isAuthorized, async (req, res) => {
     const valueChanged = req.body.value;
     const guildSet = req.body.guild;
 
-    const userColor = await PersonalCard.findOne({ discordId: discordId });
-    const guildColor = await GuildCard.findOne({ discordId: discordId });
-    const prefixDB = await sqldb.Prefix.findOne({ where: { guildId: guildSet } });
+    const userConfig = await sqldb.userConfigDB.findOne({ where: { userId: dashUserId } });
+    const guildConfig = await sqldb.guildConfigDB.findOne({ where: { guildId: guildSet } });
 
     switch (moduleChanged) {
         // Personal configs
@@ -28,11 +25,11 @@ router.post('/', isAuthorized, async (req, res) => {
             if (valueChanged.match(/^#[0-9a-f]{3,6}$/i)) { } else return;
 
             try {
-                if (userColor) {
-                    await userColor.updateOne({ color: valueChanged });
+                if (userConfig) {
+                    await sqldb.userConfigDB.update({ color: valueChanged }, { where: { userId: dashUserId } });
                 } else {
-                    await PersonalCard.create({
-                        discordId: discordId,
+                    await sqldb.userConfigDB.create({
+                        userId: dashUserId,
                         color: valueChanged
                     });
                 }
@@ -43,11 +40,11 @@ router.post('/', isAuthorized, async (req, res) => {
 
         case "personal-card-reset":
             try {
-                if (userColor) {
-                    await userColor.updateOne({ color: "BLUE" });
+                if (userConfig) {
+                    await sqldb.userConfigDB.update({ color: "BLUE" }, { where: { userId: dashUserId } });
                 } else {
-                    await PersonalCard.create({
-                        discordId: discordId,
+                    await sqldb.userConfigDB.create({
+                        userId: dashUserId,
                         color: "BLUE"
                     });
                 }
@@ -62,10 +59,13 @@ router.post('/', isAuthorized, async (req, res) => {
             if (valueChanged === "param error") return;
             if (valueChanged.match(/^[\w\d\s\W]{1,10}$/i)) { } else return;
             try {
-                if (prefixDB) {
-                    await prefixDB.update({ prefix: valueChanged }, { where: { guildId: guildSet } });
+                if (guildConfig) {
+                    await sqldb.guildConfigDB.update({ prefix: valueChanged }, { where: { guildId: guildSet } });
                 } else {
-                    await prefixDB.create({ guildId: guildSet, prefix: valueChanged })
+                    await sqldb.guildConfigDB.create({
+                        guildId: guildSet,
+                        prefix: valueChanged
+                    });
                 }
             } catch (err) {
                 console.log(err);
@@ -75,8 +75,8 @@ router.post('/', isAuthorized, async (req, res) => {
         case "prefix-reset":
             if (guildSet === "guild error") return;
             try {
-                if (prefixDB) {
-                    await prefixDB.destroy({ where: { guildId: guildSet } });
+                if (guildConfig) {
+                    await sqldb.guildConfigDB.destroy({ where: { guildId: guildSet } });
                 }
             } catch (err) {
                 console.log(err);
@@ -88,41 +88,32 @@ router.post('/', isAuthorized, async (req, res) => {
             if (valueChanged === "param error") return;
             if (valueChanged.match(/^#[0-9a-f]{3,6}$/i)) { } else return;
             try {
-                if (guildColor) {
-                    var updateColor = await guildColor.updateOne({ color: valueChanged });
-                    done(null, updateColor);
+                if (guildConfig) {
+                    await sqldb.guildConfigDB.update({ color: valueChanged }, { where: { guildId: guildSet } });
                 } else {
-                    var newColor = await guildColor.create({
-                        discordId: discordId,
+                    await sqldb.guildConfigDB.create({
+                        guildId: guildSet,
                         color: valueChanged
                     });
-                    var savedColor = await newColor.save();
-                    done(null, savedColor);
                 }
             } catch (err) {
                 console.log(err);
-                //done(err, null);
             }
             break;
 
         case "guild-card-reset":
             if (guildSet === "guild error") return;
             try {
-                if (guildColor) {
-                    done(null, color);
-                    var updateColor = await guildColor.updateOne({ color: "BLUE" });
-                    var savedColor = await newColor.save();
+                if (guildConfig) {
+                    await sqldb.guildConfigDB.update({ color: "BLUE" }, { where: { guildId: guildSet } });
                 } else {
-                    var newColor = await guildColor.create({
-                        discordId: discordId,
+                    await sqldb.guildConfigDB.create({
+                        guildId: guildSet,
                         color: "BLUE"
                     });
-                    var savedColor = await newColor.save();
-                    done(null, savedColor);
                 }
             } catch (err) {
                 console.log(err);
-                //done(err, null);
             }
             break;
 

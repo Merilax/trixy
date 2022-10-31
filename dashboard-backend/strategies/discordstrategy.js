@@ -18,14 +18,14 @@ passport.use(new DiscordStrategy({
     scope: ['identify', 'email', 'guilds']
 }, async (accessToken, refreshToken, profile, done) => {
     try {
-        const user = await DiscordUser.findOne({ discordId: profile.id });
+        const user = await DiscordUser.findOne({ userId: profile.id });
         if (user) {
             await user.updateOne({ username: profile.username, useravatar: profile.avatar, guilds: profile.guilds });
-            const updatedUser = await DiscordUser.findOne({ discordId: profile.id });
+            const updatedUser = await DiscordUser.findOne({ userId: profile.id });
             done(null, updatedUser);
         } else {
             const newUser = await DiscordUser.create({
-                discordId: profile.id,
+                userId: profile.id,
                 username: profile.username,
                 useravatar: profile.avatar,
                 guilds: profile.guilds

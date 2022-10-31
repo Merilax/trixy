@@ -64,9 +64,6 @@ async function levelUp(message) {
     var [guildLevelConfig, chCreated] = await db.guildLevelConfigDB.findOrCreate({ where: { guildId: message.guild.id }, defaults: { guildId: message.guild.id } });
     var [userConfig, uCreated] = await db.userConfigDB.findOrCreate({ where: { userId: message.author.id }, defaults: { userId: message.author.id } });
 
-
-
-
     if (guildLevelConfig) {
       if (userConfig) {
         if (userConfig.doMentionOverride === true) {
@@ -88,7 +85,6 @@ async function levelUp(message) {
     } else {
       message.channel.send({ content: `${TxTE.emoji.add} ` + doMention + ` You leveled up! You are now Level ${xpLevel.level + 1}.` });
     }
-
 
     var rewards = await db.XPRewards.findAll({ where: { guild: message.guild.id } });
 
@@ -418,7 +414,7 @@ bot.on("ready", async () => {
 
       if (Date.now() > remindDB[i].duration) {
         remindUser.send({ content: `A reminder arrived:` }).catch(e => { });
-        remindUser.send({ content: remindDB[i].text }).catch(e => { });
+        remindUser.send({ content: remindDB[i].content }).catch(e => { });
         await Reminders.deleteOne({ userId: remindDB[i].userId, duration: remindDB[i].duration, content: remindDB[i].text })
           .catch(e => console.log(e));
       }
@@ -439,19 +435,16 @@ bot.on("ready", async () => {
     );
   }, 120 * 1000);
 });
-bot.on("guildCreate", guild => {
+bot.on("guildCreate", async guild => {
   console.log(`New guild joined: ${guild.name} (id: ${guild.id}).`);
+  await db.guildConfigDB.findOrCreate({ where: { guildId: guild.id }, defaults: { guildId: guild.id } });
 });
 bot.on("guildDelete", async guild => {
   console.log(`I have been removed from: ${guild.name} (${guild.id})`);
-  await db.Levels.destroyAll({ where: { guild: guild.id } });
-  await db.XPEnabled.destroyAll({ where: { guild: guild.id } });
-  await db.XPRewards.destroyAll({ where: { guild: guild.id } });
-  await db.XPRewardType.destroyAll({ where: { guild: guild.id } });
-  await db.Mutes.destroyAll({ where: { guildId: guild.id } });
-  await db.Prefix.destroy({ where: { guildId: guild.id } });
-  const GuildCard = require('./DB/modals/GuildCard');
-  await GuildCard.destroy({ where: { discordId: guild.id } });
+  const Mutes = require("./DB/modals/Mutes.js");
+  await db.guildConfigDB.destroyAll({ where: { guildId: guild.id } });
+  await db.guildLevelConfigDB.destroyAll({ where: { guildId: guild.id } });
+  await Mutes.deleteMany({ guildId: guild.id });
 });
 
 //bot.on('debug', console.log);

@@ -63,8 +63,7 @@ const userConfigDB = sequelize.define('userconfig', {
         unique: true
     },
     color: {
-        type: Sequelize.STRING,
-        defaultValue: null
+        type: Sequelize.STRING
     },
     doMentionOverride: {
         type: Sequelize.BOOLEAN,
@@ -83,8 +82,7 @@ const guildConfigDB = sequelize.define('guildconfig', {
         type: Sequelize.STRING(10)
     },
     color: {
-        type: Sequelize.STRING,
-        defaultValue: null
+        type: Sequelize.STRING
     },
     xpEnabled: {
         type: Sequelize.BOOLEAN,
@@ -102,8 +100,7 @@ const guildLevelConfigDB = sequelize.define('guildlevelconfig', {
         defaultValue: true,
     },
     targetChannel: {
-        type: Sequelize.STRING,
-        defaultValue: null
+        type: Sequelize.STRING
     },
     doMention: {
         type: Sequelize.BOOLEAN,

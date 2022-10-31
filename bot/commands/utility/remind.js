@@ -1,4 +1,4 @@
-const db = require('../../DB/sequelDB.js');
+const Reminders = require('../../DB/modals/Reminders.js');
 const TxTE = require("../../TxTE.json");
 
 module.exports.commanddata = {
@@ -34,7 +34,7 @@ module.exports.run = async (
   }
 
   try {
-    await db.Reminders.create({ userId: message.author.id, duration: remindThen, content: remindContent });
+    await Reminders.create({ userId: message.author.id, duration: remindThen, content: remindContent });
     message.channel.send({ content: `${TxTE.emoji.ok} ${TxTE.affirmation[Math.floor(Math.random() * TxTE.affirmation.length)]} I will remind you in ${remindTiming} minutes.` });
   } catch (e) {
     console.log(e);

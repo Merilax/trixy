@@ -1,4 +1,4 @@
-const db = require('../../DB/modals/Mutes.js');
+const Mutes = require('../../DB/modals/Mutes.js');
 const masterIds = require('../../masterIds.json');
 const { PermissionsBitField } = require('discord.js');
 const TxTE = require("../../TxTE.json");
@@ -36,8 +36,6 @@ module.exports.run = async (
     return message.channel.send({ content: `${TxTE.emoji.x} You cannot mute members with the same or higher role as yours.` });
   }
 
-  //const [mutes, created] = 
-
   let txMuteRole = message.guild.roles.cache.find(r => r.name === "Trixy Mute");
   if (!txMuteRole) {
     try {
@@ -73,11 +71,11 @@ module.exports.run = async (
   }
 
   try {
-    const Mute = await db.Mutes.findOne({ userId: muteUser.user.id, guildId: message.guild.id });
+    const Mute = await Mutes.findOne({ userId: muteUser.user.id, guildId: message.guild.id });
     if (Mute) {
-      message.channel.send({ conent: `${TxTE.emoji.x} This user is already muted in database.` });
+      message.channel.send({ content: `${TxTE.emoji.x} This user is already muted in database.` });
     } else {
-      await db.Mutes.create({
+      await Mutes.create({
         userId: muteUser.user.id,
         guildId: message.guild.id,
         username: muteUser.user.tag,

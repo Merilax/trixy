@@ -398,7 +398,7 @@ bot.on("ready", async () => {
 
       let muteGuild = bot.guilds.cache.get(muteDB[i].guildId);
       if (!muteGuild) {
-        await Mutes.deleteOne({ guildId: muteDB[i].guildId, userId: muteDB[i].userId });
+        await Mutes.findOneAndRemove({ guildId: muteDB[i].guildId, userId: muteDB[i].userId });
       }
       let muteMember = muteGuild.members.cache.get(muteDB[i].userId);
       if (!muteMember) continue;
@@ -408,7 +408,7 @@ bot.on("ready", async () => {
 
       if (muteDB[i].duration == 0) { continue } else if (Date.now() > muteDB[i].duration) {
         muteMember.roles.remove(muteRole);
-        await Mutes.deleteOne({ guildId: muteDB[i].guildId, userId: muteDB[i].userId })
+        await Mutes.findOneAndRemove({ guildId: muteDB[i].guildId, userId: muteDB[i].userId })
           .catch(e => console.log(e));
       }
     }
@@ -418,13 +418,13 @@ bot.on("ready", async () => {
 
       let remindUser = bot.users.cache.get(remindDB[i].userId);
       if (!remindUser) {
-        await Reminders.deleteOne({ userId: remindDB[i].userId, duration: remindDB[i].duration, content: remindDB[i].text });
+        await Reminders.findOneAndRemove({ userId: remindDB[i].userId, duration: remindDB[i].duration, content: remindDB[i].text });
       }
 
       if (Date.now() > remindDB[i].duration) {
         remindUser.send({ content: `A reminder arrived:` }).catch(e => { });
         remindUser.send({ content: remindDB[i].content }).catch(e => { });
-        await Reminders.deleteOne({ userId: remindDB[i].userId, duration: remindDB[i].duration, content: remindDB[i].text })
+        await Reminders.findOneAndRemove({ userId: remindDB[i].userId, duration: remindDB[i].duration, content: remindDB[i].text })
           .catch(e => console.log(e));
       }
     }

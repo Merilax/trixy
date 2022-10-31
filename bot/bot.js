@@ -391,8 +391,8 @@ bot.on("ready", async () => {
 
   setInterval(async () => {
 
-    const muteDB = await Mute.findAll();
-    const remindDB = await Reminder.findAll();
+    const muteDB = await Mute.find();
+    const remindDB = await Reminder.find();
 
     for (i = 0; ; i++) {
       if (!muteDB[i]) break;

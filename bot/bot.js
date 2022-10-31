@@ -75,7 +75,7 @@ async function levelUp(message) {
 
     if (rewards == null) { } else {
       if (guildLevelConfig.isCumulative === false) {
-        let rñeolelist = [];
+        let rolelist = [];
         for (i = 0; i < rewards.length; i++) {
           rolelist.push(rewards[i].dataValues);
         };
@@ -364,26 +364,27 @@ bot.on("ready", async () => {
   );
 
   setInterval(async () => {
-    const muteDB = await db.Mutes.findAll();
-    const remindDB = await db.Reminders.findAll();
+    const Mutes = require("./DB/modals/Mutes.js");
+    const Reminders = require("./DB/modals/Reminders.js");
+    const muteDB = await Mutes.findAll();
+    const remindDB = await Reminders.findAll();
 
     for (i = 0; ; i++) {
       if (!muteDB[i]) break;
 
-      let muteguildId = muteDB[i].guildId;
-      let muteguild = bot.guilds.cache.get(muteguildId);
-      if (!muteguild) {
-        await db.Mutes.destroy({ where: { guildId: muteDB[i].guildId, userId: muteDB[i].userId } });
+      let muteGuild = bot.guilds.cache.get(muteDB[i].guildId);
+      if (!muteGuild) {
+        await Mutes.deleteOne({ guildId: muteDB[i].guildId, userId: muteDB[i].userId });
       }
-      let mutemember = muteguild.members.cache.get(muteDB[i].userId);
-      if (!mutemember) continue;
-      let muterole = muteguild.roles.cache.find(r => r.name === "Trixy Mute");
-      if (!muterole) continue;
+      let muteMember = muteGuild.members.cache.get(muteDB[i].userId);
+      if (!muteMember) continue;
+      let muteRole = muteGuild.roles.cache.find(r => r.name === "Trixy Mute");
+      if (!muteRole) continue;
 
 
       if (muteDB[i].duration == 0) { continue } else if (Date.now() > muteDB[i].duration) {
-        mutemember.roles.remove(muterole);
-        await db.Mutes.destroy({ where: { guildId: muteguildId, userId: muteDB[i].userId } })
+        muteMember.roles.remove(muteRole);
+        await Mutes.deleteOne({ guildId: muteDB[i].guildId, userId: muteDB[i].userId })
           .catch(e => console.log(e));
       }
     }
@@ -391,16 +392,15 @@ bot.on("ready", async () => {
     for (i = 0; ; i++) {
       if (!remindDB[i]) break;
 
-      let DBUserId = remindDB[i].userId;
-      let remindUser = bot.users.cache.get(DBUserId);
+      let remindUser = bot.users.cache.get(remindDB[i].userId);
       if (!remindUser) {
-        await db.Reminders.destroy({ where: { userId: DBUserId, duration: remindDB[i].duration, text: remindDB[i].text } });
+        await Reminders.deleteOne({ userId: remindDB[i].userId, duration: remindDB[i].duration, content: remindDB[i].text });
       }
 
       if (Date.now() > remindDB[i].duration) {
         remindUser.send({ content: `A reminder arrived:` }).catch(e => { });
         remindUser.send({ content: remindDB[i].text }).catch(e => { });
-        await db.Reminders.destroy({ where: { userId: DBUserId, duration: remindDB[i].duration, text: remindDB[i].text } })
+        await Reminders.deleteOne({ userId: remindDB[i].userId, duration: remindDB[i].duration, content: remindDB[i].text })
           .catch(e => console.log(e));
       }
     }

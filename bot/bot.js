@@ -42,8 +42,8 @@ const levelCooldown = new Set();
 const levelDBTimeout = 60 * 1000;
 const xpRandom = Math.floor(Math.random() * 15 + 15);
 const db = require('./DB/sequelDB.js');
-const Mutes = require("./DB/modals/Mutes.js");
-const Reminders = require("./DB/modals/Reminders.js");
+const Mute = require("./DB/modals/Mutes.js");
+const Reminder = require("./DB/modals/Reminders.js");
 
 async function addXP(message) {
   if (!message.guild) return;
@@ -391,8 +391,8 @@ bot.on("ready", async () => {
 
   setInterval(async () => {
 
-    const muteDB = await Mutes.findAll();
-    const remindDB = await Reminders.findAll();
+    const muteDB = await Mute.findAll();
+    const remindDB = await Reminder.findAll();
 
     for (i = 0; ; i++) {
       if (!muteDB[i]) break;

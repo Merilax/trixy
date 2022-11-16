@@ -71,21 +71,21 @@ async function levelUp(message) {
         if (userConfig.doMentionOverride === true) {
           var doMention = "<@" + message.author.id + ">";
         } else {
-          var doMention = "";
+          var doMention = xpLevel.userId.slice(0, -5);
         }
       } else {
         if (guildLevelConfig.doMention === true) {
           var doMention = "<@" + message.author.id + ">";
         } else {
-          var doMention = "";
+          var doMention = xpLevel.userId.slice(0, -5);
         }
       }
 
       try {
-        message.guild.channels.cache.find(ch => ch.id === guildLevelConfig.targetChannel).send({ content: `${TxTE.emoji.add} ` + doMention + ` You leveled up! You are now Level ${xpLevel.level + 1}.` });
+        message.guild.channels.cache.find(ch => ch.id === guildLevelConfig.targetChannel).send({ content: `${TxTE.emoji.add} ` + doMention + `you leveled up! You are now Level ${xpLevel.level + 1}.` });
       } catch (e) { }
     } else {
-      message.channel.send({ content: `${TxTE.emoji.add} ` + doMention + ` You leveled up! You are now Level ${xpLevel.level + 1}.` });
+      message.channel.send({ content: `${TxTE.emoji.add} ` + doMention + `, you leveled up! You are now Level ${xpLevel.level + 1}.` });
     }
 
     var rewards = await db.XPRewards.findAll({ where: { guild: message.guild.id } });
@@ -419,13 +419,13 @@ bot.on("ready", async () => {
 
       let remindUser = bot.users.cache.get(remindDB[i].userId);
       if (!remindUser) {
-        await Reminder.findOneAndRemove({ userId: remindDB[i].userId, duration: remindDB[i].duration, content: remindDB[i].text });
+        await Reminder.findOneAndRemove({ userId: remindDB[i].userId, duration: remindDB[i].duration, content: remindDB[i].content });
       }
 
       if (Date.now() > remindDB[i].duration) {
         remindUser.send({ content: `A reminder arrived:` }).catch(e => { });
         remindUser.send({ content: remindDB[i].content }).catch(e => { });
-        await Reminder.findOneAndRemove({ userId: remindDB[i].userId, duration: remindDB[i].duration, content: remindDB[i].text })
+        await Reminder.findOneAndRemove({ userId: remindDB[i].userId, duration: remindDB[i].duration, content: remindDB[i].content })
           .catch(e => console.log(e));
       }
     }

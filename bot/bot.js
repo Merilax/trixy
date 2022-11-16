@@ -71,13 +71,13 @@ async function levelUp(message) {
         if (userConfig.doMentionOverride === true) {
           var doMention = "<@" + message.author.id + ">";
         } else {
-          var doMention = xpLevel.userId.slice(0, -5);
+          var doMention = message.guild.members.cache.find(m => m.id === message.author.id).username;
         }
       } else {
         if (guildLevelConfig.doMention === true) {
           var doMention = "<@" + message.author.id + ">";
         } else {
-          var doMention = xpLevel.userId.slice(0, -5);
+          var doMention = message.guild.members.cache.find(m => m.id === message.author.id).username;
         }
       }
 

@@ -52,63 +52,64 @@ async function addXP(message) {
   if (guildConfig.xpEnabled === false) { return } else {
     var [xpLevel, levelCreated] = await db.Levels.findOrCreate({ where: { guild: message.guild.id, userId: message.author.id }, defaults: { guild: message.guild.id, user: message.author.tag } });
     await db.Levels.update({ message_count: xpLevel.message_count + 1, xp: xpLevel.xp + xpRandom }, { where: { guild: message.guild.id, userId: message.author.id } });
-    levelUp(message);
+
+    if (xpLevel.xp + xpRandom >= xpLimit) levelUp(message);
   }
 }
 
 async function levelUp(message) {
   var xpLevel = await db.Levels.findOne({ where: { guild: message.guild.id, userId: message.author.id } });
-  const xpLimit = (xpLevel.level * 100 + 100);
 
-  if (xpLevel.xp >= xpLimit) {
-    await db.Levels.update({ level: xpLevel.level + 1, xp: xpLevel.xp - xpLimit }, { where: { guild: message.guild.id, userId: message.author.id } });
+  await db.Levels.update({ level: xpLevel.level + 1, xp: xpLevel.xp - (xpLevel.level * 100 + 100) }, { where: { guild: message.guild.id, userId: message.author.id } });
 
-    var [guildLevelConfig, chCreated] = await db.guildLevelConfigDB.findOrCreate({ where: { guildId: message.guild.id }, defaults: { guildId: message.guild.id } });
-    var [userConfig, uCreated] = await db.userConfigDB.findOrCreate({ where: { userId: message.author.id }, defaults: { userId: message.author.id } });
+  var [guildLevelConfig, chCreated] = await db.guildLevelConfigDB.findOrCreate({ where: { guildId: message.guild.id }, defaults: { guildId: message.guild.id } });
+  var [userConfig, uCreated] = await db.userConfigDB.findOrCreate({ where: { userId: message.author.id }, defaults: { userId: message.author.id } });
 
-    if (guildLevelConfig) {
-      if (userConfig) {
-        if (userConfig.doMentionOverride === true) {
-          var doMention = "<@" + message.author.id + ">";
-        } else {
-          var doMention = message.guild.members.cache.find(m => m.id === message.author.id).user.username;
-        }
+  let doMention = "";
+
+  if (guildLevelConfig) {
+    if (userConfig) {
+      if (userConfig.doMentionOverride === true) {
+        doMention = "<@" + message.author.id + ">";
       } else {
-        if (guildLevelConfig.doMention === true) {
-          var doMention = "<@" + message.author.id + ">";
-        } else {
-          var doMention = message.guild.members.cache.find(m => m.id === message.author.id).user.username;
-        }
+        doMention = message.guild.members.cache.find(m => m.id === message.author.id).user.username;
       }
-
-      try {
-        message.guild.channels.cache.find(ch => ch.id === guildLevelConfig.targetChannel).send({ content: `${TxTE.emoji.add} ` + doMention + `, you leveled up! You are now Level ${xpLevel.level + 1}.` });
-      } catch (e) { }
     } else {
-      message.channel.send({ content: `${TxTE.emoji.add} ` + doMention + `, you leveled up! You are now Level ${xpLevel.level + 1}.` });
-    }
-
-    var rewards = await db.XPRewards.findAll({ where: { guild: message.guild.id } });
-
-    if (rewards == null) { } else {
-      if (guildLevelConfig.isCumulative === false) {
-        let rolelist = [];
-        for (i = 0; i < rewards.length; i++) {
-          rolelist.push(rewards[i].dataValues);
-        };
-
-        let toRemove = [];
-        for (i = 0; i < rolelist.length; i++) {
-          if (rolelist[i].level !== xpLevel.level + 1) {
-            toRemove.push(message.guild.roles.cache.find(r => r.id === rolelist[i].roleId));
-          }
-        };
-        await message.member.roles.remove(toRemove);
+      if (guildLevelConfig.doMention === true) {
+        doMention = "<@" + message.author.id + ">";
+      } else {
+        doMention = message.guild.members.cache.find(m => m.id === message.author.id).user.username;
       }
-
-      var rewards = await db.XPRewards.findOne({ where: { guild: message.guild.id, level: xpLevel.level + 1 } });
-      message.member.roles.add(message.guild.roles.cache.find(r => r.id === rewards.roleId));
     }
+
+    try {
+      message.guild.channels.cache.find(ch => ch.id === guildLevelConfig.targetChannel).send({ content: `${TxTE.emoji.add} ` + doMention + `, you leveled up! You are now Level ${xpLevel.level + 1}.` });
+    } catch (e) { }
+  } else {
+    message.channel.send({ content: `${TxTE.emoji.add} You leveled up! You are now Level ${xpLevel.level + 1}.` });
+  }
+
+  var rewards = await db.XPRewards.findAll({ where: { guild: message.guild.id } });
+
+  if (rewards != null) {
+    if (guildLevelConfig.isCumulative === false) {
+      let rolelist = [];
+      for (i = 0; i < rewards.length; i++) {
+        rolelist.push(rewards[i].dataValues);
+      };
+
+      let toRemove = [];
+      for (i = 0; i < rolelist.length; i++) {
+        if (rolelist[i].level !== xpLevel.level + 1) {
+          toRemove.push(message.guild.roles.cache.find(r => r.id === rolelist[i].roleId));
+        }
+      };
+      await message.member.roles.remove(toRemove);
+    }
+
+    var rewards = await db.XPRewards.findOne({ where: { guild: message.guild.id, level: xpLevel.level + 1 } });
+    message.member.roles.add(message.guild.roles.cache.find(r => r.id === rewards.roleId));
+
   }
 }
 

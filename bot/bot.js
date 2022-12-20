@@ -71,18 +71,18 @@ async function levelUp(message) {
         if (userConfig.doMentionOverride === true) {
           var doMention = "<@" + message.author.id + ">";
         } else {
-          var doMention = message.guild.members.cache.find(m => m.id === message.author.id).username;
+          var doMention = message.guild.members.cache.find(m => m.id === message.author.id).user.username;
         }
       } else {
         if (guildLevelConfig.doMention === true) {
           var doMention = "<@" + message.author.id + ">";
         } else {
-          var doMention = message.guild.members.cache.find(m => m.id === message.author.id).username;
+          var doMention = message.guild.members.cache.find(m => m.id === message.author.id).user.username;
         }
       }
 
       try {
-        message.guild.channels.cache.find(ch => ch.id === guildLevelConfig.targetChannel).send({ content: `${TxTE.emoji.add} ` + doMention + `you leveled up! You are now Level ${xpLevel.level + 1}.` });
+        message.guild.channels.cache.find(ch => ch.id === guildLevelConfig.targetChannel).send({ content: `${TxTE.emoji.add} ` + doMention + `, you leveled up! You are now Level ${xpLevel.level + 1}.` });
       } catch (e) { }
     } else {
       message.channel.send({ content: `${TxTE.emoji.add} ` + doMention + `, you leveled up! You are now Level ${xpLevel.level + 1}.` });

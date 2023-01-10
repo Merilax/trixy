@@ -39,7 +39,9 @@ module.exports.run = async (
         if (guildColor === null) { cardColor = '#08f'; }
         else if (guildConfig.color === null) { cardColor = '#08f'; }
         else { cardColor = guildColor.color; }
-    } else { cardColor = userColor.color; }
+    } 
+    else if (userColor.color === null) { cardColor = '#08f'; }
+    else { cardColor = userColor.color; }
 
     const xpLimit = (level.level * 100 + 100);
     const progressBar = ((level.xp / xpLimit) * 950);

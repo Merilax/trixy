@@ -17,7 +17,7 @@ module.exports.run = async (
     args,
     prefix
 ) => {
-    const xpenable = await db.guildConfigDB.findOne({ where: { guild: message.guild.id } });
+    const xpenable = await db.guildConfigDB.findOne({ where: { guildId: message.guild.id } });
     if (xpenable.xpEnabled == false) { return } else {
         const level = await db.Levels.findAll({ where: { guild: message.guild.id } });
         const guildConfig = await db.guildConfigDB.findOne({ where: { guildId: message.guild.id } });

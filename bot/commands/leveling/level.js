@@ -17,7 +17,7 @@ module.exports.run = async (
     args,
     prefix
 ) => {
-    const [guildConfig, created] = await db.guildConfigDB.findOrCreate({ where: { guild: message.guild.id }, defaults: { guild: message.guild.id } });
+    const [guildConfig, created] = await db.guildConfigDB.findOrCreate({ where: { guildId: message.guild.id }, defaults: { guildId: message.guild.id } });
     if (guildConfig.xpEnabled === false) { return }
 
     if (!args[0]) {

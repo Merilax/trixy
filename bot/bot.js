@@ -467,18 +467,14 @@ bot.login(process.env.TOKEN);
 
 process.on("uncaughtException", error => logger.log("error", error));
 //process.on('exit', mongoose.connection.close());
-/*
-nodeCleanup(function (exitCode, signal) {
-    // release resources here before node exits
-    if (exitCode === 1) {
 
-    }
-    if (signal) {
-        unsavedData.save(function done() {
-            // calling process.exit() won't inform parent process of signal
-            process.kill(process.pid, signal);
-        });
-        nodeCleanup.uninstall(); // don't call cleanup handler again
-        return false;
-    }
-});*/
+nodeCleanup(function (exitCode, signal) {
+  // release resources here before node exits
+  if (signal) {
+    // calling process.exit() won't inform parent process of signal
+    mongoose.connection.close();
+    process.kill(process.pid, signal);
+    nodeCleanup.uninstall(); // don't call cleanup handler again
+    return false;
+  }
+});

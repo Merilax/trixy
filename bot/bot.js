@@ -136,6 +136,7 @@ const cookiesRoute = require('../dashboard-backend/routes/legal/cookie-policy');
 const disclaimersRoute = require('../dashboard-backend/routes/legal/disclaimers');
 const privacyRoute = require('../dashboard-backend/routes/legal/privacy-policy');
 const termsRoute = require('../dashboard-backend/routes/legal/terms-and-conditions');
+const healthRoute = require('../dashboard-backend/routes/health');
 const { default: mongoose } = require('mongoose');
 
 app.use(session({
@@ -162,6 +163,7 @@ app.use('partials', express.static(path.join(__dirname, `../dashboard-frontend/v
 app.use(express.json());
 app.use(express.urlencoded());
 
+app.use('/health', healthRoute);
 app.use('/auth', authRoute);
 app.use('/dashboard', dashboardRoute);
 app.use('/commands', commandsRoute);
@@ -466,10 +468,8 @@ bot.on("guildDelete", async guild => {
 bot.login(process.env.TOKEN);
 
 process.on("uncaughtException", error => logger.log("error", error));
-//process.on('exit', mongoose.connection.close());
 
 nodeCleanup(function (exitCode, signal) {
-  // release resources here before node exits
   if (signal) {
     // calling process.exit() won't inform parent process of signal
     mongoose.connection.close();

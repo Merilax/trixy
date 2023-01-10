@@ -9,6 +9,8 @@ const { sep } = require("path");
 const { success, error, warning } = require("log-symbols");
 const { setTimeout } = require("timers");
 const path = require('path');
+const nodeCleanup = require('node-cleanup');
+
 
 const logger = winston.createLogger({
   transports: [
@@ -53,7 +55,7 @@ async function addXP(message) {
     var [xpLevel, levelCreated] = await db.Levels.findOrCreate({ where: { guild: message.guild.id, userId: message.author.id }, defaults: { guild: message.guild.id, user: message.author.tag } });
     await db.Levels.update({ message_count: xpLevel.message_count + 1, xp: xpLevel.xp + xpRandom }, { where: { guild: message.guild.id, userId: message.author.id } });
 
-    if (xpLevel.xp + xpRandom >= xpLimit) levelUp(message);
+    if (xpLevel.xp + xpRandom >= (xpLevel.level * 100 + 100)) levelUp(message);
   }
 }
 
@@ -134,6 +136,7 @@ const cookiesRoute = require('../dashboard-backend/routes/legal/cookie-policy');
 const disclaimersRoute = require('../dashboard-backend/routes/legal/disclaimers');
 const privacyRoute = require('../dashboard-backend/routes/legal/privacy-policy');
 const termsRoute = require('../dashboard-backend/routes/legal/terms-and-conditions');
+const { default: mongoose } = require('mongoose');
 
 app.use(session({
   secret: process.env.COOKIE_SECRET,
@@ -383,7 +386,7 @@ bot.on("debug", m => logger.log("debug", m));
 bot.on("warn", m => logger.log("warn", m));
 bot.on("error", m => logger.log("error", m));
 
-process.on("uncaughtException", error => logger.log("error", error));
+
 
 bot.on("ready", async () => {
   console.log(
@@ -461,3 +464,21 @@ bot.on("guildDelete", async guild => {
 
 //bot.on('debug', console.log);
 bot.login(process.env.TOKEN);
+
+process.on("uncaughtException", error => logger.log("error", error));
+//process.on('exit', mongoose.connection.close());
+/*
+nodeCleanup(function (exitCode, signal) {
+    // release resources here before node exits
+    if (exitCode === 1) {
+
+    }
+    if (signal) {
+        unsavedData.save(function done() {
+            // calling process.exit() won't inform parent process of signal
+            process.kill(process.pid, signal);
+        });
+        nodeCleanup.uninstall(); // don't call cleanup handler again
+        return false;
+    }
+});*/

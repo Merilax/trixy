@@ -37,6 +37,7 @@ module.exports.run = async (
 
     if (userColor === null) {
         if (guildColor === null) { cardColor = '#08f'; }
+        else if (guildConfig.color === null) { cardColor = '#08f'; }
         else { cardColor = guildColor.color; }
     } else { cardColor = userColor.color; }
 

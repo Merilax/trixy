@@ -26,6 +26,7 @@ module.exports.run = async (
         let barColor;
 
         if (guildConfig === null) { barColor = '#0088ff'; }
+        else if (guildConfig.color === null) { barColor = '#0088ff'; }
         else { barColor = guildConfig.color; }
 
         for (let i = 0; ; i++) {

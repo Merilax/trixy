@@ -468,7 +468,7 @@ bot.on("guildDelete", async guild => {
 bot.login(process.env.TOKEN);
 
 process.on("uncaughtException", error => logger.log("error", error));
-
+/*
 nodeCleanup(function (exitCode, signal) {
   if (signal) {
     // calling process.exit() won't inform parent process of signal
@@ -477,4 +477,4 @@ nodeCleanup(function (exitCode, signal) {
     nodeCleanup.uninstall(); // don't call cleanup handler again
     return false;
   }
-});
+});*/

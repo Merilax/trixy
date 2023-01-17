@@ -19,6 +19,7 @@ module.exports.run = (
         return;
     } else {
         try {
+            message.channel.send("As you wish. Going offline.");
             mongoose.connection.close();
             process.kill(process.pid, 0);
         } catch (err) {

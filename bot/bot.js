@@ -110,8 +110,7 @@ async function levelUp(message) {
     }
 
     var rewards = await db.XPRewards.findOne({ where: { guild: message.guild.id, level: xpLevel.level + 1 } });
-    message.member.roles.add(message.guild.roles.cache.find(r => r.id === rewards.roleId));
-
+    if (rewards != null) message.member.roles.add(message.guild.roles.cache.find(r => r.id === rewards.roleId));
   }
 }
 

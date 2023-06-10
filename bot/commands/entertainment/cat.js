@@ -17,13 +17,13 @@ module.exports.run = (
   args,
   prefix
 ) => {
-  fetch("https://aws.random.cat/meow").then(res => res.json()).then(json => {
+  fetch("https://cataas.com/cat").then(res => res.json()).then(json => {
     const file = new Discord.AttachmentBuilder()
     const embed = new Discord.EmbedBuilder()
       .setImage(json.file)
       .setTitle("Here you go! :cat:")
       .setColor("#4badeb")
-      .setFooter({text:"https://aws.random.cat/meow"});
+      .setFooter({text:"https://cataas.com/cat"});
     return message.channel.send({ embeds: [embed] })
       .catch(error => {
         message.channel.send(

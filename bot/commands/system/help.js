@@ -54,7 +54,7 @@ module.exports.run = (
         },
         {
           name: "**Miscellaneous and entertainment:**",
-          value: "```md\n# bird, cat, cosmos, dog, fact, fox, roll.```"
+          value: "```md\n# cat, cosmos, dog, fact, fox, roll.```"
         },
         {
           name: "**Utility:**",

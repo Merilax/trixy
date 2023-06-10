@@ -92,7 +92,7 @@
         "u": "`roll (number)`"
     },
     "bird": {
-        "t": "Bird, aka `birb`.",
+        "t": "[Disabled] Bird, aka `birb`.",
         "d": "Gets a random image of a bird.",
         "u": "`bird`"
     },

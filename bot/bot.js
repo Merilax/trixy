@@ -9,8 +9,6 @@ const { sep } = require("path");
 const { success, error, warning } = require("log-symbols");
 const { setTimeout } = require("timers");
 const path = require('path');
-const nodeCleanup = require('node-cleanup');
-
 
 const logger = winston.createLogger({
   transports: [
@@ -26,7 +24,7 @@ const bot = new Client({
   intents: [
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMembers,
-    GatewayIntentBits.GuildBans,
+    GatewayIntentBits.GuildModeration,
     GatewayIntentBits.GuildPresences,
     GatewayIntentBits.GuildMessages,
     GatewayIntentBits.DirectMessages,
@@ -53,7 +51,7 @@ async function addXP(message) {
 
   if (guildConfig.xpEnabled === false) { return } else {
     var [xpLevel, levelCreated] = await db.Levels.findOrCreate({ where: { guild: message.guild.id, userId: message.author.id }, defaults: { guild: message.guild.id, user: message.author.tag } });
-    await db.Levels.update({ message_count: xpLevel.message_count + 1, xp: xpLevel.xp + xpRandom }, { where: { guild: message.guild.id, userId: message.author.id } });
+    await db.Levels.updateOne({ message_count: xpLevel.message_count + 1, xp: xpLevel.xp + xpRandom }, { where: { guild: message.guild.id, userId: message.author.id } });
 
     if (xpLevel.xp + xpRandom >= (xpLevel.level * 100 + 100)) levelUp(message);
   }
@@ -62,7 +60,7 @@ async function addXP(message) {
 async function levelUp(message) {
   var xpLevel = await db.Levels.findOne({ where: { guild: message.guild.id, userId: message.author.id } });
 
-  await db.Levels.update({ level: xpLevel.level + 1, xp: xpLevel.xp - (xpLevel.level * 100 + 100) }, { where: { guild: message.guild.id, userId: message.author.id } });
+  await db.Levels.updateOne({ level: xpLevel.level + 1, xp: xpLevel.xp - (xpLevel.level * 100 + 100) }, { where: { guild: message.guild.id, userId: message.author.id } });
 
   var [guildLevelConfig, chCreated] = await db.guildLevelConfigDB.findOrCreate({ where: { guildId: message.guild.id }, defaults: { guildId: message.guild.id } });
   var [userConfig, uCreated] = await db.userConfigDB.findOrCreate({ where: { userId: message.author.id }, defaults: { userId: message.author.id } });

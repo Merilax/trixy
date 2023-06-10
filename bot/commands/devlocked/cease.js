@@ -1,4 +1,4 @@
-const masterIds = require('../../masterIds.json');
+const config = require('../../config.json');
 const mongoose = require("mongoose");
 
 module.exports.commanddata = {
@@ -15,7 +15,7 @@ module.exports.run = (
     args,
     prefix
 ) => {
-    if (message.author.id !== masterIds.txdev) {
+    if (message.author.id !== config.ownerID) {
         return;
     } else {
         try {

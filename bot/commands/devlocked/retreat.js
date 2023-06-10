@@ -1,4 +1,4 @@
-const masterIds = require('../../masterIds.json');
+const config = require('../../config.json');
 
 module.exports.commanddata = {
   name: "retreat",
@@ -14,7 +14,7 @@ module.exports.run = (
   args,
   prefix
 ) => {
-  if (message.author.id !== masterIds.txdev) {
+  if (message.author.id !== config.ownerID) {
     return;
   } else message.guild.leave();
 };

@@ -31,6 +31,6 @@ module.exports.run = async (
     //console.log(args[1]);
     if (found.level.toString() === args[1]) { return message.channel.send({ content: `${TxTE.emoji.x} Only one role can be rewarded per level.` }); }
 
-    await db.XPRewards.update({ level: args[1] }, { where: { guild: message.guild.id, roleId: args[0] } });
+    await db.XPRewards.updateOne({ level: args[1] }, { where: { guild: message.guild.id, roleId: args[0] } });
     message.channel.send({ content: `${TxTE.emoji.ok} The target level for this role has changed to ${args[1]}` });
 };

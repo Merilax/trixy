@@ -1,27 +1,33 @@
 const Sequelize = require('sequelize');
-//SQLite3
-/* 
-const sequelize = new Sequelize('database', 'user', 'password', {
-    host: 'localhost',
-    dialect: 'sqlite',
-    logging: false,
-    storage: 'database.sqlite',
-});
- */
+var sequelize;
 
-// PostGreSQL
 
-const sequelize = new Sequelize(process.env.SEQUELDB_URL, {
-    dialect: 'postgres',
-    protocol: 'postgres',
-    logging: false,
-    dialectOptions: {
-        ssl: {
-            require: true,
-            rejectUnauthorized: false
+
+if (process.env.DEVMODE == "true") {
+    //SQLite3
+    sequelize = new Sequelize('database', 'user', 'password', {
+        host: 'localhost',
+        dialect: 'sqlite',
+        logging: false,
+        storage: 'database.sqlite',
+    });
+    console.log("Selected DEV SQLite database.");
+} else {
+    // PostGreSQL
+    sequelize = new Sequelize(process.env.SEQUELDB_URL, {
+        dialect: 'postgres',
+        protocol: 'postgres',
+        logging: false,
+        dialectOptions: {
+            ssl: {
+                require: true,
+                rejectUnauthorized: false
+            }
         }
-    }
-});
+    });
+    console.log("Selected Prod Postgres database.");
+
+}
 
 sequelize.authenticate();
 console.log("Database Auth Success!");

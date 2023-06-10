@@ -26,7 +26,7 @@ router.post('/', isAuthorized, async (req, res) => {
 
             try {
                 if (userConfig) {
-                    await sqldb.userConfigDB.update({ color: valueChanged }, { where: { userId: dashUserId } });
+                    await sqldb.userConfigDB.updateOne({ color: valueChanged }, { where: { userId: dashUserId } });
                 } else {
                     await sqldb.userConfigDB.create({
                         userId: dashUserId,
@@ -41,7 +41,7 @@ router.post('/', isAuthorized, async (req, res) => {
         case "personal-card-reset":
             try {
                 if (userConfig) {
-                    await sqldb.userConfigDB.update({ color: "BLUE" }, { where: { userId: dashUserId } });
+                    await sqldb.userConfigDB.updateOne({ color: "BLUE" }, { where: { userId: dashUserId } });
                 } else {
                     await sqldb.userConfigDB.create({
                         userId: dashUserId,
@@ -60,7 +60,7 @@ router.post('/', isAuthorized, async (req, res) => {
             if (valueChanged.match(/^[\w\d\s\W]{1,10}$/i)) { } else return;
             try {
                 if (guildConfig) {
-                    await sqldb.guildConfigDB.update({ prefix: valueChanged }, { where: { guildId: guildSet } });
+                    await sqldb.guildConfigDB.updateOne({ prefix: valueChanged }, { where: { guildId: guildSet } });
                 } else {
                     await sqldb.guildConfigDB.create({
                         guildId: guildSet,
@@ -89,7 +89,7 @@ router.post('/', isAuthorized, async (req, res) => {
             if (valueChanged.match(/^#[0-9a-f]{3,6}$/i)) { } else return;
             try {
                 if (guildConfig) {
-                    await sqldb.guildConfigDB.update({ color: valueChanged }, { where: { guildId: guildSet } });
+                    await sqldb.guildConfigDB.updateOne({ color: valueChanged }, { where: { guildId: guildSet } });
                 } else {
                     await sqldb.guildConfigDB.create({
                         guildId: guildSet,
@@ -105,7 +105,7 @@ router.post('/', isAuthorized, async (req, res) => {
             if (guildSet === "guild error") return;
             try {
                 if (guildConfig) {
-                    await sqldb.guildConfigDB.update({ color: "BLUE" }, { where: { guildId: guildSet } });
+                    await sqldb.guildConfigDB.updateOne({ color: "BLUE" }, { where: { guildId: guildSet } });
                 } else {
                     await sqldb.guildConfigDB.create({
                         guildId: guildSet,

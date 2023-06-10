@@ -17,20 +17,25 @@ passport.use(new DiscordStrategy({
     callbackURL: process.env.CLIENT_REDIRECT,
     scope: ['identify', 'email', 'guilds']
 }, async (accessToken, refreshToken, profile, done) => {
+    
     try {
         const user = await DiscordUser.findOne({ userId: profile.id });
         if (user) {
+            console.log(user);
             await user.updateOne({ username: profile.username, useravatar: profile.avatar, guilds: profile.guilds });
             const updatedUser = await DiscordUser.findOne({ userId: profile.id });
             done(null, updatedUser);
         } else {
+            console.log("null user");
             const newUser = await DiscordUser.create({
                 userId: profile.id,
                 username: profile.username,
                 useravatar: profile.avatar,
                 guilds: profile.guilds
             });
+            console.log(newUser);
             const savedUser = await newUser.save();
+            console.log(savedUser);
             done(null, savedUser);
         }
     } catch (err) {

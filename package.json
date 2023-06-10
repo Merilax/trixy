@@ -20,7 +20,7 @@
     "json": ">=10.0.0",
     "log-symbols": "^4.1.0",
     "moment": "^2.29.4",
-    "mongoose": "^6.4.6",
+    "mongoose": "^6.10.2",
     "node-cleanup": "^2.1.2",
     "node-fetch": "^2.6.7",
     "passport": "^0.6.0",
@@ -35,5 +35,8 @@
   "engines": {
     "node": "16.x"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "sqlite3": "^5.1.6"
+  }
 }

@@ -22,10 +22,10 @@ module.exports.run = async (
     if (args[0].trim().match(/^(true|false)$/i)) {
         
         if (args[0] === "true") {
-            await db.guildLevelConfigDB.update({ isCumulative: 1 }, { where: { guildId: message.guild.id } });
+            await db.guildLevelConfigDB.updateOne({ isCumulative: 1 }, { where: { guildId: message.guild.id } });
             message.channel.send({ content: `${TxTE.emoji.ok} ${TxTE.affirmation[Math.floor(Math.random() * TxTE.affirmation.length)]} Members will be mentioned upon levelling up. Their user configuration will override this.` });
         } else {
-            await db.guildLevelConfigDB.update({ isCumulative: 0 }, { where: { guildId: message.guild.id } });
+            await db.guildLevelConfigDB.updateOne({ isCumulative: 0 }, { where: { guildId: message.guild.id } });
             message.channel.send({ content: `${TxTE.emoji.ok} ${TxTE.affirmation[Math.floor(Math.random() * TxTE.affirmation.length)]} Members won't be mentioned upon levelling up. Their user configuration will override this.` });
         }
     } else {

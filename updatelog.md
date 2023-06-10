@@ -76,3 +76,5 @@
 3.4.0 >> Added role rewards by XP. Added `addreward`, `removereward`, `rewardlist` and `rewardtype` commands. Fixed typos and incoherent messages.
 3.5.0 >> Bumped Discord.JS to 14.0.2. Fixed `mute` and `unmute` command.
 3.6.0 >> Restructured both databases and adjusted code accordingly. Added `levelchannel`, `levelmention` and `mentionoverride` commands. Minor bugfixes.
+3.6.1 >> Fixed reminder infinite loop. Fixed level up not specifying the target user.
+3.6.2 >> Fixed dashboard login. Fixed level embeds not displaying.

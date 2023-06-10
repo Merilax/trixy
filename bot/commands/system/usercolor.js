@@ -21,10 +21,10 @@ module.exports.run = async (
             const [userColour, created] = await db.userConfigDB.findOrCreate({ where: { userId: message.author.id }, defaults: { color: newColour } });
             if (created) { } else {
                 if (newColour === "#000000" || newColour === "#000") {
-                    await db.userConfigDB.update({ color: null }, { where: { userId: message.author.id } });
+                    await db.userConfigDB.updateOne({ color: null }, { where: { userId: message.author.id } });
                     message.channel.send({ content: `${TxTE.emoji.ok} Custom colour disabled. Try #001 if you wanted black.` });
                 } else {
-                    await db.userConfigDB.update({ color: newColour }, { where: { userId: message.author.id } });
+                    await db.userConfigDB.updateOne({ color: newColour }, { where: { userId: message.author.id } });
                     message.channel.send({ content: `${TxTE.emoji.ok} ${TxTE.success[Math.floor(Math.random() * TxTE.success.length)]}` });
                 }
             }

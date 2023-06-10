@@ -25,10 +25,10 @@ module.exports.run = (
       var helpembed = new Discord.EmbedBuilder()
         .setTitle(`${TxTE.emoji.settings} **${help.t}**`)
         .setDescription(help.d)
-        .setFooter({ text:`Usage: ${help.u}` })
+        .setFooter({ text: `Usage: ${help.u}` })
         .setColor("#4badeb");
 
-      return message.author.send({ embeds: [helpembed ]}).catch(error => {
+      return message.author.send({ embeds: [helpembed] }).catch(error => {
         message.channel.send({ content: `${TxTE.emoji.x} It seems like I can't DM you! I'll post the message here instead...\n` });
         message.channel.send({ embeds: [helpembed] });
       });
@@ -66,11 +66,11 @@ module.exports.run = (
         }
       ])
       .setThumbnail("https://media.discordapp.net/attachments/356840100749115395/613738957154418708/1563964604683.png?width=702&height=702")
-      .setFooter({ text:"Icons by https://dryicons.com" })
+      .setFooter({ text: "Icons by https://dryicons.com" })
       .setColor("#4badeb")
       .setTimestamp(new Date());
 
-    return message.author.send({ embeds: [helpembed ]}).catch(error => {
+    return message.author.send({ embeds: [helpembed] }).catch(error => {
       message.channel.send({ content: `${TxTE.emoji.x} It seems like I can't DM you! I'll post the message here instead...\n` });
       message.channel.send({ embeds: [helpembed] });
     });

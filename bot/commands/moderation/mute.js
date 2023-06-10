@@ -1,5 +1,5 @@
 const Mute = require('../../DB/modals/Mutes.js');
-const masterIds = require('../../masterIds.json');
+const config = require('../../config.json');
 const { PermissionsBitField } = require('discord.js');
 const TxTE = require("../../TxTE.json");
 
@@ -28,7 +28,7 @@ module.exports.run = async (
   } else {
     muteUser = message.guild.members.cache.find(m => m.user.id === muteUser.user.id);
   }
-  if (muteUser.user.id === masterIds.txdev) return;
+  if (muteUser.user.id === config.ownerID) return;
 
   if (muteUser.user.id === message.author.id)
     return message.channel.send({ content: "Quite a peculiar petition, is it not?" });

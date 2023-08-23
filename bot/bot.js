@@ -51,7 +51,7 @@ async function addXP(message) {
 
   if (guildConfig.xpEnabled === false) { return } else {
     var [xpLevel, levelCreated] = await db.Levels.findOrCreate({ where: { guild: message.guild.id, userId: message.author.id }, defaults: { guild: message.guild.id, user: message.author.tag } });
-    await db.Levels.updateOne({ message_count: xpLevel.message_count + 1, xp: xpLevel.xp + xpRandom }, { where: { guild: message.guild.id, userId: message.author.id } });
+    await db.Levels.update({ message_count: xpLevel.message_count + 1, xp: xpLevel.xp + xpRandom }, { where: { guild: message.guild.id, userId: message.author.id } });
 
     if (xpLevel.xp + xpRandom >= (xpLevel.level * 100 + 100)) levelUp(message);
   }
@@ -60,7 +60,7 @@ async function addXP(message) {
 async function levelUp(message) {
   var xpLevel = await db.Levels.findOne({ where: { guild: message.guild.id, userId: message.author.id } });
 
-  await db.Levels.updateOne({ level: xpLevel.level + 1, xp: xpLevel.xp - (xpLevel.level * 100 + 100) }, { where: { guild: message.guild.id, userId: message.author.id } });
+  await db.Levels.update({ level: xpLevel.level + 1, xp: xpLevel.xp - (xpLevel.level * 100 + 100) }, { where: { guild: message.guild.id, userId: message.author.id } });
 
   var [guildLevelConfig, chCreated] = await db.guildLevelConfigDB.findOrCreate({ where: { guildId: message.guild.id }, defaults: { guildId: message.guild.id } });
   var [userConfig, uCreated] = await db.userConfigDB.findOrCreate({ where: { userId: message.author.id }, defaults: { userId: message.author.id } });
@@ -257,7 +257,7 @@ bot.on("messageCreate", async message => {
   } // Reacts to bot mention.
   switch (message.content.trim().toLowerCase()) {
     case "hi trixy": case "hello trixy": case "trixy, hi": case "trixy, hello":
-      return message.channel.send({ content: `Hello ${message.author.username}!`, reply: { messageReference: message.id } });
+      return message.channel.send({ content: `Hello ${message.author.username}!`, reply: { messageReference: message } });
   } // Reacts to friendliness. Hi Trixy!
 
   if (message.author.bot || message.content.includes("@here") || message.content.includes("@everyone")) return; // Returns when author is a bot or when mass mentioned
@@ -464,7 +464,7 @@ bot.on("guildDelete", async guild => {
 //bot.on('debug', console.log);
 bot.login(process.env.TOKEN);
 
-process.on("uncaughtException", error => logger.log("error", error));
+process.on("uncaughtException", error => console.error(error));//logger.log("error", error)
 /*
 nodeCleanup(function (exitCode, signal) {
   if (signal) {

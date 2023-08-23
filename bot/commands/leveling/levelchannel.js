@@ -20,14 +20,14 @@ module.exports.run = async (
     await db.guildLevelConfigDB.findOrCreate({ where: { guildId: message.guild.id }, defaults: { guildId: message.guild.id, isCumulative: true } });
 
     if (args[0] === "reset") {
-        await db.guildLevelConfigDB.updateOne({ targetChannel: null }, { where: { guildId: message.guild.id } });
+        await db.guildLevelConfigDB.update({ targetChannel: null }, { where: { guildId: message.guild.id } });
         return message.channel.send({ content: `${TxTE.emoji.ok} Level-up announcements will no longer happen in a specific channel.` });
     }
 
     if (message.guild.channels.cache.find(ch => ch.id === args[0])) {
         try {
             var target = message.guild.channels.cache.find(ch => ch.id === args[0]).id;
-            await db.guildLevelConfigDB.updateOne({ targetChannel: target }, { where: { guildId: message.guild.id } });
+            await db.guildLevelConfigDB.update({ targetChannel: target }, { where: { guildId: message.guild.id } });
             message.channel.send({ content: `${TxTE.emoji.ok} ${TxTE.affirmation[Math.floor(Math.random() * TxTE.affirmation.length)]}` });
         } catch (err) {
             message.channel.send({ content: `${TxTE.emoji.x} Something went wrong...` });

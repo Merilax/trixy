@@ -21,10 +21,10 @@ module.exports.run = async (
     
     if (args[0].trim().match(/^(true|false)$/i)) {
         if (args[0] === "true") {
-            await db.guildLevelConfigDB.updateOne({ isCumulative: 1 }, { where: { guildId: message.guild.id } });
+            await db.guildLevelConfigDB.update({ isCumulative: 1 }, { where: { guildId: message.guild.id } });
             message.channel.send({ content: `${TxTE.emoji.ok} ${TxTE.affirmation[Math.floor(Math.random() * TxTE.affirmation.length)]} Roles will now stack up as rewarded.` });
         } else {
-            await db.guildLevelConfigDB.updateOne({ isCumulative: 0 }, { where: { guildId: message.guild.id } });
+            await db.guildLevelConfigDB.update({ isCumulative: 0 }, { where: { guildId: message.guild.id } });
             message.channel.send({ content: `${TxTE.emoji.ok} ${TxTE.affirmation[Math.floor(Math.random() * TxTE.affirmation.length)]} Members will only keep their highest reward role.` });
         }
     } else {

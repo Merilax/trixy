@@ -26,10 +26,10 @@ module.exports.run = async (
             const [guildColour, created] = await db.guildConfigDB.findOrCreate({ where: { guildId: message.guild.id }, defaults: { color: newColour } });
             if (created) { } else {
                 if (newColour === "#000000" || newColour === "#000") {
-                    await db.guildConfigDB.updateOne({ color: null }, { where: { guildId: message.guild.id } });
+                    await db.guildConfigDB.update({ color: null }, { where: { guildId: message.guild.id } });
                     message.channel.send({ content: `${TxTE.emoji.ok} Custom colour disabled. Try #001 if you wanted black.` });
                 } else {
-                    await db.guildConfigDB.updateOne({ color: newColour }, { where: { guildId: message.guild.id } });
+                    await db.guildConfigDB.update({ color: newColour }, { where: { guildId: message.guild.id } });
                     message.channel.send({ content: `${TxTE.emoji.ok} ${TxTE.success[Math.floor(Math.random() * TxTE.success.length)]}` });
                 }
             }

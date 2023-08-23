@@ -20,10 +20,10 @@ module.exports.run = async (
     await db.guildLevelConfigDB.findOrCreate({ where: { guildId: message.guild.id }, defaults: { guildId: message.guild.id } });
 
     if (args[0] === "enable") {
-        await db.guildConfigDB.updateOne({ xpEnabled: 1 }, { where: { guildId: message.guild.id } });
+        await db.guildConfigDB.update({ xpEnabled: 1 }, { where: { guildId: message.guild.id } });
         return message.channel.send({ content: `${TxTE.emoji.ok} **Enabled** leveling system!` });
     } else if (args[0] === "disable") {
-        await db.guildConfigDB.updateOne({ xpEnabled: 0 }, { where: { guildId: message.guild.id } });
+        await db.guildConfigDB.update({ xpEnabled: 0 }, { where: { guildId: message.guild.id } });
         return message.channel.send({ content: `${TxTE.emoji.ok} **Disabled** leveling system!` });
     } else {
         return message.channel.send({ content: `${TxTE.emoji.quote} You must append \`enable\` or \`disable\` to the command in order to enable or disable the leveling system.` });

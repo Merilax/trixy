@@ -27,7 +27,7 @@ module.exports.run = async (
             await db.guildConfigDB.destroy({ where: { guildId: message.guild.id } });
             return message.channel.send({ content: `${TxTE.emoji.ok} Custom prefix deleted.` });
         }
-        await db.guildConfigDB.updateOne({ prefix: newPrefix }, { where: { guildId: message.guild.id } });
+        await db.guildConfigDB.update({ prefix: newPrefix }, { where: { guildId: message.guild.id } });
         message.channel.send({ content: `${TxTE.emoji.ok} Prefix updated to \`${newPrefix}\`! I will still respond to the original prefix too, just in case.` });
     }
     

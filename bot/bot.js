@@ -136,6 +136,13 @@ const termsRoute = require('../dashboard-backend/routes/legal/terms-and-conditio
 const healthRoute = require('../dashboard-backend/routes/health');
 const { default: mongoose } = require('mongoose');
 
+var selectedDB
+if (process.env.DEVMODE == "true") {
+  selectedDB = `mongodb://127.0.0.1:27017/main`;
+} else {
+  selectedDB = `mongodb+srv://Trixy:${process.env.MONGODB_PASSWORD}@trixy-mondodb.sv0er.mongodb.net/main`;
+}
+
 app.use(session({
   secret: process.env.COOKIE_SECRET,
   cookie: {
@@ -144,7 +151,7 @@ app.use(session({
   saveUninitialized: false,
   resave: false,
   name: 'discord.oauth2',
-  store: MongoStore.create({ mongoUrl: `mongodb+srv://Trixy:${process.env.MONGODB_PASSWORD}@trixy-mondodb.sv0er.mongodb.net/main?retryWrites=true&w=majority` })
+  store: MongoStore.create({ mongoUrl: selectedDB+`?retryWrites=true&w=majority` })
 }));
 
 // Passport
@@ -456,13 +463,18 @@ bot.on("guildCreate", async guild => {
 
 bot.on("guildDelete", async guild => {
   console.log(`I have been removed from: ${guild.name} (${guild.id})`);
-  await db.guildConfigDB.destroyAll({ where: { guildId: guild.id } });
-  await db.guildLevelConfigDB.destroyAll({ where: { guildId: guild.id } });
+  await db.guildConfigDB.destroy({ where: { guildId: guild.id } });
+  await db.guildLevelConfigDB.destroy({ where: { guildId: guild.id } });
   await Mute.deleteMany({ guildId: guild.id });
 });
 
 //bot.on('debug', console.log);
-bot.login(process.env.TOKEN);
+
+if (process.env.DEVMODE == "true") {
+  bot.login(process.env.DEV_TOKEN);
+} else {
+  bot.login(process.env.TOKEN);
+}
 
 process.on("uncaughtException", error => console.error(error));//logger.log("error", error)
 /*

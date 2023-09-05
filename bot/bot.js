@@ -404,6 +404,7 @@ bot.on("ready", async () => {
     const muteDB = await Mute.find();
     const remindDB = await Reminder.find();
 
+    // Mutes
     for (i = 0; ; i++) {
       if (!muteDB[i]) break;
 
@@ -424,6 +425,7 @@ bot.on("ready", async () => {
       }
     }
 
+    // Reminders
     for (i = 0; ; i++) {
       if (!remindDB[i]) break;
 

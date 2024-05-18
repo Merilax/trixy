@@ -1,48 +1,17 @@
 {
-
-"nosmile":
-"https://media.discordapp.net/attachments/356840100749115395/437638460904570880/uncomfortable.png?width=90&height=90",
-
-"smile":
-"https://media.discordapp.net/attachments/356840100749115395/437638662671302677/smile.png?width=90&height=90",
-
-"smile2":
-"https://media.discordapp.net/attachments/356840100749115395/437638435482894356/smile_hard.png?width=90&height=90",
-
-"smile3":
-"https://media.discordapp.net/attachments/356840100749115395/437638433028964354/smile_hard_double.png?width=90&height=90",
-
-"neutral":
-"https://media.discordapp.net/attachments/356840100749115395/437638428104982531/neutral.png?width=90&height=90",
-
-"neutral2":
-"https://media.discordapp.net/attachments/356840100749115395/437638429833035777/O_mouth.png?width=90&height=90",
-
-"worried":
-"https://media.discordapp.net/attachments/356840100749115395/437638432299417610/sad.png?width=90&height=90",
-
-"angry":
-"https://media.discordapp.net/attachments/356840100749115395/437638418797690890/angry.png?width=90&height=90",
-
-"MX8T4_0":
-"https://media.discordapp.net/attachments/356840100749115395/437638421742354455/MX8T40.png?width=90&height=90",
-
-"MX8T4_1":
-"https://media.discordapp.net/attachments/356840100749115395/437638423201972224/MX8T41.png?width=90&height=90",
-
-"MX8T4_2":
-"https://media.discordapp.net/attachments/356840100749115395/437638431070486529/pixil-frame-0.png?width=90&height=90",
-
-"MX8T4_3":
-"https://media.discordapp.net/attachments/356840100749115395/437638424619384832/MX8T4ULTIMATE.png?width=90&height=90 ",
-
-"gif":
-"https://cdn.discordapp.com/attachments/440893235578142732/554329218780102686/pixil-gif-drawing_5.gif",
-
-"pencil":
-"https://media.discordapp.net/attachments/600426134244425728/603616777481748491/1563964598365.png?width=702&height=702",
-  
-"tv":
-"https://media.discordapp.net/attachments/356840100749115395/613738957154418708/1563964604683.png?width=702&height=702"
-
+    "nosmile": "https://media.discordapp.net/attachments/356840100749115395/437638460904570880/uncomfortable.png?width=90&height=90",
+    "smile": "https://media.discordapp.net/attachments/356840100749115395/437638662671302677/smile.png?width=90&height=90",
+    "smile2": "https://media.discordapp.net/attachments/356840100749115395/437638435482894356/smile_hard.png?width=90&height=90",
+    "smile3": "https://media.discordapp.net/attachments/356840100749115395/437638433028964354/smile_hard_double.png?width=90&height=90",
+    "neutral": "https://media.discordapp.net/attachments/356840100749115395/437638428104982531/neutral.png?width=90&height=90",
+    "neutral2": "https://media.discordapp.net/attachments/356840100749115395/437638429833035777/O_mouth.png?width=90&height=90",
+    "worried": "https://media.discordapp.net/attachments/356840100749115395/437638432299417610/sad.png?width=90&height=90",
+    "angry": "https://media.discordapp.net/attachments/356840100749115395/437638418797690890/angry.png?width=90&height=90",
+    "MX8T4_0": "https://media.discordapp.net/attachments/356840100749115395/437638421742354455/MX8T40.png?width=90&height=90",
+    "MX8T4_1": "https://media.discordapp.net/attachments/356840100749115395/437638423201972224/MX8T41.png?width=90&height=90",
+    "MX8T4_2": "https://media.discordapp.net/attachments/356840100749115395/437638431070486529/pixil-frame-0.png?width=90&height=90",
+    "MX8T4_3": "https://media.discordapp.net/attachments/356840100749115395/437638424619384832/MX8T4ULTIMATE.png?width=90&height=90 ",
+    "gif": "https://cdn.discordapp.com/attachments/440893235578142732/554329218780102686/pixil-gif-drawing_5.gif",
+    "pencil": "https://media.discordapp.net/attachments/600426134244425728/603616777481748491/1563964598365.png?width=702&height=702",
+    "tv": "https://media.discordapp.net/attachments/356840100749115395/613738957154418708/1563964604683.png?width=702&height=702"
 }

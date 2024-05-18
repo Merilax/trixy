@@ -1,5 +1,7 @@
-function getMutualGuilds(userGuilds, botGuilds) {
+const bot = require("../../bot/bot.js");
 
-    return userGuilds.filter((guild) => botGuilds.find((botGuild) => botGuild.id === guild.id) && (guild.permissions & 0x20) === 0x20);
+function getMutualGuilds(userGuilds) {
+    let botGuilds = bot.guilds.getBotGuilds();
+    return userGuilds.filter((guild) => botGuilds.find((botGuild) => botGuild.id === guild.id));// && (guild.permissions & 0x8) === 0x8 PERMISSION CHECK
 }
 module.exports = { getMutualGuilds }

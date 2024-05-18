@@ -63,6 +63,26 @@ module.exports.run = async (
   if (muteUser.roles.cache.has(txMuteRole.id)) {
     return message.channel.send({ content: `${TxTE.emoji.x} This user can't be any more silent.` });
   }
+  
+  let remindTimeStr = args[1];
+  let maxTime; let timeScale; let multiplier;
+  let remindTimeInt;
+  switch (remindTimeStr.toLowerCase().slice(-1)) {
+    case "h":
+      remindTimeInt = remindTimeStr.slice(0, -1)
+      maxTime = 8760;
+      timeScale = 'hours';
+      multiplier = 3600000; //ms to h
+      break;
+    case "m":
+      remindTimeInt = remindTimeStr.slice(0, -1)
+      maxTime = 525600;
+      timeScale = 'minutes';
+      multiplier = 60000; //ms to m
+      break;
+  }
+
+  let remindThen;
 
   if (args[1] && (args[1] < 1000000) && (args[1] > 0)) {
     var muteExpire = Date.now() + (parseInt(args[1]) * 60000);

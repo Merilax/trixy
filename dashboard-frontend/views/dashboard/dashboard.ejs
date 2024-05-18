@@ -18,66 +18,71 @@
 <body>
     <%- include('../partials/header') -%>
 
-    <%- include('dashpartials/nav') -%>
+        <%- include('dashpartials/nav') -%>
 
-    <div class="container select">
-        <button onclick="selectThis('personal')">Personal configuration</button>
-        <button onclick="selectThis('guild')">Guild configuration</button>
-    </div>
-    
-    <main class="container-md conf" id="pconf"> <!-- PERSONAL CONFIG -->
-        <div class="container level-card">
-            <h2>Level card</h2>
-            <span>Select a color to apply to your level card:</span>
-            <input type="color" id="personal-card" value="#6633BB" /> <!-- MAKE THIS DYNAMIC -->
-            <button onclick="updateDB('personal-card')">Submit</button>
-            <button onclick="updateDB('personal-card-reset')">Use Guild default</button>
-        </div>
-    </main>
-
-    <main class="container-md conf" id="gconf"> <!-- GUILD CONFIG -->
-        <ul id="guild-select-list"> <!-- GUILD SELECT -->
-            <% guilds.forEach(guild => { %>
-                <li><button class="guild-select-button" selected="false" id="<%=guild.id%>" onclick="setGuild('<%=guild.id%>')"><img src="https://cdn.discordapp.com/icons/<%=guild.id%>/<%=guild.icon%>.webp?size=64" alt="<%=guild.name%>"></button></li>
-            <% }) %>
-            <li><button class="guild-select-button" id="addGuild"><a href="https://discord.com/api/oauth2/authorize?client_id=583006737322475550&redirect_uri=https%3A%2F%2Ftrixy.onrender.com%2Fauth%2Fredirect&response_type=code&scope=identify%20email%20guilds">+</a></button></li>
-        </ul>
-        
-        <ul id="module-select">
-            <li><button onclick="changeModule('system')">System</button></li>
-            <li><button onclick="changeModule('leveling')">Leveling</button></li>
-        </ul>
-        <div id="gconf2">
-            <div class="module" id="system">
-                <div class="container-md prefix">
-                    <h2>Prefix</h2>
-                    <span>Set a custom prefix: </span>
-                    <input type="text" id="prefix" maxlength="10">
-                    <button onclick="updateDB('prefix')">Submit</button>
-                    <button onclick="updateDB('prefix-reset')">Reset</button>
-                </div>
+            <div class="container select">
+                <button onclick="selectThis('personal')">Personal configuration</button>
+                <button onclick="selectThis('guild')">Guild configuration</button>
             </div>
 
-            <div class="module" id="leveling">
-                <div class="container-md level-card">
-                    <h2>Guild level card</h2>
-                    <span>Select a color to apply to all Guild level cards:</span>
-                    <input type="color" id="guild-card" value="#6633BB" /> <!-- MAKE THIS DYNAMIC -->
-                    <button onclick="updateDB('guild-card')">Submit</button>
-                    <button onclick="updateDB('guild-card-reset')">Use global default</button>
+            <main class="container-md conf" id="pconf"> <!-- PERSONAL CONFIG -->
+                <div class="container level-card">
+                    <h2>Level card</h2>
+                    <span>Select a color to apply to your level card:</span>
+                    <input type="color" id="personal-card" value="#6633BB" /> <!-- MAKE THIS DYNAMIC -->
+                    <button onclick="updateDB('personal-card')">Submit</button>
+                    <button onclick="updateDB('personal-card-reset')">Use Guild default</button>
                 </div>
-                <!-- Add leveldelete option -->
-            </div>
-        </div>
-    </main>
+            </main>
 
-    <%- include('dashpartials/footer') -%>
+            <main class="container-md conf" id="gconf"> <!-- GUILD CONFIG -->
+                <ul id="guild-select-list"> <!-- GUILD SELECT -->
+                    <% guilds.forEach(guild=> { %>
+                        <li><button class="guild-select-button" selected="false" id="<%=guild.id%>"
+                                onclick="setGuild('<%=guild.id%>')"><img
+                                    src="https://cdn.discordapp.com/icons/<%=guild.id%>/<%=guild.icon%>.webp?size=64"
+                                    alt="<%=guild.name%>"></button></li>
+                        <% }) %>
+                            <li><button class="guild-select-button" id="addGuild"><a
+                                        href="https://discord.com/api/oauth2/authorize?client_id=583006737322475550&redirect_uri=https%3A%2F%2Ftrixy.onrender.com%2Fauth%2Fredirect&response_type=code&scope=identify%20email%20guilds">+</a></button>
+                            </li>
+                </ul>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
-    crossorigin="anonymous"></script>
-    <script src="/script.js"></script>
-    <script src="/scripts/dashboard.js"></script>
+                <ul id="module-select">
+                    <li><button onclick="changeModule('system')">System</button></li>
+                    <li><button onclick="changeModule('leveling')">Leveling</button></li>
+                </ul>
+                <div id="gconf2">
+                    <div class="module" id="system">
+                        <div class="container-md prefix">
+                            <h2>Prefix</h2>
+                            <span>Set a custom prefix: </span>
+                            <input type="text" id="prefix" maxlength="10">
+                            <button onclick="updateDB('prefix')">Submit</button>
+                            <button onclick="updateDB('prefix-reset')">Reset</button>
+                        </div>
+                    </div>
+
+                    <div class="module" id="leveling">
+                        <div class="container-md level-card">
+                            <h2>Guild level card</h2>
+                            <span>Select a color to apply to all Guild level cards:</span>
+                            <input type="color" id="guild-card" value="#6633BB" /> <!-- MAKE THIS DYNAMIC -->
+                            <button onclick="updateDB('guild-card')">Submit</button>
+                            <button onclick="updateDB('guild-card-reset')">Use global default</button>
+                        </div>
+                        <!-- Add leveldelete option -->
+                    </div>
+                </div>
+            </main>
+
+            <%- include('dashpartials/footer') -%>
+
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+                    integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+                    crossorigin="anonymous"></script>
+                <script src="/script.js"></script>
+                <script src="/scripts/dashboard.js"></script>
 </body>
 
 </html>

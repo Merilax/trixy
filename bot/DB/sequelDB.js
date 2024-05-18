@@ -11,7 +11,6 @@ if (process.env.DEVMODE == "true") {
         logging: false,
         storage: 'database.sqlite',
     });
-    console.log("Selected DEV SQLite database.");
 } else {
     // PostGreSQL
     sequelize = new Sequelize(process.env.SEQUELDB_URL, {
@@ -25,8 +24,6 @@ if (process.env.DEVMODE == "true") {
             }
         }
     });
-    console.log("Selected Prod Postgres database.");
-
 }
 
 sequelize.authenticate();

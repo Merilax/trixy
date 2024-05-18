@@ -1,6 +1,7 @@
 const DiscordStrategy = require('passport-discord').Strategy;
 const passport = require('passport');
-const DiscordUser = require('../../bot/DB/modals/DiscordUser')
+const DiscordUser = require('../../bot/DB/modals/DiscordUser');
+const {getMutualGuilds} = require("../utils/mutualGuilds");
 
 passport.serializeUser((user, done) => {
     done(null, user.id);
@@ -21,8 +22,7 @@ passport.use(new DiscordStrategy({
     try {
         const user = await DiscordUser.findOne({ userId: profile.id });
         if (user) {
-            console.log(user);
-            await user.update({ username: profile.username, useravatar: profile.avatar, guilds: profile.guilds });
+            await user.updateOne({ username: profile.username, useravatar: profile.avatar, guilds: getMutualGuilds(profile.guilds) }); // profile.guilds
             const updatedUser = await DiscordUser.findOne({ userId: profile.id });
             done(null, updatedUser);
         } else {
@@ -31,11 +31,9 @@ passport.use(new DiscordStrategy({
                 userId: profile.id,
                 username: profile.username,
                 useravatar: profile.avatar,
-                guilds: profile.guilds
+                guilds: getMutualGuilds(profile.guilds)//profile.guilds
             });
-            console.log(newUser);
             const savedUser = await newUser.save();
-            console.log(savedUser);
             done(null, savedUser);
         }
     } catch (err) {

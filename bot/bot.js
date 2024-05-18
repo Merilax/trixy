@@ -13,7 +13,7 @@ const path = require('path');
 const logger = winston.createLogger({
   transports: [
     new winston.transports.Console(),
-    new winston.transports.File({ filename: "log" })
+    new winston.transports.File({ filename: "logs" })
   ],
   format: winston.format.printf(
     log => `[${log.level.toUpperCase()}] - ${log.message}`
@@ -45,8 +45,17 @@ const db = require('./DB/sequelDB.js');
 const Mute = require("./DB/modals/Mutes.js");
 const Reminder = require("./DB/modals/Reminders.js");
 
+function checkCooldownXP(message) {
+  if (!levelCooldown.has(message.author.id)) {
+    levelCooldown.add(message.author.id);
+    addXP(message);
+    setTimeout(() => {
+      levelCooldown.delete(message.author.id);
+    }, levelDBTimeout);
+  }
+}
+
 async function addXP(message) {
-  if (!message.guild) return;
   var [guildConfig, xpCreated] = await db.guildConfigDB.findOrCreate({ where: { guildId: message.guild.id }, defaults: { guildId: message.guild.id } });
 
   if (guildConfig.xpEnabled === false) { return } else {
@@ -89,9 +98,13 @@ async function levelUp(message) {
     message.channel.send({ content: `${TxTE.emoji.add} You leveled up! You are now Level ${xpLevel.level + 1}.` });
   }
 
-  var rewards = await db.XPRewards.findAll({ where: { guild: message.guild.id } });
+  assignRewardsXP(message);
+}
 
-  if (rewards != null) {
+async function assignRewardsXP(message) {
+  let rewards = await db.XPRewards.findAll({ where: { guild: message.guild.id } });
+
+  if (rewards !== null) {
     if (guildLevelConfig.isCumulative === false) {
       let rolelist = [];
       for (i = 0; i < rewards.length; i++) {
@@ -107,11 +120,13 @@ async function levelUp(message) {
       await message.member.roles.remove(toRemove);
     }
 
-    var rewards = await db.XPRewards.findOne({ where: { guild: message.guild.id, level: xpLevel.level + 1 } });
-    if (rewards != null) message.member.roles.add(message.guild.roles.cache.find(r => r.id === rewards.roleId));
+    let reward = await db.XPRewards.findOne({ where: { guild: message.guild.id, level: xpLevel.level + 1 } });
+    if (reward !== null) message.member.roles.add(message.guild.roles.cache.find(r => r.id === reward.roleId));
+    return true;
   }
-}
 
+  return false;
+}
 
 
 // EXPRESS ===============================================================================
@@ -151,7 +166,7 @@ app.use(session({
   saveUninitialized: false,
   resave: false,
   name: 'discord.oauth2',
-  store: MongoStore.create({ mongoUrl: selectedDB+`?retryWrites=true&w=majority` })
+  store: MongoStore.create({ mongoUrl: selectedDB + `?retryWrites=true&w=majority` })
 }));
 
 // Passport
@@ -178,7 +193,7 @@ app.use('/legal/terms-and-conditions', termsRoute);
 app.use('/dashboard', dashboardRoute);
 app.use('/dbupdate', dbupdateRoute);
 app.get('/', isAuthorized, (req, res) => {
-  res.render('index');
+  res.render('index', { bot, db });
 });
 
 function isAuthorized(req, res, next) {
@@ -190,9 +205,12 @@ function isAuthorized(req, res, next) {
   }
 }
 
-app.listen(PORT, () => { console.log(`Node server running on http://localhost:${3000}`); });
+app.listen(PORT, () => { console.log(`Node server running on http://localhost:${PORT}`); });
 
-
+function getBotGuilds() {
+  return bot.guilds.cache;
+}
+module.exports.guilds = { getBotGuilds };
 
 // LOADING COMMANDS =========================================================================
 
@@ -201,7 +219,7 @@ app.listen(PORT, () => { console.log(`Node server running on http://localhost:${
 const load = (dir = "./bot/commands") => {
   readdirSync(dir).forEach(dirs => {
     const commands = readdirSync(`${dir}${sep}${dirs}${sep}`).filter(files =>
-      (files.endsWith(".js") /*|| files.endsWith(".cjs")*/)
+      (files.endsWith(".js"))
     );
     for (const file of commands) {
       const pull = require(`../bot/commands/${dirs}/${file}`);
@@ -241,16 +259,91 @@ load();
 
 const cooldowns = new Collection();
 
+async function parseArgs(message) {
+  const standardPrefixCheck = (message.content.slice(0, prefix.length).toLowerCase() === prefix.toLowerCase());
+  const standardPrefixArgs = message.content.slice(prefix.length).trim().split(/ +/g);
+
+  if (standardPrefixCheck) return standardPrefixArgs;
+
+  // Guild, therefore check for custom prefix.
+  if (message.guild) {
+    const prefixDB = await db.guildConfigDB.findOne({ where: { guildId: message.guild.id } });
+
+    // Check for database record, and then check if custom prefix is set.
+    if (prefixDB === null) return null;
+    else if (prefixDB.prefix === null) return null;
+
+    const customPrefixCheck = (message.content.slice(0, prefixDB.prefix.length).toLowerCase() === prefixDB.prefix);
+    const customPrefixArgs = message.content.slice(prefixDB.prefix.length).trim().split(/ +/g);
+
+    if (customPrefixCheck) return customPrefixArgs;
+    else return null;
+  }
+  return null;
+}
+
+function detectCommand(args, message) {
+  const cmd = args.shift().toLowerCase();
+
+  // Check if command exists.
+  if (cmd.length === 0) return;
+  if (bot.commands.has(cmd) === true)
+    command = bot.commands.get(cmd);
+  else if (bot.aliases.has(cmd) === true)
+    command = bot.commands.get(bot.aliases.get(cmd));
+  else return;
+
+  // Check if command is guild only.
+  if (command.commanddata.guildOnly && message.channel.type !== 0) {
+    message.channel.send({ content: `${TxTE.emoji.block} I can't execute that command inside DMs!` });
+    return null;
+  }
+
+  if (command.commanddata.args && !args.length) {
+    let reply = `${TxTE.emoji.quote} You didn't provide any arguments, ${message.author}!`;
+
+    if (helplist[command]) {
+      reply += `\nThe proper usage would be: \`${prefix}${helplist[command].u}\``;
+    }
+    message.channel.send(reply);
+    return null;
+  } // Appends command usage if no args found.
+
+  return command;
+}
+
+function commandOnCooldown(command, message) {
+  if (!cooldowns.has(command.commanddata.name)) {
+    cooldowns.set(command.commanddata.name, new Collection());
+  }
+
+  const now = Date.now();
+  const timestamps = cooldowns.get(command.commanddata.name);
+  const cooldownAmount = (command.commanddata.cooldown || 3) * 1000;
+
+  if (timestamps.has(message.author.id)) {
+    const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
+
+    if (now < expirationTime) {
+      const timeLeft = (expirationTime - now) / 1000;
+      message.channel.send({
+        content: `${TxTE.emoji.time} Please wait ${timeLeft.toFixed(1)} more second(s) before using the \`${command.commanddata.name}\` command.`
+      });
+      return true;
+    }
+  }
+
+  timestamps.set(message.author.id, now);
+  setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
+  return false;
+}
+
 bot.on("messageCreate", async message => {
   if (message.author.bot) return;
+  if (message.content.includes("@here")) return;
+  if (message.content.includes("@everyone")) return;
 
-  if (levelCooldown.has(message.author.id)) { } else {
-    levelCooldown.add(message.author.id);
-    if (message.guild) addXP(message);
-    setTimeout(() => {
-      levelCooldown.delete(message.author.id);
-    }, levelDBTimeout);
-  } // Checks XP cooldown and adds XP.
+  if (message.guild) checkCooldownXP(message);
 
   if (message.mentions.users.first()) {
     if ((message.mentions.users.first().id === bot.user.id)) {
@@ -269,130 +362,29 @@ bot.on("messageCreate", async message => {
 
   if (message.author.bot || message.content.includes("@here") || message.content.includes("@everyone")) return; // Returns when author is a bot or when mass mentioned
 
-  if (message.guild) {
-    const prefixDB = await db.guildConfigDB.findOne({ where: { guildId: message.guild.id } });
-    if (prefixDB !== null) {
-      if (prefixDB.prefix !== null) {
-        if (
-          message.content.substr(0, prefixDB.prefix.length).toLowerCase() != prefixDB.prefix
-          && message.content.substr(0, prefix.length).toLowerCase() != prefix.toLowerCase()
-        ) {
-          return;
-        } else {
-          if (message.content.substr(0, prefix.length).toLowerCase() === prefix.toLowerCase()) {
-            var args = message.content
-              .slice(prefix.length)
-              .trim()
-              .split(/ +/g);
-          } else {
-            var args = message.content
-              .slice(prefixDB.prefix.length)
-              .trim()
-              .split(/ +/g);
-          }
-        }
-      } else {
-        if (message.content.substr(0, prefix.length).toLowerCase() != prefix.toLowerCase()) {
-          return;
-        } else {
-          var args = message.content
-            .slice(prefix.length)
-            .trim()
-            .split(/ +/g);
-        }
-      }
-    } else {
-      if (message.content.substr(0, prefix.length).toLowerCase() != prefix.toLowerCase()) {
-        return;
-      } else {
-        var args = message.content
-          .slice(prefix.length)
-          .trim()
-          .split(/ +/g);
-      }
-    } // Returns unless prefix included and declares args accordingly to prefix used.
-  } else {
-    if (
-      message.content.substr(0, prefix.length).toLowerCase() != prefix.toLowerCase()
-      || message.author.bot
-      || message.content.includes("@here")
-      || message.content.includes("@everyone")
-    ) {
-      return;
-    } else {
-      var args = message.content
-        .slice(prefix.length)
-        .trim()
-        .split(/ +/g);
-    }
-  }
+  let args = parseArgs(message);
+  if (args === null) return;
 
-  const cmd = args.shift().toLowerCase();
-  let command;
+  let command = detectCommand(args, message);
+  if (command === null) return;
 
-  if (cmd.length === 0) return;
-  if (bot.commands.has(cmd) === true) command = bot.commands.get(cmd);
-  else if (bot.aliases.has(cmd) === true)
-    command = bot.commands.get(bot.aliases.get(cmd));
-  else return;
-
-  if (command.commanddata.guildOnly && message.channel.type !== 0) {
-    return message.channel.send({ content: `${TxTE.emoji.block} I can't execute that command inside DMs!` });
-  } // GuildOnly command.
-
-  if (command.commanddata.args && !args.length) {
-    let reply = `${TxTE.emoji.quote} You didn't provide any arguments, ${message.author}!`;
-
-    if (helplist[command]) {
-      reply += `\nThe proper usage would be: \`${prefix}${helplist[command].u}\``;
-    }
-
-    return message.channel.send(reply);
-  } // Appends command usage if no args found.
-
-  if (!cooldowns.has(command.commanddata.name)) {
-    cooldowns.set(command.commanddata.name, new Collection());
-  }
-
-  const now = Date.now();
-  const timestamps = cooldowns.get(command.commanddata.name);
-  const cooldownAmount = (command.commanddata.cooldown || 3) * 1000;
-
-  if (timestamps.has(message.author.id)) {
-    const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
-
-    if (now < expirationTime) {
-      const timeLeft = (expirationTime - now) / 1000;
-      return message.channel.send({
-        content: `${TxTE.emoji.time} Please wait ${timeLeft.toFixed(1)} more second(s) before using the \`${command.commanddata.name}\` command.`
-      });
-    }
-  } // Command cooldown
-
-  timestamps.set(message.author.id, now);
-  setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
+  if (commandOnCooldown(command, message)) return;
 
   try {
-    if (command) {
-      command.run(bot, message, args, prefix);
-    }
+    command.run(bot, message, args, prefix);
   } catch (e) {
     console.error(e);
     message.channel.send({
       content: `${TxTE.emoji.windowText} Send to Merilax#1572. An error ocurred during command execution: \n \`\`\`${e}\`\`\``
     });
   }
-});
-
-
+});xx
 
 //STATUS AND TOKEN//========================================
 
 bot.on("debug", m => logger.log("debug", m));
 bot.on("warn", m => logger.log("warn", m));
 bot.on("error", m => logger.log("error", m));
-
-
 
 bot.on("ready", async () => {
   console.log(
@@ -470,8 +462,6 @@ bot.on("guildDelete", async guild => {
   await Mute.deleteMany({ guildId: guild.id });
 });
 
-//bot.on('debug', console.log);
-
 if (process.env.DEVMODE == "true") {
   bot.login(process.env.DEV_TOKEN);
 } else {
@@ -479,13 +469,3 @@ if (process.env.DEVMODE == "true") {
 }
 
 process.on("uncaughtException", error => console.error(error));//logger.log("error", error)
-/*
-nodeCleanup(function (exitCode, signal) {
-  if (signal) {
-    // calling process.exit() won't inform parent process of signal
-    mongoose.connection.close();
-    process.kill(process.pid, signal);
-    nodeCleanup.uninstall(); // don't call cleanup handler again
-    return false;
-  }
-});*/

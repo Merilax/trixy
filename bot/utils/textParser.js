@@ -1,4 +1,4 @@
-module.exports.parseCommandTime = (time) => {
+function parseCommandTime(time) {
     let timeInt = 0, multiplier = 0, maxTime = 0, scale = "";
 
     if (!time.match(/^\d+(m|h)$/i))
@@ -28,3 +28,5 @@ module.exports.parseCommandTime = (time) => {
     }
     return [timeInt, multiplier, scale];
 }
+
+module.exports = { parseCommandTime };

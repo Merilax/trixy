@@ -21,16 +21,13 @@
     "log-symbols": "^4.1.0",
     "moment": "^2.29.4",
     "mongoose": "^6.10.2",
-    "node-cleanup": "^2.1.2",
     "node-fetch": "^2.6.7",
     "passport": "^0.6.0",
     "passport-discord": "^0.1.4",
     "path": "^0.12.7",
     "pg": "^8.8.0",
-    "request": "^2.88.2",
     "sequelize": "^6.21.3",
-    "util": "^0.12.4",
-    "winston": "^3.8.1"
+    "util": "^0.12.4"
   },
   "engines": {
     "node": "16.x"

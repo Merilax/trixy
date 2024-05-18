@@ -4,21 +4,10 @@ const { readdirSync } = require("fs");
 const { prefix, statusquote } = require("./config.json");
 const helplist = require('./commands/system/helplist.json');
 const TxTE = require("./TxTE.json");
-const winston = require("winston");
 const { sep } = require("path");
 const { success, error, warning } = require("log-symbols");
 const { setTimeout } = require("timers");
 const path = require('path');
-
-const logger = winston.createLogger({
-    transports: [
-        new winston.transports.Console(),
-        new winston.transports.File({ filename: "logs" })
-    ],
-    format: winston.format.printf(
-        log => `[${log.level.toUpperCase()}] - ${log.message}`
-    )
-});
 
 const bot = new Client({
     intents: [
@@ -283,28 +272,29 @@ async function parseArgs(message) {
         });
 
         // Check for database record, and then check if custom prefix is set.
-        if (prefixDB === null) return null;
-        else if (prefixDB.prefix === null) return null;
+        if (prefixDB === null) return false;
+        else if (prefixDB.prefix === null) return false;
 
         const customPrefixCheck = (message.content.slice(0, prefixDB.prefix.length).toLowerCase() === prefixDB.prefix);
         const customPrefixArgs = message.content.slice(prefixDB.prefix.length).trim().split(/ +/g);
 
         if (customPrefixCheck) return customPrefixArgs;
-        else return null;
+        else return false;
     }
-    return null;
+    return false;
 }
 
 function detectCommand(args, message) {
+    if (!args) return false;
     const cmd = args.shift().toLowerCase();
 
     // Check if command exists.
-    if (cmd.length === 0) return;
+    if (cmd.length === 0) return false;
     if (bot.commands.has(cmd) === true)
         command = bot.commands.get(cmd);
     else if (bot.aliases.has(cmd) === true)
         command = bot.commands.get(bot.aliases.get(cmd));
-    else return;
+    else return false;
 
     // Check if command is guild only.
     if (command.commanddata.guildOnly && message.channel.type !== 0)
@@ -317,7 +307,7 @@ function detectCommand(args, message) {
             reply += `\nThe proper usage would be: \`${prefix}${helplist[command].u}\``;
 
         message.channel.send(reply);
-        return;
+        return false;
     } // Appends command usage if no args found.
 
     return command;
@@ -373,16 +363,16 @@ bot.on("messageCreate", async message => {
 
     if (message.author.bot || message.content.includes("@here") || message.content.includes("@everyone")) return; // Returns when author is a bot or when mass mentioned
 
-    let args = parseArgs(message);
-    if (args === null) return;
+    let args = await parseArgs(message);
+    if (!args) return;
 
     let command = detectCommand(args, message);
-    if (command === null) return;
+    if (!command) return;
 
     if (commandOnCooldown(command, message)) return;
 
     try {
-        command.run(bot, message, args, prefix);
+        command.run(bot, message, args, prefix); // module.exports.run()
     } catch (e) {
         console.error(e);
         message.channel.send({
@@ -392,10 +382,6 @@ bot.on("messageCreate", async message => {
 });
 
 //STATUS AND TOKEN//========================================
-
-bot.on("debug", m => logger.log("debug", m));
-bot.on("warn", m => logger.log("warn", m));
-bot.on("error", m => logger.log("error", m));
 
 bot.on("ready", async () => {
     console.log(
@@ -447,14 +433,19 @@ bot.on("ready", async () => {
         }
     }, 60 * 1000);
 
+    setActivity();
     setInterval(() => {
-        bot.user.setActivity(
-            `${bot.guilds.cache.size} servers, ${bot.users.cache.size} users.\n@Trixy help. ` +
-            `${statusquote[Math.floor(Math.random() * statusquote.length)]}`,
-            { type: 3 }
-        );
+        setActivity();
     }, 120 * 1000);
 });
+
+function setActivity() {
+    bot.user.setActivity(
+        `${bot.guilds.cache.size} servers, ${bot.users.cache.size} users.\n@Trixy help. ` +
+        `${statusquote[Math.floor(Math.random() * statusquote.length)]}`,
+        { type: 3 }
+    );
+}
 
 bot.on("guildCreate", async guild => {
     console.log(`New guild joined: ${guild.name} (id: ${guild.id}).`);
@@ -473,4 +464,4 @@ if (process.env.DEVMODE == "true")
 else
     bot.login(process.env.TOKEN);
 
-process.on("uncaughtException", error => console.error(error));//logger.log("error", error)
+process.on("uncaughtException", error => console.error(error));

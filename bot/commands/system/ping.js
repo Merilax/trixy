@@ -15,7 +15,7 @@ module.exports.run = async (
   args,
   prefix
 ) => {
-  const m = await message.channel.send({ content: "Pinging" });
+  const m = await message.channel.send({ content: "Pinging..." });
   m.edit(
     `${TxTE.emoji.chart} Latency: ${m.createdTimestamp -
       message.createdTimestamp}ms, API Latency: ${Math.round(bot.ws.ping)}ms`

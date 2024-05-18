@@ -17,12 +17,21 @@ module.exports.run = async (
     args,
     prefix
 ) => {
-    if (message.author.id !== message.guild.ownerId) return message.channel.send({ content: `${TxTE.emoji.block} Only the server owner may add XP rewards!` });
+    if (message.author.id !== message.guild.ownerId)
+        return message.channel.send({ content: `${TxTE.emoji.block} Only the server owner may add EXP rewards!` });
 
-    if (!message.guild.roles.cache.find(r => r.id === args[0])) { message.channel.send({ content: `${TxTE.emoji.quote} I couldn't find a matching role, did you copy the right Id?` }); }
+    if (!message.guild.roles.cache.find(r => r.id === args[0]))
+        message.channel.send({ content: `${TxTE.emoji.quote} I couldn't find a matching role, did you copy the right Id?` });
 
-    const found = await db.XPRewards.findOne({ where: { guild: message.guild.id, roleId: args[0] }});
-    if (!found) return message.channel.send({ content: `${TxTE.emoji.x} This role is not being rewarded.` });
-    await db.XPRewards.destroy({ where: { guild: message.guild.id, roleId: args[0] } });
+    const found = await db.XPRewards.findOne({
+        where: { guild: message.guild.id, roleId: args[0] }
+    });
+    if (!found)
+        return message.channel.send({ content: `${TxTE.emoji.x} This role is not being rewarded.` });
+
+    await db.XPRewards.destroy({
+        where: { guild: message.guild.id, roleId: args[0] }
+    });
+
     message.channel.send({ content: `${TxTE.emoji.ok} This role won't be rewarded anymore.` });
 };

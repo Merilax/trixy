@@ -1,4 +1,4 @@
-# TRIXY-DEPRECATED
+# TRIXY LEGACY
 
 0.1.6 >> Added autoresponses.  
 0.1.7 >> Added `dice` command. 

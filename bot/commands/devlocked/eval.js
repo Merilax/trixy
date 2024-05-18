@@ -22,18 +22,16 @@ module.exports.run = (
     else return text;
   }
 
-  if (message.author.id !== config.ownerID) {
-    return;
-  } else {
-    try {
-      const code = args.join(" ");
-      let evaled = eval(code);
+  if (message.author.id !== config.ownerID) return;
 
-      if (typeof evaled !== "string") evaled = require("util").inspect(evaled);
+  try {
+    const code = args.join(" ");
+    let evaled = eval(code);
 
-      message.channel.send({ content: `\`\`\`js\n${clean(evaled)}\`\`\`` });
-    } catch (err) {
-      message.channel.send({ content: `\`ERROR\` \`\`\`xl\n${clean(err)}\n\`\`\`` });
-    }
+    if (typeof evaled !== "string") evaled = require("util").inspect(evaled);
+
+    message.channel.send({ content: `\`\`\`js\n${clean(evaled)}\`\`\`` });
+  } catch (err) {
+    message.channel.send({ content: `\`\`\`xl\n${clean(err)}\n\`\`\`` });
   }
 };

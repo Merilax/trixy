@@ -17,9 +17,15 @@ module.exports.run = async (
     args,
     prefix
 ) => {
-    await db.guildLevelConfigDB.findOrCreate({ where: { guildId: message.guild.id }, defaults: { guildId: message.guild.id } });
-    const rewards = await db.XPRewards.findAll({ where: { guild: message.guild.id }});
-    if(rewards == null) return message.channel.send({ content: `${TxTE.emoji.x} There are no role rewards set for this server.` })
+    await db.guildLevelConfigDB.findOrCreate({
+        where: { guildId: message.guild.id },
+        defaults: { guildId: message.guild.id }
+    });
+    const rewards = await db.XPRewards.findAll({
+        where: { guild: message.guild.id }
+    });
+    if (rewards == null)
+        return message.channel.send({ content: `${TxTE.emoji.x} There are no role rewards set for this server.` })
 
     let rolelist = [];
     for (i = 0; ; i++) {
@@ -27,7 +33,7 @@ module.exports.run = async (
         rolelist.push(rewards[i].dataValues);
     };
     rolelist.sort((a, b) => a.level - b.level);
-    
+
     let list = [];
     for (i = 0; i < rolelist.length; i++) {
         list.push(`LVL ${rolelist[i].level}: ${message.guild.roles.cache.find(r => r.id === rolelist[i].roleId)}`);

@@ -23,11 +23,10 @@ module.exports.run = (
       .setTitle("Here you go! :bird:")
       .setColor("#4badeb")
       .setFooter({ text:"https://some-random-api.ml/img/birb" });
+    
     return message.channel.send({ embeds: [embed] })
-      .catch(error => {
-        message.channel.send(
-          `${TxTE.emoji.x} Something went wrong...`
-        );
+      .catch(err => {
+        message.channel.send(`${TxTE.emoji.x} Something went wrong...`);
       });
   });
 };

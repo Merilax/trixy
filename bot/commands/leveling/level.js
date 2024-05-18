@@ -17,29 +17,37 @@ module.exports.run = async (
     args,
     prefix
 ) => {
-    const [guildConfig, created] = await db.guildConfigDB.findOrCreate({ where: { guildId: message.guild.id }, defaults: { guildId: message.guild.id } });
-    if (guildConfig.xpEnabled === false) { return }
+    const [guildConfig, created] = await db.guildConfigDB.findOrCreate({
+        where: { guildId: message.guild.id },
+        defaults: { guildId: message.guild.id }
+    });
+    if (guildConfig.xpEnabled === false) return;
 
-    if (!args[0]) {
-        var user = message.author;
-    } else {
-        var user = message.mentions.members.first().user;
-    };
+    let user;
+    if (!args[0])
+        user = message.author;
+    else
+        user = message.mentions.members.first().user;
 
-    const level = await db.Levels.findOne({ where: { guild: message.guild.id, userId: user.id } });
-    const userColor = await db.userConfigDB.findOne({ where: { userId: user.id } });
-    const guildColor = await db.guildConfigDB.findOne({ where: { guildId: message.guild.id } });
+    const level = await db.Levels.findOne({
+        where: { guild: message.guild.id, userId: user.id }
+    });
+    const userColor = await db.userConfigDB.findOne({
+        where: { userId: user.id }
+    });
+    const guildColor = await db.guildConfigDB.findOne({
+        where: { guildId: message.guild.id }
+    });
     let cardColor;
 
-    if (level === null) {
+    if (level === null)
         return message.channel.send({ content: `${TxTE.emoji.x} No XP gained yet.` });
-    }
 
     if (userColor === null) {
         if (guildColor === null) { cardColor = '#08f'; }
         else if (guildConfig.color === null) { cardColor = '#08f'; }
         else { cardColor = guildColor.color; }
-    } 
+    }
     else if (userColor.color === null) { cardColor = '#08f'; }
     else { cardColor = userColor.color; }
 

@@ -11,26 +11,26 @@ const { setTimeout } = require("timers");
 const path = require('path');
 
 const logger = winston.createLogger({
-  transports: [
-    new winston.transports.Console(),
-    new winston.transports.File({ filename: "logs" })
-  ],
-  format: winston.format.printf(
-    log => `[${log.level.toUpperCase()}] - ${log.message}`
-  )
+    transports: [
+        new winston.transports.Console(),
+        new winston.transports.File({ filename: "logs" })
+    ],
+    format: winston.format.printf(
+        log => `[${log.level.toUpperCase()}] - ${log.message}`
+    )
 });
 
 const bot = new Client({
-  intents: [
-    GatewayIntentBits.Guilds,
-    GatewayIntentBits.GuildMembers,
-    GatewayIntentBits.GuildModeration,
-    GatewayIntentBits.GuildPresences,
-    GatewayIntentBits.GuildMessages,
-    GatewayIntentBits.DirectMessages,
-    GatewayIntentBits.MessageContent
-  ],
-  partials: [Partials.Channel]
+    intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMembers,
+        GatewayIntentBits.GuildModeration,
+        GatewayIntentBits.GuildPresences,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.DirectMessages,
+        GatewayIntentBits.MessageContent
+    ],
+    partials: [Partials.Channel]
 });
 
 // DATABASE ===============================================================================
@@ -45,87 +45,106 @@ const db = require('./DB/sequelDB.js');
 const Mute = require("./DB/modals/Mutes.js");
 const Reminder = require("./DB/modals/Reminders.js");
 
-function checkCooldownXP(message) {
-  if (!levelCooldown.has(message.author.id)) {
-    levelCooldown.add(message.author.id);
-    addXP(message);
-    setTimeout(() => {
-      levelCooldown.delete(message.author.id);
-    }, levelDBTimeout);
-  }
+function checkCooldownEXP(message) {
+    if (!levelCooldown.has(message.author.id)) {
+        levelCooldown.add(message.author.id);
+        addEXP(message);
+        setTimeout(() => {
+            levelCooldown.delete(message.author.id);
+        }, levelDBTimeout);
+    }
 }
 
-async function addXP(message) {
-  var [guildConfig, xpCreated] = await db.guildConfigDB.findOrCreate({ where: { guildId: message.guild.id }, defaults: { guildId: message.guild.id } });
+async function addEXP(message) {
+    let [guildConfig, xpCreated] = await db.guildConfigDB.findOrCreate({
+        where: { guildId: message.guild.id },
+        defaults: { guildId: message.guild.id }
+    });
 
-  if (guildConfig.xpEnabled === false) { return } else {
-    var [xpLevel, levelCreated] = await db.Levels.findOrCreate({ where: { guild: message.guild.id, userId: message.author.id }, defaults: { guild: message.guild.id, user: message.author.tag } });
-    await db.Levels.update({ message_count: xpLevel.message_count + 1, xp: xpLevel.xp + xpRandom }, { where: { guild: message.guild.id, userId: message.author.id } });
+    if (guildConfig.xpEnabled) {
+        let [xpLevel, levelCreated] = await db.Levels.findOrCreate({
+            where: { guild: message.guild.id, userId: message.author.id },
+            defaults: { guild: message.guild.id, user: message.author.tag }
+        });
+        await db.Levels.update({ message_count: xpLevel.message_count + 1, xp: xpLevel.xp + xpRandom }, {
+            where: { guild: message.guild.id, userId: message.author.id }
+        });
 
-    if (xpLevel.xp + xpRandom >= (xpLevel.level * 100 + 100)) levelUp(message);
-  }
+        if (xpLevel.xp + xpRandom >= (xpLevel.level * 100 + 100))
+            levelUp(message);
+    }
 }
 
 async function levelUp(message) {
-  var xpLevel = await db.Levels.findOne({ where: { guild: message.guild.id, userId: message.author.id } });
+    let xpLevel = await db.Levels.findOne({
+        where: { guild: message.guild.id, userId: message.author.id }
+    });
 
-  await db.Levels.update({ level: xpLevel.level + 1, xp: xpLevel.xp - (xpLevel.level * 100 + 100) }, { where: { guild: message.guild.id, userId: message.author.id } });
+    await db.Levels.update({ level: xpLevel.level + 1, xp: xpLevel.xp - (xpLevel.level * 100 + 100) }, {
+        where: { guild: message.guild.id, userId: message.author.id }
+    });
 
-  var [guildLevelConfig, chCreated] = await db.guildLevelConfigDB.findOrCreate({ where: { guildId: message.guild.id }, defaults: { guildId: message.guild.id } });
-  var [userConfig, uCreated] = await db.userConfigDB.findOrCreate({ where: { userId: message.author.id }, defaults: { userId: message.author.id } });
+    let [guildLevelConfig, chCreated] = await db.guildLevelConfigDB.findOrCreate({
+        where: { guildId: message.guild.id },
+        defaults: { guildId: message.guild.id }
+    });
+    let [userConfig, uCreated] = await db.userConfigDB.findOrCreate({
+        where: { userId: message.author.id },
+        defaults: { userId: message.author.id }
+    });
 
-  let doMention = "";
+    let doMention = "";
 
-  if (guildLevelConfig) {
-    if (userConfig) {
-      if (userConfig.doMentionOverride === true) {
-        doMention = "<@" + message.author.id + ">";
-      } else {
-        doMention = message.guild.members.cache.find(m => m.id === message.author.id).user.username;
-      }
+    if (guildLevelConfig) {
+        if (userConfig) {
+            doMention = "<@" + message.author.id + ">";
+            if (userConfig.doMentionOverride === false)
+                doMention = message.guild.members.cache.find(m => m.id === message.author.id).user.username;
+        } else {
+            doMention = "<@" + message.author.id + ">";
+            if (guildLevelConfig.doMention === false)
+                doMention = message.guild.members.cache.find(m => m.id === message.author.id).user.username;
+        }
+
+        try {
+            message.guild.channels.cache.find(ch => ch.id === guildLevelConfig.targetChannel)
+                .send({ content: `${TxTE.emoji.add} ` + doMention + `, you leveled up! You are now Level ${xpLevel.level + 1}.` });
+        } catch (e) { }
     } else {
-      if (guildLevelConfig.doMention === true) {
-        doMention = "<@" + message.author.id + ">";
-      } else {
-        doMention = message.guild.members.cache.find(m => m.id === message.author.id).user.username;
-      }
+        message.channel.send({ content: `${TxTE.emoji.add} You leveled up! You are now Level ${xpLevel.level + 1}.` });
     }
 
-    try {
-      message.guild.channels.cache.find(ch => ch.id === guildLevelConfig.targetChannel).send({ content: `${TxTE.emoji.add} ` + doMention + `, you leveled up! You are now Level ${xpLevel.level + 1}.` });
-    } catch (e) { }
-  } else {
-    message.channel.send({ content: `${TxTE.emoji.add} You leveled up! You are now Level ${xpLevel.level + 1}.` });
-  }
-
-  assignRewardsXP(message);
+    assignRewardsXP(message);
 }
 
 async function assignRewardsXP(message) {
-  let rewards = await db.XPRewards.findAll({ where: { guild: message.guild.id } });
+    let rewards = await db.XPRewards.findAll({ where: { guild: message.guild.id } });
 
-  if (rewards !== null) {
-    if (guildLevelConfig.isCumulative === false) {
-      let rolelist = [];
-      for (i = 0; i < rewards.length; i++) {
-        rolelist.push(rewards[i].dataValues);
-      };
+    if (rewards !== null) {
+        if (guildLevelConfig.isCumulative === false) {
+            let rolelist = [];
+            for (i = 0; i < rewards.length; i++) {
+                rolelist.push(rewards[i].dataValues);
+            };
 
-      let toRemove = [];
-      for (i = 0; i < rolelist.length; i++) {
-        if (rolelist[i].level !== xpLevel.level + 1) {
-          toRemove.push(message.guild.roles.cache.find(r => r.id === rolelist[i].roleId));
+            let toRemove = [];
+            for (i = 0; i < rolelist.length; i++) {
+                if (rolelist[i].level !== xpLevel.level + 1) {
+                    toRemove.push(message.guild.roles.cache.find(r => r.id === rolelist[i].roleId));
+                }
+            };
+            await message.member.roles.remove(toRemove);
         }
-      };
-      await message.member.roles.remove(toRemove);
+
+        let reward = await db.XPRewards.findOne({
+            where: { guild: message.guild.id, level: xpLevel.level + 1 }
+        });
+        if (reward !== null)
+            message.member.roles.add(message.guild.roles.cache.find(r => r.id === reward.roleId));
+        return true;
     }
 
-    let reward = await db.XPRewards.findOne({ where: { guild: message.guild.id, level: xpLevel.level + 1 } });
-    if (reward !== null) message.member.roles.add(message.guild.roles.cache.find(r => r.id === reward.roleId));
-    return true;
-  }
-
-  return false;
+    return false;
 }
 
 
@@ -151,22 +170,21 @@ const termsRoute = require('../dashboard-backend/routes/legal/terms-and-conditio
 const healthRoute = require('../dashboard-backend/routes/health');
 const { default: mongoose } = require('mongoose');
 
-var selectedDB
-if (process.env.DEVMODE == "true") {
-  selectedDB = `mongodb://127.0.0.1:27017/main`;
-} else {
-  selectedDB = `mongodb+srv://Trixy:${process.env.MONGODB_PASSWORD}@trixy-mondodb.sv0er.mongodb.net/main`;
-}
+let selectedDB
+if (process.env.DEVMODE == "true")
+    selectedDB = `mongodb://127.0.0.1:27017/main`;
+else
+    selectedDB = `mongodb+srv://Trixy:${process.env.MONGODB_PASSWORD}@trixy-mondodb.sv0er.mongodb.net/main`;
 
 app.use(session({
-  secret: process.env.COOKIE_SECRET,
-  cookie: {
-    maxAge: 60000 * 60 * 24
-  },
-  saveUninitialized: false,
-  resave: false,
-  name: 'discord.oauth2',
-  store: MongoStore.create({ mongoUrl: selectedDB + `?retryWrites=true&w=majority` })
+    secret: process.env.COOKIE_SECRET,
+    cookie: {
+        maxAge: 60000 * 60 * 24
+    },
+    saveUninitialized: false,
+    resave: false,
+    name: 'discord.oauth2',
+    store: MongoStore.create({ mongoUrl: selectedDB + `?retryWrites=true&w=majority` })
 }));
 
 // Passport
@@ -193,22 +211,20 @@ app.use('/legal/terms-and-conditions', termsRoute);
 app.use('/dashboard', dashboardRoute);
 app.use('/dbupdate', dbupdateRoute);
 app.get('/', isAuthorized, (req, res) => {
-  res.render('index', { bot, db });
+    res.render('index', { bot, db });
 });
 
 function isAuthorized(req, res, next) {
-  if (req.user) {
-    res.redirect('/dashboard');
-  }
-  else {
-    next();
-  }
+    if (req.user)
+        res.redirect('/dashboard');
+    else
+        next();
 }
 
 app.listen(PORT, () => { console.log(`Node server running on http://localhost:${PORT}`); });
 
 function getBotGuilds() {
-  return bot.guilds.cache;
+    return bot.guilds.cache;
 }
 module.exports.guilds = { getBotGuilds };
 
@@ -216,169 +232,164 @@ module.exports.guilds = { getBotGuilds };
 
 ["commands", "aliases"].forEach(x => (bot[x] = new Collection()));
 
-const load = (dir = "./bot/commands") => {
-  readdirSync(dir).forEach(dirs => {
-    const commands = readdirSync(`${dir}${sep}${dirs}${sep}`).filter(files =>
-      (files.endsWith(".js"))
-    );
-    for (const file of commands) {
-      const pull = require(`../bot/commands/${dirs}/${file}`);
-      if (
-        pull.commanddata &&
-        typeof pull.commanddata.name === "string" &&
-        typeof pull.commanddata.category === "string"
-      ) {
-        if (bot.commands.get(pull.commanddata.name))
-          return console.warn(
-            `${warning} Two or more commands have the same name ${pull.commanddata.name}.`
-          );
-        bot.commands.set(pull.commanddata.name, pull);
-        console.log(`${success} Loaded command ${pull.commanddata.name}.`);
-      } else {
-        console.log(
-          `${error} Error loading command in ${dir}${dirs}. you have a missing commanddata.name or commanddata.name is not a string. or you have a missing commanddata.category or commanddata.category is not a string`
-        );
-        continue;
-      }
-      if (
-        pull.commanddata.aliases &&
-        typeof pull.commanddata.aliases === "object"
-      ) {
-        pull.commanddata.aliases.forEach(alias => {
-          if (bot.aliases.get(alias))
-            return console.warn(
-              `${warning} Two commands or more commands have the same aliases ${alias}`
-            );
-          bot.aliases.set(alias, pull.commanddata.name);
-        });
-      }
-    }
-  });
+function load(dir) {
+    readdirSync(dir).forEach(dirs => {
+        const commands = readdirSync(`${dir}${sep}${dirs}${sep}`).filter(files => (files.endsWith(".js")));
+
+        for (const file of commands) {
+            const pull = require(`../bot/commands/${dirs}/${file}`);
+            if (
+                pull.commanddata &&
+                typeof pull.commanddata.name === "string" &&
+                typeof pull.commanddata.category === "string"
+            ) {
+                if (bot.commands.get(pull.commanddata.name))
+                    return console.warn(`${warning} Two or more commands have the same name ${pull.commanddata.name}.`);
+
+                bot.commands.set(pull.commanddata.name, pull);
+                //console.log(`${success} Loaded command ${pull.commanddata.name}.`);
+            } else {
+                console.log(`${error} Error loading command in ${dir}${dirs}. You have a missing commanddata name or category.`);
+                continue;
+            }
+            if (
+                pull.commanddata.aliases &&
+                typeof pull.commanddata.aliases === "object"
+            ) {
+                pull.commanddata.aliases.forEach(alias => {
+                    if (bot.aliases.get(alias))
+                        return console.warn(`${warning} Two commands or more commands have the same aliases ${alias}`);
+
+                    bot.aliases.set(alias, pull.commanddata.name);
+                });
+            }
+        }
+    });
 };
-load();
+load("./bot/commands");
 
 const cooldowns = new Collection();
 
 async function parseArgs(message) {
-  const standardPrefixCheck = (message.content.slice(0, prefix.length).toLowerCase() === prefix.toLowerCase());
-  const standardPrefixArgs = message.content.slice(prefix.length).trim().split(/ +/g);
+    const standardPrefixCheck = (message.content.slice(0, prefix.length).toLowerCase() === prefix.toLowerCase());
+    const standardPrefixArgs = message.content.slice(prefix.length).trim().split(/ +/g);
 
-  if (standardPrefixCheck) return standardPrefixArgs;
+    if (standardPrefixCheck) return standardPrefixArgs;
 
-  // Guild, therefore check for custom prefix.
-  if (message.guild) {
-    const prefixDB = await db.guildConfigDB.findOne({ where: { guildId: message.guild.id } });
+    // Guild, therefore check for custom prefix.
+    if (message.guild) {
+        const prefixDB = await db.guildConfigDB.findOne({
+            where: { guildId: message.guild.id }
+        });
 
-    // Check for database record, and then check if custom prefix is set.
-    if (prefixDB === null) return null;
-    else if (prefixDB.prefix === null) return null;
+        // Check for database record, and then check if custom prefix is set.
+        if (prefixDB === null) return null;
+        else if (prefixDB.prefix === null) return null;
 
-    const customPrefixCheck = (message.content.slice(0, prefixDB.prefix.length).toLowerCase() === prefixDB.prefix);
-    const customPrefixArgs = message.content.slice(prefixDB.prefix.length).trim().split(/ +/g);
+        const customPrefixCheck = (message.content.slice(0, prefixDB.prefix.length).toLowerCase() === prefixDB.prefix);
+        const customPrefixArgs = message.content.slice(prefixDB.prefix.length).trim().split(/ +/g);
 
-    if (customPrefixCheck) return customPrefixArgs;
-    else return null;
-  }
-  return null;
+        if (customPrefixCheck) return customPrefixArgs;
+        else return null;
+    }
+    return null;
 }
 
 function detectCommand(args, message) {
-  const cmd = args.shift().toLowerCase();
+    const cmd = args.shift().toLowerCase();
 
-  // Check if command exists.
-  if (cmd.length === 0) return;
-  if (bot.commands.has(cmd) === true)
-    command = bot.commands.get(cmd);
-  else if (bot.aliases.has(cmd) === true)
-    command = bot.commands.get(bot.aliases.get(cmd));
-  else return;
+    // Check if command exists.
+    if (cmd.length === 0) return;
+    if (bot.commands.has(cmd) === true)
+        command = bot.commands.get(cmd);
+    else if (bot.aliases.has(cmd) === true)
+        command = bot.commands.get(bot.aliases.get(cmd));
+    else return;
 
-  // Check if command is guild only.
-  if (command.commanddata.guildOnly && message.channel.type !== 0) {
-    message.channel.send({ content: `${TxTE.emoji.block} I can't execute that command inside DMs!` });
-    return null;
-  }
+    // Check if command is guild only.
+    if (command.commanddata.guildOnly && message.channel.type !== 0)
+        return message.channel.send({ content: `${TxTE.emoji.block} I cannot execute this command in DMs.` });
 
-  if (command.commanddata.args && !args.length) {
-    let reply = `${TxTE.emoji.quote} You didn't provide any arguments, ${message.author}!`;
+    if (command.commanddata.args && !args.length) {
+        let reply = `${TxTE.emoji.quote} You didn't provide any arguments, ${message.author}!`;
 
-    if (helplist[command]) {
-      reply += `\nThe proper usage would be: \`${prefix}${helplist[command].u}\``;
-    }
-    message.channel.send(reply);
-    return null;
-  } // Appends command usage if no args found.
+        if (helplist[command])
+            reply += `\nThe proper usage would be: \`${prefix}${helplist[command].u}\``;
 
-  return command;
+        message.channel.send(reply);
+        return;
+    } // Appends command usage if no args found.
+
+    return command;
 }
 
 function commandOnCooldown(command, message) {
-  if (!cooldowns.has(command.commanddata.name)) {
-    cooldowns.set(command.commanddata.name, new Collection());
-  }
+    if (!cooldowns.has(command.commanddata.name))
+        cooldowns.set(command.commanddata.name, new Collection());
 
-  const now = Date.now();
-  const timestamps = cooldowns.get(command.commanddata.name);
-  const cooldownAmount = (command.commanddata.cooldown || 3) * 1000;
+    const now = Date.now();
+    const timestamps = cooldowns.get(command.commanddata.name);
+    const cooldownAmount = (command.commanddata.cooldown || 3) * 1000;
 
-  if (timestamps.has(message.author.id)) {
-    const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
+    if (timestamps.has(message.author.id)) {
+        const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
 
-    if (now < expirationTime) {
-      const timeLeft = (expirationTime - now) / 1000;
-      message.channel.send({
-        content: `${TxTE.emoji.time} Please wait ${timeLeft.toFixed(1)} more second(s) before using the \`${command.commanddata.name}\` command.`
-      });
-      return true;
+        if (now < expirationTime) {
+            const timeLeft = (expirationTime - now) / 1000;
+            message.channel.send({
+                content: `${TxTE.emoji.time} Please wait ${timeLeft.toFixed(1)} more second(s) before using the \`${command.commanddata.name}\` command.`
+            });
+            return true;
+        }
     }
-  }
 
-  timestamps.set(message.author.id, now);
-  setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
-  return false;
+    timestamps.set(message.author.id, now);
+    setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
+    return false;
 }
 
 bot.on("messageCreate", async message => {
-  if (message.author.bot) return;
-  if (message.content.includes("@here")) return;
-  if (message.content.includes("@everyone")) return;
+    if (message.author.bot) return;
+    if (message.content.includes("@here")) return;
+    if (message.content.includes("@everyone")) return;
 
-  if (message.guild) checkCooldownXP(message);
+    if (message.guild) checkCooldownEXP(message);
 
-  if (message.mentions.users.first()) {
-    if ((message.mentions.users.first().id === bot.user.id)) {
-      var mentionForHelp = message.content.trim().split(' ');
-      switch (mentionForHelp[1]) {
-        case "help":
-        case "prefix": return message.channel.send({ content: "Try using `Trixy, help`" });
-        default: { };
-      }
+    if (message.mentions.users.first()) {
+        if ((message.mentions.users.first().id === bot.user.id)) {
+            var mentionForHelp = message.content.trim().split(' ');
+            switch (mentionForHelp[1]) {
+                case "help":
+                case "prefix": return message.channel.send({ content: "Try using `Trixy, help`" });
+                default: { };
+            }
+        }
+    } // Reacts to bot mention.
+
+    switch (message.content.trim().toLowerCase()) {
+        case "hi trixy": case "hello trixy": case "trixy, hi": case "trixy, hello":
+            return message.channel.send({ content: `Hello ${message.author.username}!`, reply: { messageReference: message } });
+    } // Reacts to friendliness. Hi Trixy!
+
+    if (message.author.bot || message.content.includes("@here") || message.content.includes("@everyone")) return; // Returns when author is a bot or when mass mentioned
+
+    let args = parseArgs(message);
+    if (args === null) return;
+
+    let command = detectCommand(args, message);
+    if (command === null) return;
+
+    if (commandOnCooldown(command, message)) return;
+
+    try {
+        command.run(bot, message, args, prefix);
+    } catch (e) {
+        console.error(e);
+        message.channel.send({
+            content: `${TxTE.emoji.windowText} Send to Merilax#1572. An error ocurred during command execution: \n \`\`\`${e}\`\`\``
+        });
     }
-  } // Reacts to bot mention.
-  switch (message.content.trim().toLowerCase()) {
-    case "hi trixy": case "hello trixy": case "trixy, hi": case "trixy, hello":
-      return message.channel.send({ content: `Hello ${message.author.username}!`, reply: { messageReference: message } });
-  } // Reacts to friendliness. Hi Trixy!
-
-  if (message.author.bot || message.content.includes("@here") || message.content.includes("@everyone")) return; // Returns when author is a bot or when mass mentioned
-
-  let args = parseArgs(message);
-  if (args === null) return;
-
-  let command = detectCommand(args, message);
-  if (command === null) return;
-
-  if (commandOnCooldown(command, message)) return;
-
-  try {
-    command.run(bot, message, args, prefix);
-  } catch (e) {
-    console.error(e);
-    message.channel.send({
-      content: `${TxTE.emoji.windowText} Send to Merilax#1572. An error ocurred during command execution: \n \`\`\`${e}\`\`\``
-    });
-  }
-});xx
+});
 
 //STATUS AND TOKEN//========================================
 
@@ -387,85 +398,79 @@ bot.on("warn", m => logger.log("warn", m));
 bot.on("error", m => logger.log("error", m));
 
 bot.on("ready", async () => {
-  console.log(
-    `\n\n\nBot has started, with ${bot.users.cache.size} cached users, in ${bot.channels.cache.size} channels of ${bot.guilds.cache.size} guilds.\n\n\n`
-  );
-
-  setInterval(async () => {
-
-    const muteDB = await Mute.find();
-    const remindDB = await Reminder.find();
-
-    // Mutes
-    for (i = 0; ; i++) {
-      if (!muteDB[i]) break;
-
-      let muteGuild = bot.guilds.cache.get(muteDB[i].guildId);
-      if (!muteGuild) {
-        await Mute.findOneAndRemove({ guildId: muteDB[i].guildId, userId: muteDB[i].userId });
-      }
-      let muteMember = muteGuild.members.cache.get(muteDB[i].userId);
-      if (!muteMember) continue;
-      let muteRole = muteGuild.roles.cache.find(r => r.name === "Trixy Mute");
-      if (!muteRole) continue;
-
-
-      if (muteDB[i].duration == 0) { continue } else if (Date.now() > muteDB[i].duration) {
-        muteMember.roles.remove(muteRole);
-        await Mute.findOneAndRemove({ guildId: muteDB[i].guildId, userId: muteDB[i].userId })
-          .catch(e => console.log(e));
-      }
-    }
-
-    // Reminders
-    for (i = 0; ; i++) {
-      if (!remindDB[i]) break;
-
-      let remindUser = bot.users.cache.get(remindDB[i].userId);
-      if (!remindUser) {
-        await Reminder.findOneAndRemove({ userId: remindDB[i].userId, duration: remindDB[i].duration, content: remindDB[i].content });
-      }
-
-      if (Date.now() > remindDB[i].duration) {
-        remindUser.send({ content: `A reminder arrived:` }).catch(e => { });
-        remindUser.send({ content: remindDB[i].content }).catch(e => { });
-        await Reminder.findOneAndRemove({ userId: remindDB[i].userId, duration: remindDB[i].duration, content: remindDB[i].content })
-          .catch(e => console.log(e));
-      }
-    }
-  }, 60 * 1000);
-
-  bot.user.setActivity(
-    `${bot.guilds.cache.size} servers, ${bot.users.cache.size} users.\n@Trixy help. ` +
-    `${statusquote[Math.floor(Math.random() * statusquote.length)]}`,
-    { type: 3 }
-  );
-
-  setInterval(() => {
-    bot.user.setActivity(
-      `${bot.guilds.cache.size} servers, ${bot.users.cache.size} users.\n@Trixy help. ` +
-      `${statusquote[Math.floor(Math.random() * statusquote.length)]}`,
-      { type: 3 }
+    console.log(
+        `\n\n\nBot has started, with ${bot.users.cache.size} cached users, in ${bot.channels.cache.size} channels of ${bot.guilds.cache.size} guilds.\n\n\n`
     );
-  }, 120 * 1000);
+
+    setInterval(async () => {
+
+        const muteDB = await Mute.find();
+        const remindDB = await Reminder.find();
+
+        // Mutes
+        for (i = 0; ; i++) {
+            if (!muteDB[i]) break;
+
+            let muteGuild = bot.guilds.cache.get(muteDB[i].guildId);
+            if (!muteGuild) {
+                await Mute.findOneAndRemove({ guildId: muteDB[i].guildId, userId: muteDB[i].userId });
+            }
+            let muteMember = muteGuild.members.cache.get(muteDB[i].userId);
+            if (!muteMember) continue;
+            let muteRole = muteGuild.roles.cache.find(r => r.name === "Trixy Mute");
+            if (!muteRole) continue;
+
+            if (muteDB[i].duration == 0) {
+                continue
+            } else if (Date.now() > muteDB[i].duration) {
+                muteMember.roles.remove(muteRole);
+                await Mute.findOneAndRemove({ guildId: muteDB[i].guildId, userId: muteDB[i].userId })
+                    .catch(e => console.log(e));
+            }
+        }
+
+        // Reminders
+        for (i = 0; ; i++) {
+            if (!remindDB[i]) break;
+
+            let remindUser = bot.users.cache.get(remindDB[i].userId);
+            if (!remindUser)
+                await Reminder.findOneAndRemove({ userId: remindDB[i].userId, duration: remindDB[i].duration, content: remindDB[i].content });
+
+
+            if (Date.now() > remindDB[i].duration) {
+                remindUser.send({ content: `A reminder arrived:` }).catch(e => { });
+                remindUser.send({ content: remindDB[i].content }).catch(e => { });
+                await Reminder.findOneAndRemove({ userId: remindDB[i].userId, duration: remindDB[i].duration, content: remindDB[i].content })
+                    .catch(e => console.log(e));
+            }
+        }
+    }, 60 * 1000);
+
+    setInterval(() => {
+        bot.user.setActivity(
+            `${bot.guilds.cache.size} servers, ${bot.users.cache.size} users.\n@Trixy help. ` +
+            `${statusquote[Math.floor(Math.random() * statusquote.length)]}`,
+            { type: 3 }
+        );
+    }, 120 * 1000);
 });
 
 bot.on("guildCreate", async guild => {
-  console.log(`New guild joined: ${guild.name} (id: ${guild.id}).`);
-  await db.guildConfigDB.findOrCreate({ where: { guildId: guild.id }, defaults: { guildId: guild.id } });
+    console.log(`New guild joined: ${guild.name} (id: ${guild.id}).`);
+    await db.guildConfigDB.findOrCreate({ where: { guildId: guild.id }, defaults: { guildId: guild.id } });
 });
 
 bot.on("guildDelete", async guild => {
-  console.log(`I have been removed from: ${guild.name} (${guild.id})`);
-  await db.guildConfigDB.destroy({ where: { guildId: guild.id } });
-  await db.guildLevelConfigDB.destroy({ where: { guildId: guild.id } });
-  await Mute.deleteMany({ guildId: guild.id });
+    console.log(`I have been removed from: ${guild.name} (${guild.id})`);
+    await db.guildConfigDB.destroy({ where: { guildId: guild.id } });
+    await db.guildLevelConfigDB.destroy({ where: { guildId: guild.id } });
+    await Mute.deleteMany({ guildId: guild.id });
 });
 
-if (process.env.DEVMODE == "true") {
-  bot.login(process.env.DEV_TOKEN);
-} else {
-  bot.login(process.env.TOKEN);
-}
+if (process.env.DEVMODE == "true")
+    bot.login(process.env.DEV_TOKEN);
+else
+    bot.login(process.env.TOKEN);
 
 process.on("uncaughtException", error => console.error(error));//logger.log("error", error)

@@ -14,11 +14,9 @@ module.exports.run = (
   args,
   prefix
 ) => {
-  if (message.author.id === config.ownerID) {
-    let say = args.slice().join(" ");
-    message.delete().catch(e => {});
-    message.channel.send({ content: say });
-  } else {
-    return;
-  }
+  if (message.author.id !== config.ownerID) return;
+  
+  let say = args.slice().join(" ");
+  message.delete().catch(e => { });
+  message.channel.send({ content: say });
 };
